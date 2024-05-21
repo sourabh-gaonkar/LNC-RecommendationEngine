@@ -7,8 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-
+  build-client:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,7 +18,19 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven [ Client ] 
+    - name: Build with Maven [ Client ]
       run: cd Client && mvn clean package
+
+  build-server:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
     - name: Build with Maven [ Server ]
-      run: cd ../Server && mvn clean package
+      run: cd Server && mvn clean package
