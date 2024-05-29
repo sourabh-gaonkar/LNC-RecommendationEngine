@@ -1,6 +1,6 @@
-CREATE DATABASE test;
+CREATE DATABASE recommendation_engine;
 
-use test;
+use recommendation_engine;
 
 -- USER DETAILS
 CREATE TABLE user_details (
