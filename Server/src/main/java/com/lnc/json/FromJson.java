@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lnc.admin.MenuItem;
+import com.lnc.employee.Feedback;
 
 public class FromJson {
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -15,5 +16,9 @@ public class FromJson {
 
     public MenuItem decodeMenuItem(String jsonData) throws JsonProcessingException {
         return objectMapper.readValue(jsonData, MenuItem.class);
+    }
+
+    public Feedback decodeFeedback(String jsonData) throws JsonProcessingException {
+        return objectMapper.readValue(jsonData, Feedback.class);
     }
 }

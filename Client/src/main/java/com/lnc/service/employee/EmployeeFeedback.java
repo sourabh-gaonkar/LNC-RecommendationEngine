@@ -19,7 +19,8 @@ public class EmployeeFeedback {
         String request = toJsonConversion.codeEmployeeFeedback(feedback);
 
         try{
-            ServerConnection.requestServer(request);
+            String response = ServerConnection.requestServer(request);
+            System.out.println("response: " + response);
         } catch (Exception ex){
             System.out.println("Server connection error.");
         }
