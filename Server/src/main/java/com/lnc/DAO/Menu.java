@@ -103,4 +103,19 @@ public class Menu {
 
         return menuList;
     }
+
+    public int getItemID(String menuItem) throws Exception {
+        int itemID = 0;
+        String query = "SELECT item_id FROM menu WHERE item_name =?";
+        try(PreparedStatement getItemIDStmt = connection.prepareStatement(query)) {
+            getItemIDStmt.setString(1, menuItem);
+            ResultSet rs = getItemIDStmt.executeQuery();
+            if(rs.next()) {
+                itemID = rs.getInt("item_id");
+            }
+        } catch (SQLException ex) {
+            throw new Exception("\nFailed to get item ID.\n" + ex.getMessage());
+        }
+        return itemID;
+    }
 }

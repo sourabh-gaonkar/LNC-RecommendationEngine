@@ -3,6 +3,7 @@ package com.lnc.app;
 import com.lnc.admin.*;
 import com.lnc.auth.Registration;
 import com.lnc.auth.authentication;
+import com.lnc.employee.EmployeeFeedback;
 
 import java.sql.SQLException;
 
@@ -44,7 +45,8 @@ public class Redirection {
         }
 
         if(path.equalsIgnoreCase("/employee/feedback")){
-
+            EmployeeFeedback employeeFeedback = new EmployeeFeedback();
+            response = employeeFeedback.getEmployeeFeedback(data);
         }
 
         return response;

@@ -22,9 +22,14 @@ public class EmployeeController {
     }
 
     private void run() throws IOException, InterruptedException {
-        displayOptions();
-        int choice = InputHandler.getInt("Enter your choice: ");
-        processOption(choice);
+        while (true) {
+            displayOptions();
+            int choice = InputHandler.getInt("Enter your choice: ");
+            processOption(choice);
+            if (choice == 5) {
+                break;
+            }
+        }
     }
 
     private void processOption(int choice) throws InterruptedException, IOException {
