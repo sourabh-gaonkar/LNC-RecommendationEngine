@@ -3,52 +3,63 @@ package com.lnc.app;
 import com.lnc.admin.*;
 import com.lnc.auth.Registration;
 import com.lnc.auth.authentication;
+import com.lnc.chef.FeedbackDisplay;
 import com.lnc.employee.EmployeeFeedback;
-
-import java.sql.SQLException;
 
 public class Redirection {
     private String response = null;
+
     public String redirect(String request) throws Exception {
         String[] parts = request.split("&");
         String path = parts[0];
         String data = parts[1];
 
-        if(path.equalsIgnoreCase("/login")) {
-            authentication auth = new authentication();
-            response = auth.authenticate(data);
+        switch (path) {
+            case "/login":
+                authentication auth = new authentication();
+                response = auth.authenticate(data);
+                break;
+
+            case "/register":
+                Registration register = new Registration();
+                response = register.addUser(data);
+                break;
+
+            case "/admin/addItem":
+                MenuItemAddition addItem = new MenuItemAddition();
+                response = addItem.addMenuItem(data);
+                break;
+
+            case "/admin/deleteItem":
+                MenuItemDeletion deleteItem = new MenuItemDeletion();
+                response = deleteItem.deleteMenuItem(data);
+                break;
+
+            case "/admin/viewItems":
+                MenuItemDisplay viewItems = new MenuItemDisplay();
+                response = viewItems.displayMenu();
+                break;
+
+            case "/admin/updateItem":
+                MenuItemUpdate updateItem = new MenuItemUpdate();
+                response = updateItem.updateMenuItem(data);
+                break;
+
+            case "/employee/feedback":
+                EmployeeFeedback employeeFeedback = new EmployeeFeedback();
+                response = employeeFeedback.getEmployeeFeedback(data);
+                break;
+
+            case "/chef/getFeedback":
+                FeedbackDisplay feedbackDisplay = new FeedbackDisplay();
+                response = feedbackDisplay.displayFeedback(data);
+                break;
+
+            default:
+                throw new IllegalArgumentException("Invalid path: " + path);
         }
 
-        if(path.equalsIgnoreCase("/register")){
-            Registration register = new Registration();
-            response = register.addUser(data);
-        }
-
-        if(path.equalsIgnoreCase("/admin/addItem")){
-            MenuItemAddition item = new MenuItemAddition();
-            response = item.addMenuItem(data);
-        }
-
-        if(path.equalsIgnoreCase("/admin/deleteItem")){
-            MenuItemDeletion item = new MenuItemDeletion();
-            response = item.deleteMenuItem(data);
-        }
-
-        if(path.equalsIgnoreCase("/admin/viewItems")){
-            MenuItemDisplay items = new MenuItemDisplay();
-            response = items.displayMenu();
-        }
-
-        if(path.equalsIgnoreCase("/admin/updateItem")){
-            MenuItemUpdate menuItemUpdate = new MenuItemUpdate();
-            response = menuItemUpdate.updateMenuItem(data);
-        }
-
-        if(path.equalsIgnoreCase("/employee/feedback")){
-            EmployeeFeedback employeeFeedback = new EmployeeFeedback();
-            response = employeeFeedback.getEmployeeFeedback(data);
-        }
-
+        System.out.println("Response: " + response);
         return response;
     }
 }
