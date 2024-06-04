@@ -1,5 +1,7 @@
 package com.lnc.controller;
 
+import com.lnc.model.Feedback;
+import com.lnc.service.chef.FeedbackView;
 import com.lnc.util.InputHandler;
 
 import java.io.IOException;
@@ -21,9 +23,14 @@ public class ChefController {
     }
 
     private void run() throws IOException, InterruptedException {
-        displayOptions();
-        int choice = InputHandler.getInt("Enter your choice: ");
-        processOption(choice);
+        while (true) {
+            displayOptions();
+            int choice = InputHandler.getInt("Enter your choice: ");
+            processOption(choice);
+            if (choice == 5) {
+                break;
+            }
+        }
     }
 
     private void processOption(int choice) throws InterruptedException, IOException {
@@ -35,7 +42,8 @@ public class ChefController {
                 System.out.println("View Recommendation from Engine.");
                 break;
             case 3:
-                System.out.println("View FeedBack.");
+                FeedbackView feedbackView = new FeedbackView();
+                feedbackView.getFeedbacks();
                 break;
             case 4:
                 System.out.println("Generate Report.");

@@ -53,4 +53,14 @@ public class ToJsonConversion {
 
         return apiPath+ "&" + jsonData;
     }
+
+    public String codeItemName(String itemName) throws JsonProcessingException {
+        Map<String,String> itemNameMap = new HashMap<>();
+        itemNameMap.put("itemName", itemName);
+        String jsonData = objectMapper.writeValueAsString(itemNameMap);
+
+        String apiPath = "/chef/getFeedback";
+
+        return apiPath+ "&" + jsonData;
+    }
 }
