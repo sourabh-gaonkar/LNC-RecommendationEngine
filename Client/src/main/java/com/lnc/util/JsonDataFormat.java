@@ -7,6 +7,7 @@ import com.lnc.model.MenuItem;
 import com.lnc.model.MenuItemResponse;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +46,27 @@ public class JsonDataFormat {
 
         for (Map<String, Object> feedback : feedbackList) {
             System.out.printf("%-16s %-7d %-50s %s%n", feedback.get("user_name"), feedback.get("rating"), feedback.get("comment"), feedback.get("feedback_date"));
+        }
+    }
+
+    public void printFormattedRecommendation(String jsonString) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Map<String, Object>> recommendations = objectMapper.readValue(jsonString, new TypeReference<List<Map<String, Object>>>() {});
+            List<String> order = Arrays.asList("BREAKFAST", "LUNCH", "SNACK", "DINNER");
+
+            System.out.printf("%-30s %-10s %-10s %-20s%n", "Item Name", "Category", "Price", "Average Rating");
+
+            for (String category : order) {
+                for (Map<String, Object> row : recommendations) {
+                    if (category.equals(row.get("category"))) {
+                        System.out.printf("%-30s %-10s %-10.2f %-20.2f%n",
+                                row.get("item_name"), row.get("category"), row.get("price"), row.get("avg_overall_rating"));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred while printing recommendations: " + e.getMessage());
         }
     }
 }
