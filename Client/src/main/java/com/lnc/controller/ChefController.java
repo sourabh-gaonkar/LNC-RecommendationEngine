@@ -1,6 +1,7 @@
 package com.lnc.controller;
 
 import com.lnc.model.Feedback;
+import com.lnc.service.chef.EngineRecommendation;
 import com.lnc.service.chef.FeedbackView;
 import com.lnc.util.InputHandler;
 
@@ -17,12 +18,12 @@ public class ChefController {
         this.employeeID = employeeID;
     }
 
-    public void runHomePage() throws IOException, InterruptedException {
+  public void runHomePage() throws Exception {
         System.out.println("\nWelcome "+ name);
         run();
     }
 
-    private void run() throws IOException, InterruptedException {
+  private void run() throws Exception {
         while (true) {
             displayOptions();
             int choice = InputHandler.getInt("Enter your choice: ");
@@ -33,13 +34,14 @@ public class ChefController {
         }
     }
 
-    private void processOption(int choice) throws InterruptedException, IOException {
+  private void processOption(int choice) throws Exception {
         switch (choice) {
             case 1:
                 System.out.println("Rollout Menu for Tomorrow");
                 break;
             case 2:
-                System.out.println("View Recommendation from Engine.");
+                EngineRecommendation engineRecommendation = new EngineRecommendation();
+                engineRecommendation.viewRecommendation();
                 break;
             case 3:
                 FeedbackView feedbackView = new FeedbackView();

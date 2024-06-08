@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.lnc.model.Employee;
 
 import java.util.List;
@@ -19,10 +20,6 @@ public class ToJson {
         return objectMapper.writeValueAsString(menuList);
     }
 
-//    public String codeAllFeedbacks(List<Map<String, Object>> feedbackList) throws JsonProcessingException {
-//        return objectMapper.writeValueAsString(feedbackList);
-//    }
-
     public String codeFeedbacks(List<Map<String, Object>> feedbackList, Map<String, Object> weeklyStat, Map<String, Object> overallStat) throws JsonProcessingException {
         ObjectNode rootNode = objectMapper.createObjectNode();
 
@@ -34,5 +31,11 @@ public class ToJson {
         rootNode.set("overallStat", objectMapper.valueToTree(overallStat));
 
         return objectMapper.writeValueAsString(rootNode);
+    }
+
+    public String codeEngineResponse(List<Map<String, Object>> recommendations) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        return objectMapper.writeValueAsString(recommendations);
     }
 }

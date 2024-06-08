@@ -8,6 +8,7 @@ import com.lnc.service.admin.MenuItemUpdate;
 import com.lnc.service.authentication;
 import com.lnc.service.chef.FeedbackDisplay;
 import com.lnc.service.employee.EmployeeFeedback;
+import com.lnc.service.recommendationEngine.RecommendationEngine;
 
 public class Route {
     private String response = null;
@@ -56,6 +57,11 @@ public class Route {
             case "/chef/getFeedback":
                 FeedbackDisplay feedbackDisplay = new FeedbackDisplay();
                 response = feedbackDisplay.displayFeedback(data);
+                break;
+
+            case "/chef/getRecommendation":
+                RecommendationEngine recommendationEngine = new RecommendationEngine();
+                response = recommendationEngine.runEngine();
                 break;
 
             default:
