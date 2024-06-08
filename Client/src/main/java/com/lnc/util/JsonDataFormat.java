@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lnc.model.MenuItem;
+import com.lnc.model.MenuItemResponse;
 
 import java.io.IOException;
 import java.util.List;
@@ -12,19 +13,22 @@ import java.util.Map;
 public class JsonDataFormat {
     private final ObjectMapper objectMapper = new ObjectMapper();
     public void prettyView(String jsonData) throws Exception {
-        List<MenuItem> items;
+        List<MenuItemResponse> items;
         try {
-            items = objectMapper.readValue(jsonData, new TypeReference<List<MenuItem>>() {});
-
+            items = objectMapper.readValue(jsonData, new TypeReference<List<MenuItemResponse>>() {});
         } catch (IOException ex) {
             throw new Exception("Error formatting JSON data.\n" + ex.getMessage());
         }
 
-        System.out.printf("%-20s %-10s %-10s%n", "Item Name", "Price", "Availability");
-        System.out.println("------------------------------------------------------");
+        System.out.printf("%-30s %-10s %-15s %-10s%n", "Item Name", "Price", "Availability", "Category");
+        System.out.println("--------------------------------------------------------------------------");
 
-        for (MenuItem item : items) {
-            System.out.printf("%-20s %-10.2f %-10s%n", item.getItemName(), item.getPrice(), item.getAvailability() ? "Yes" : "No");
+        for (MenuItemResponse item : items) {
+            System.out.printf("%-30s %-10.2f %-15s %-10s%n",
+                    item.getItemName(),
+                    item.getPrice(),
+                    item.isAvailable() ? "Yes" : "No",
+                    item.getCategory());
         }
     }
 

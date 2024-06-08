@@ -15,10 +15,15 @@ public class MenuItemAddition {
             choice = InputHandler.getInt("Enter availability (1 - available, 0 - not available): ");
         } while (choice != 0 && choice != 1);
         boolean available = choice == 1 ? true : false;
+        int categoryCode;
+        do {
+            categoryCode = InputHandler.getInt("Enter category code (1 - Breakfast, 2 - Lunch, 3 - Snack, 4 - Dinner): ");
+        } while (categoryCode < 1 || categoryCode > 4);
 
         item.setItemName(itemName);
         item.setPrice(price);
         item.setAvailability(available);
+        item.setCategory(categoryCode);
 
         ToJsonConversion jsonCoder = new ToJsonConversion();
         String request = jsonCoder.codeMenuItem(item, "/admin/addItem");

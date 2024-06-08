@@ -3,10 +3,9 @@ package com.lnc.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public abstract class User {
-    @JsonProperty
+    @JsonProperty("employeeID")
     private String userId;
     private String name;
-
     private String role;
     private String email;
     private String password;

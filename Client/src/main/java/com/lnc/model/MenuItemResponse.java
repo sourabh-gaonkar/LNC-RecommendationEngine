@@ -1,12 +1,13 @@
-package com.lnc.admin;
+package com.lnc.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+public class MenuItemResponse {
 
-public class MenuItem {
     @JsonProperty("item_name")
     private String itemName;
     private double price;
     private boolean availability;
+    private String category;
 
     public String getItemName() {
         return itemName;
@@ -31,4 +32,13 @@ public class MenuItem {
     public void setAvailability(boolean availability) {
         this.availability = availability;
     }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }
+
