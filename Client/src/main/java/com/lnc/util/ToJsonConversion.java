@@ -2,6 +2,7 @@ package com.lnc.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lnc.model.DailyMenu;
 import com.lnc.model.Employee;
 import com.lnc.model.Feedback;
 import com.lnc.model.MenuItem;
@@ -60,6 +61,14 @@ public class ToJsonConversion {
         String jsonData = objectMapper.writeValueAsString(itemNameMap);
 
         String apiPath = "/chef/getFeedback";
+
+        return apiPath+ "&" + jsonData;
+    }
+
+    public String codeDailyMenu(DailyMenu menu) throws JsonProcessingException {
+        String jsonData = objectMapper.writeValueAsString(menu);
+
+        String apiPath = "/chef/rolloutMenu";
 
         return apiPath+ "&" + jsonData;
     }
