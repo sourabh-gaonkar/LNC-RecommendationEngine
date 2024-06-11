@@ -3,6 +3,8 @@ package com.lnc.controller;
 import com.lnc.model.Feedback;
 import com.lnc.service.chef.EngineRecommendation;
 import com.lnc.service.chef.FeedbackView;
+import com.lnc.service.chef.MenuRollout;
+import com.lnc.service.chef.ReportGenerator;
 import com.lnc.util.InputHandler;
 
 import java.io.IOException;
@@ -37,7 +39,8 @@ public class ChefController {
   private void processOption(int choice) throws Exception {
         switch (choice) {
             case 1:
-                System.out.println("Rollout Menu for Tomorrow");
+                MenuRollout menuRollout = new MenuRollout();
+                menuRollout.rolloutMenu();
                 break;
             case 2:
                 EngineRecommendation engineRecommendation = new EngineRecommendation();
@@ -48,7 +51,8 @@ public class ChefController {
                 feedbackView.getFeedbacks();
                 break;
             case 4:
-                System.out.println("Generate Report.");
+                ReportGenerator reportGenerator = new ReportGenerator();
+                reportGenerator.generateReport();
                 break;
             case 5:
                 System.out.println("Logging out...");

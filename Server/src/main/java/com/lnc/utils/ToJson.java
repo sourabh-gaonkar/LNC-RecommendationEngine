@@ -38,4 +38,8 @@ public class ToJson {
         objectMapper.registerModule(new JavaTimeModule());
         return objectMapper.writeValueAsString(recommendations);
     }
+
+    public String codeMonthlyReport(List<Map<String, Object>> reportData) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(reportData);
+    }
 }

@@ -7,6 +7,8 @@ import com.lnc.service.admin.MenuItemDisplay;
 import com.lnc.service.admin.MenuItemUpdate;
 import com.lnc.service.authentication;
 import com.lnc.service.chef.FeedbackDisplay;
+import com.lnc.service.chef.ReportGenerator;
+import com.lnc.service.chef.RolloutMenu;
 import com.lnc.service.employee.EmployeeFeedback;
 import com.lnc.service.recommendationEngine.RecommendationEngine;
 
@@ -62,6 +64,16 @@ public class Route {
             case "/chef/getRecommendation":
                 RecommendationEngine recommendationEngine = new RecommendationEngine();
                 response = recommendationEngine.runEngine();
+                break;
+
+            case "/chef/rolloutMenu":
+                RolloutMenu rolloutMenu = new RolloutMenu();
+                response = rolloutMenu.rolloutMenu(data);
+                break;
+
+            case "/chef/generateReport":
+                ReportGenerator reportGenerator = new ReportGenerator();
+                response = reportGenerator.generateReport(data);
                 break;
 
             default:

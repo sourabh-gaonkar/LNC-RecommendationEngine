@@ -3,6 +3,7 @@ package com.lnc.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lnc.model.DailyMenu;
 import com.lnc.model.Feedback;
 import com.lnc.model.MenuItem;
 
@@ -20,5 +21,9 @@ public class FromJson {
 
     public Feedback decodeFeedback(String jsonData) throws JsonProcessingException {
         return objectMapper.readValue(jsonData, Feedback.class);
+    }
+
+    public DailyMenu decodeDailyMenu(String jsonData) throws JsonProcessingException {
+        return objectMapper.readValue(jsonData, DailyMenu.class);
     }
 }
