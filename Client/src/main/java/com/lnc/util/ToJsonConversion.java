@@ -72,4 +72,15 @@ public class ToJsonConversion {
 
         return apiPath+ "&" + jsonData;
     }
+
+    public String codeMonthYear(String month, String year) throws JsonProcessingException {
+        Map<String,String> monthYear = new HashMap<>();
+        monthYear.put("month", month);
+        monthYear.put("year",  year);
+        String jsonData = objectMapper.writeValueAsString(monthYear);
+
+        String apiPath = "/chef/generateReport";
+
+        return apiPath+ "&" + jsonData;
+    }
 }

@@ -3,6 +3,7 @@ package com.lnc.service.chef;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lnc.DB.Menu;
 import com.lnc.DB.MenuRolloutQueries;
+import com.lnc.DB.NotificationQueries;
 import com.lnc.model.DailyMenu;
 import com.lnc.utils.FromJson;
 
@@ -11,6 +12,7 @@ import java.sql.SQLException;
 public class RolloutMenu {
     Menu menuQueries = new Menu();
     MenuRolloutQueries menuRolloutQueries = new MenuRolloutQueries();
+    NotificationQueries notificationQueries = new NotificationQueries();
 
     public RolloutMenu() throws SQLException {
     }
@@ -44,7 +46,11 @@ public class RolloutMenu {
         }
 
         if (menuRolloutQueries.rolloutMenu(dailyMenu)){
-            return "Menu rolled out successfully";
+            if (notificationQueries.insertRolloutNotification()){
+                return "Menu rolled out successfully and notifications sent to all employees";
+            } else {
+                return "Menu rollout successful but failed to send notifications";
+            }
         } else {
             return "Menu rollout failed";
         }

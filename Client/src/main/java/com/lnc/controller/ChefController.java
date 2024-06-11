@@ -4,6 +4,7 @@ import com.lnc.model.Feedback;
 import com.lnc.service.chef.EngineRecommendation;
 import com.lnc.service.chef.FeedbackView;
 import com.lnc.service.chef.MenuRollout;
+import com.lnc.service.chef.ReportGenerator;
 import com.lnc.util.InputHandler;
 
 import java.io.IOException;
@@ -50,7 +51,8 @@ public class ChefController {
                 feedbackView.getFeedbacks();
                 break;
             case 4:
-                System.out.println("Generate Report.");
+                ReportGenerator reportGenerator = new ReportGenerator();
+                reportGenerator.generateReport();
                 break;
             case 5:
                 System.out.println("Logging out...");
