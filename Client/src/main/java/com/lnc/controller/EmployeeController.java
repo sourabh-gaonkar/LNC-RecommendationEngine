@@ -1,11 +1,11 @@
 package com.lnc.controller;
 
+import static java.lang.Thread.sleep;
+
+import com.lnc.service.AllNewNotifications;
+import com.lnc.service.employee.AllNotificationsOfEmployee;
 import com.lnc.service.employee.EmployeeFeedback;
 import com.lnc.util.InputHandler;
-
-import java.io.IOException;
-
-import static java.lang.Thread.sleep;
 
 public class EmployeeController {
     private final String name;
@@ -16,12 +16,19 @@ public class EmployeeController {
         this.employeeID = employeeID;
     }
 
-    public void runHomePage() throws IOException, InterruptedException {
-        System.out.println("\nWelcome "+ name);
+  public void runHomePage() throws Exception {
+        System.out.println("\nWelcome "+ name+ "!");
+        System.out.println();
+        getNotifications();
         run();
     }
 
-    private void run() throws IOException, InterruptedException {
+    private void getNotifications() throws Exception {
+    AllNewNotifications newNotifications = new AllNewNotifications();
+        newNotifications.getNewNotifications(employeeID);
+    }
+
+  private void run() throws Exception {
         while (true) {
             displayOptions();
             int choice = InputHandler.getInt("Enter your choice: ");
@@ -32,7 +39,7 @@ public class EmployeeController {
         }
     }
 
-    private void processOption(int choice) throws InterruptedException, IOException {
+  private void processOption(int choice) throws Exception {
         switch (choice) {
             case 1:
                 System.out.println("View today's menu.");
@@ -45,7 +52,8 @@ public class EmployeeController {
                 employeeFeedback.takeEmployeeFeedback(employeeID);
                 break;
             case 4:
-                System.out.println("View Notifications.");
+                AllNotificationsOfEmployee allNotificationsOfEmployee = new AllNotificationsOfEmployee();
+                allNotificationsOfEmployee.getAllNotifications(employeeID);
                 break;
             case 5:
                 System.out.println("Logging out...");

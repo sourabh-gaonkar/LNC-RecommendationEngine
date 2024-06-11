@@ -1,5 +1,6 @@
 package com.lnc.app;
 
+import com.lnc.service.NewNotification;
 import com.lnc.service.Registration;
 import com.lnc.service.admin.MenuItemAddition;
 import com.lnc.service.admin.MenuItemDeletion;
@@ -9,6 +10,7 @@ import com.lnc.service.authentication;
 import com.lnc.service.chef.FeedbackDisplay;
 import com.lnc.service.chef.ReportGenerator;
 import com.lnc.service.chef.RolloutMenu;
+import com.lnc.service.employee.AllNotificationsOfEmployee;
 import com.lnc.service.employee.EmployeeFeedback;
 import com.lnc.service.recommendationEngine.RecommendationEngine;
 
@@ -29,6 +31,11 @@ public class Route {
             case "/register":
                 Registration register = new Registration();
                 response = register.addUser(data);
+                break;
+
+            case "/getNotifications":
+                NewNotification newNotification = new NewNotification();
+                response = newNotification.getNewNotifications(data);
                 break;
 
             case "/admin/addItem":
@@ -54,6 +61,11 @@ public class Route {
             case "/employee/feedback":
                 EmployeeFeedback employeeFeedback = new EmployeeFeedback();
                 response = employeeFeedback.getEmployeeFeedback(data);
+                break;
+
+            case "/employee/getNotifications":
+                AllNotificationsOfEmployee allNotificationsOfEmployee = new AllNotificationsOfEmployee();
+                response = allNotificationsOfEmployee.getAllNotificationsOfEmployee(data);
                 break;
 
             case "/chef/getFeedback":
