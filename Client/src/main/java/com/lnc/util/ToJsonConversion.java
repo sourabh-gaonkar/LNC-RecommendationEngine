@@ -38,9 +38,9 @@ public class ToJsonConversion {
     }
 
     public String codeMenuItemName(String itemName) throws JsonProcessingException {
-        Map<String,String> loginCredentials = new HashMap<>();
-        loginCredentials.put("itemName", itemName);
-        String jsonData = objectMapper.writeValueAsString(loginCredentials);
+        Map<String,String> items = new HashMap<>();
+        items.put("itemName", itemName);
+        String jsonData = objectMapper.writeValueAsString(items);
 
         String apiPath = "/admin/deleteItem";
 
@@ -82,5 +82,13 @@ public class ToJsonConversion {
         String apiPath = "/chef/generateReport";
 
         return apiPath+ "&" + jsonData;
+    }
+
+    public String codeEmployeeID(String employeeID) throws JsonProcessingException {
+        Map<String,String> employeeMap = new HashMap<>();
+        employeeMap.put("employee_id", employeeID);
+
+
+        return objectMapper.writeValueAsString(employeeMap);
     }
 }

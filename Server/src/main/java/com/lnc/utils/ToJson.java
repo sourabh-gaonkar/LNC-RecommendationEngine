@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.lnc.model.Employee;
+import com.lnc.model.Notification;
 
 import java.util.List;
 import java.util.Map;
@@ -41,5 +42,9 @@ public class ToJson {
 
     public String codeMonthlyReport(List<Map<String, Object>> reportData) throws JsonProcessingException {
         return objectMapper.writeValueAsString(reportData);
+    }
+
+    public String codeNotifications(List<Notification> notifications) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(notifications);
     }
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lnc.model.MenuItem;
 import com.lnc.model.MenuItemResponse;
+import com.lnc.model.Notification;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -67,6 +68,19 @@ public class JsonDataFormat {
             }
         } catch (Exception e) {
             System.out.println("An error occurred while printing recommendations: " + e.getMessage());
+        }
+    }
+
+    public void printAllNotifications(String jsonData) throws JsonProcessingException {
+        List<Notification> notifications = objectMapper.readValue(jsonData, new TypeReference<List<Notification>>() {});
+
+        System.out.println();
+        System.out.printf("%-10s %-50s %-20s%n", "Serial No", "Message", "Sent At");
+        System.out.println("---------------------------------------------------------------------------------");
+
+        for (int i = 0; i < notifications.size(); i++) {
+            Notification notification = notifications.get(i);
+            System.out.printf("%-10d %-50s %-20s%n", i + 1, notification.getMessage(), notification.getCreatedAt());
         }
     }
 }
