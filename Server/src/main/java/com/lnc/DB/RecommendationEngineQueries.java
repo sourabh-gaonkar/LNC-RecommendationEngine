@@ -1,11 +1,12 @@
 package com.lnc.DB;
 
-import com.lnc.connection.JDBCConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.lnc.connection.JDBCConnection;
 
 public class RecommendationEngineQueries {
     private final Connection connection;

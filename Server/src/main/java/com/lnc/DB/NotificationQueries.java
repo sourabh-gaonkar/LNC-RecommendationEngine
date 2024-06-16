@@ -49,10 +49,10 @@ public class NotificationQueries {
         notification.setCreatedAt(createdAt);
         notifications.add(notification);
       }
-      boolean isStatusUpdated = updateNotificationStatus(employeeID, "READ");
-      if (!isStatusUpdated) {
-        System.out.println("Failed to update notification status.");
-      }
+        boolean isStatusUpdated = updateNotificationStatus(employeeID, "READ");
+        if (!isStatusUpdated) {
+            System.out.println("Failed to update notification status.");
+        }
     } catch (SQLException ex) {
       throw new Exception("\nFailed to get notifications.\n" + ex.getMessage());
     }

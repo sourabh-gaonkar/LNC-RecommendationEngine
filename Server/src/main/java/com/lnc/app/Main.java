@@ -1,16 +1,16 @@
 package com.lnc.app;
 
-import com.lnc.Connection.Server;
 import java.util.logging.Logger;
 
-public class Main {
-  private static final Logger logger = Logger.getLogger(Main.class.getName());
+import com.lnc.connection.Server;
 
-  public static void main(String[] args) {
-    try {
-      Server.runServer();
-    } catch (Exception e) {
-      logger.severe(e.getMessage());
+public class Main {
+    private static final Logger logger = Logger.getLogger(Main.class.getName());
+    public static void main(String[] args) {
+        try {
+            Server.runServer();
+        } catch (Exception e) {
+            logger.severe(e.getMessage());
+        }
     }
-  }
 }
