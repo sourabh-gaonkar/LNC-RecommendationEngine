@@ -13,6 +13,8 @@ public class MenuItemDeletion {
       if (menu.deleteMenuItem(itemName)) {
         return "Deleted Item Successfully";
       }
+    } else {
+      return "Menu item not found..";
     }
     return "Error deleting menu item..";
   }

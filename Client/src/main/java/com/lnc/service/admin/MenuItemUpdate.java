@@ -15,12 +15,7 @@ public class MenuItemUpdate {
       choice = InputHandler.getInt("Enter availability (1 - available, 0 - not available): ");
     } while (choice != 0 && choice != 1);
     boolean available = choice == 1;
-    int categoryCode;
-    do {
-      categoryCode =
-          InputHandler.getInt(
-              "Enter category code (1 - Breakfast, 2 - Lunch, 3 - Snack, 4 - Dinner): ");
-    } while (categoryCode < 1 || categoryCode > 4);
+    int categoryCode = 1;
 
     item.setItemName(itemName);
     item.setPrice(price);
