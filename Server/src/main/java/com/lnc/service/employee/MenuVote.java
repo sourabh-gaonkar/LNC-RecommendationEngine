@@ -9,8 +9,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class MenuVote {
-    Menu menu = new Menu();
-    MenuRolloutQueries menuRolloutQueries = new MenuRolloutQueries();
+    private final Menu menu = new Menu();
+    private final MenuRolloutQueries menuRolloutQueries = new MenuRolloutQueries();
 
     public MenuVote() throws SQLException {
     }

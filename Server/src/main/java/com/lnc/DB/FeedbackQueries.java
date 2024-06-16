@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class FeedbackQueries {
   private final Connection connection;
-  Menu menu = new Menu();
+  private final Menu menu = new Menu();
 
   public FeedbackQueries() throws SQLException {
     JDBCConnection dbInstance = JDBCConnection.getInstance();

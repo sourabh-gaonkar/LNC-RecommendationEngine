@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class MenuRolloutQueries {
     private final Connection connection;
-    Menu menuQueries = new Menu();
+    private final Menu menuQueries = new Menu();
 
     public MenuRolloutQueries() throws SQLException {
         JDBCConnection dbInstance = JDBCConnection.getInstance();

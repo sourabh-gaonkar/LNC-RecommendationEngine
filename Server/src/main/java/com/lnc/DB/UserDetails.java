@@ -73,13 +73,12 @@ public class UserDetails {
                 employee.setRole(rs.getString("role"));
                 employee.setEmailID(rs.getString("email"));
                 employee.setPassword(null);
+                if(!password.equals(actualPassword)) {
+                    return null;
+                }
             }
         } catch (SQLException ex) {
             throw new Exception(ex.getMessage());
-        }
-
-        if(actualPassword!= null && actualPassword.equals(password)) {
-            return employee;
         }
 
         return employee;

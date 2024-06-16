@@ -13,6 +13,10 @@ public class AuthService {
         String request = jsonConversion.codeLoginCredentials(employeeID, password);
         try {
             String response = ServerConnection.requestServer(request);
+            if(response.equals("Wrong username, password.")){
+                System.out.println("Wrong username, password.");
+                return;
+            }
 
             FromJsonConversion jsonDecode = new FromJsonConversion();
             String name = jsonDecode.getJsonValue("name", response);

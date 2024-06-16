@@ -14,13 +14,13 @@ import com.lnc.service.employee.*;
 import com.lnc.service.recommendationEngine.RecommendationEngine;
 
 public class Route {
-    private String response = null;
 
     public String redirect(String request) throws Exception {
         String[] parts = request.split("&");
         String path = parts[0];
         String data = parts[1];
 
+        String response = null;
         switch (path) {
             case "/login":
                 authentication auth = new authentication();

@@ -10,9 +10,9 @@ import com.lnc.utils.FromJson;
 import java.sql.SQLException;
 
 public class RolloutMenu {
-    Menu menuQueries = new Menu();
-    MenuRolloutQueries menuRolloutQueries = new MenuRolloutQueries();
-    NotificationQueries notificationQueries = new NotificationQueries();
+    private final Menu menuQueries = new Menu();
+    private final MenuRolloutQueries menuRolloutQueries = new MenuRolloutQueries();
+    private final NotificationQueries notificationQueries = new NotificationQueries();
 
     public RolloutMenu() throws SQLException {
     }

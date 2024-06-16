@@ -29,7 +29,7 @@ public class FromJson {
         return objectMapper.readValue(jsonData, DailyMenu.class);
     }
 
-    public List<String> decodeVotedMenu(String jsonData) throws JsonProcessingException {
+    public List decodeVotedMenu(String jsonData) throws JsonProcessingException {
         return objectMapper.readValue(jsonData, List.class);
     }
 }
