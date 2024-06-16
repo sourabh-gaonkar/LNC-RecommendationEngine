@@ -47,4 +47,8 @@ public class ToJson {
     public String codeNotifications(List<Notification> notifications) throws JsonProcessingException {
         return objectMapper.writeValueAsString(notifications);
     }
+
+    public String codeTodaysMenu(List<Map<String, Object>> todaysMenu) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(todaysMenu);
+    }
 }

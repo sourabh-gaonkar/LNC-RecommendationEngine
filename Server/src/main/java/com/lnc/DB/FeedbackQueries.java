@@ -190,4 +190,20 @@ public class FeedbackQueries {
 
     return reportData;
   }
+
+  public List<String> getReviewCommentsOfItem(String itemName) throws Exception {
+    List<String> comments = new ArrayList<>();
+    int itemID = menu.getItemID(itemName);
+    String query = "SELECT comment FROM feedback WHERE item_id = ? LIMIT 100";
+    try (PreparedStatement getCommentsStmt = connection.prepareStatement(query)) {
+      getCommentsStmt.setInt(1, itemID);
+      ResultSet rs = getCommentsStmt.executeQuery();
+      while (rs.next()) {
+        comments.add(rs.getString("comment"));
+      }
+    } catch (SQLException e) {
+      throw new Exception("\nError getting review comments.\n" + e.getMessage());
+    }
+    return comments;
+  }
 }

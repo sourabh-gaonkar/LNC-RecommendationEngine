@@ -8,6 +8,7 @@ import com.lnc.model.MenuItemResponse;
 import com.lnc.model.Notification;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -82,5 +83,29 @@ public class JsonDataFormat {
             Notification notification = notifications.get(i);
             System.out.printf("%-10d %-50s %-20s%n", i + 1, notification.getMessage(), notification.getCreatedAt());
         }
+    }
+
+    public List<String> printDaysMenu(String jsonData, String day) throws JsonProcessingException {
+        List<Map<String, Object>> items = objectMapper.readValue(jsonData, new TypeReference<List<Map<String, Object>>>() {});
+        List<String> printedItems = new ArrayList<>();
+
+        System.out.println("\n" + day + "'S MENU\n");
+
+        System.out.printf("%-5s %-40s %-10s %-20s %-10s%n", "No.", "Item Name", "Price", "Overall Sentiment", "Category");
+        System.out.println("------------------------------------------------------------------------------------");
+
+        int index = 1;
+        for (Map<String, Object> item : items) {
+            String itemName = (String) item.get("item_name");
+            Double price = (Double) item.get("price");
+            String sentiment = (String) item.get("sentiment");
+            String category = (String) item.get("category");
+
+            System.out.printf("%-5d %-40s %-10s %-20s %-10s%n", index, itemName, price, sentiment, category);
+            printedItems.add(itemName);
+            index++;
+        }
+
+        return printedItems;
     }
 }
