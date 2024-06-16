@@ -4,7 +4,6 @@ import com.lnc.DB.NotificationQueries;
 import com.lnc.model.Notification;
 import com.lnc.utils.FromJson;
 import com.lnc.utils.ToJson;
-
 import java.util.List;
 
 public class AllNotificationsOfEmployee {

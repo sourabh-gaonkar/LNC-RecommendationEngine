@@ -1,4 +1,4 @@
-package com.lnc.Connection;
+package com.lnc.connection;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -7,17 +7,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
-    private static final int PORT = 9999;
-    private static final ExecutorService pool = Executors.newFixedThreadPool(10);
+  private static final int PORT = 9999;
+  private static final ExecutorService pool = Executors.newFixedThreadPool(10);
 
-    public static void runServer() throws IOException {
-        ServerSocket serverSocket = new ServerSocket(PORT);
-        System.out.println("Server started...");
+  public static void runServer() throws IOException {
+    ServerSocket serverSocket = new ServerSocket(PORT);
+    System.out.println("Server started...");
 
-        while(true) {
-            Socket clientSocket = serverSocket.accept();
-            System.out.println("Client connected: " + clientSocket.getInetAddress());
-            pool.execute(new ClientHandler(clientSocket));
-        }
+    while (true) {
+      Socket clientSocket = serverSocket.accept();
+      System.out.println("Client connected: " + clientSocket.getInetAddress());
+      pool.execute(new ClientHandler(clientSocket));
     }
+  }
 }

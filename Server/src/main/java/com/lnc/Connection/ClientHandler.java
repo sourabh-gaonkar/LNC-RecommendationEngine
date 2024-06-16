@@ -1,11 +1,11 @@
-package com.lnc.Connection;
+package com.lnc.connection;
 
 import com.lnc.app.Route;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ClientHandler implements Runnable{
@@ -24,7 +24,7 @@ public class ClientHandler implements Runnable{
         ) {
             String request;
             while((request = in.readLine())!= null) {
-                logger.info("Request received: " + request);
+                logger.log(Level.INFO, "Request received: {0} ", request);
                 String response = handleRequest(request);
                 out.println(response);
             }

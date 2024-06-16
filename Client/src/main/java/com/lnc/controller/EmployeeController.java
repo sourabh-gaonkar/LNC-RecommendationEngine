@@ -8,7 +8,6 @@ import com.lnc.service.employee.EmployeeFeedback;
 import com.lnc.service.employee.TodaysMenu;
 import com.lnc.service.employee.TomorrowsMenuVoting;
 import com.lnc.util.InputHandler;
-
 import java.awt.*;
 import java.time.LocalTime;
 import java.time.ZoneId;

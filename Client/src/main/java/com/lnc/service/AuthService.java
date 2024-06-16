@@ -8,36 +8,37 @@ import com.lnc.util.FromJsonConversion;
 import com.lnc.util.ToJsonConversion;
 
 public class AuthService {
-    ToJsonConversion jsonConversion = new ToJsonConversion();
-    public void authenticate(String employeeID, String password) throws Exception {
-        String request = jsonConversion.codeLoginCredentials(employeeID, password);
-        try {
-            String response = ServerConnection.requestServer(request);
-            if(response.equals("Wrong username, password.")){
-                System.out.println("Wrong username, password.");
-                return;
-            }
+  ToJsonConversion jsonConversion = new ToJsonConversion();
 
-            FromJsonConversion jsonDecode = new FromJsonConversion();
-            String name = jsonDecode.getJsonValue("name", response);
-            String role = jsonDecode.getJsonValue("role", response);
+  public void authenticate(String employeeID, String password) throws Exception {
+    String request = jsonConversion.codeLoginCredentials(employeeID, password);
+    try {
+      String response = ServerConnection.requestServer(request);
+      if (response.equals("Wrong username, password.")) {
+        System.out.println("Wrong username, password.");
+        return;
+      }
 
-            switch (role) {
-                case "ADMIN" -> {
-                    AdminController adminController = new AdminController(name, employeeID);
-                    adminController.runHomepage();
-                }
-                case "CHEF" -> {
-                    ChefController chefController = new ChefController(name, employeeID);
-                    chefController.runHomePage();
-                }
-                case "EMPLOYEE" -> {
-                    EmployeeController employeeController = new EmployeeController(name, employeeID);
-                    employeeController.runHomePage();
-                }
-            }
-        } catch (Exception ex){
-            System.out.println("Server connection failed.");
+      FromJsonConversion jsonDecode = new FromJsonConversion();
+      String name = jsonDecode.getJsonValue("name", response);
+      String role = jsonDecode.getJsonValue("role", response);
+
+      switch (role) {
+        case "ADMIN" -> {
+          AdminController adminController = new AdminController(name, employeeID);
+          adminController.runHomepage();
         }
+        case "CHEF" -> {
+          ChefController chefController = new ChefController(name, employeeID);
+          chefController.runHomePage();
+        }
+        case "EMPLOYEE" -> {
+          EmployeeController employeeController = new EmployeeController(name, employeeID);
+          employeeController.runHomePage();
+        }
+      }
+    } catch (Exception ex) {
+      System.out.println("Server connection failed.");
     }
+  }
 }

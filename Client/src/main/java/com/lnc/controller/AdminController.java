@@ -1,12 +1,12 @@
 package com.lnc.controller;
 
+import static java.lang.Thread.sleep;
+
 import com.lnc.service.admin.MenuItemAddition;
 import com.lnc.service.admin.MenuItemDeletion;
 import com.lnc.service.admin.MenuItemUpdate;
 import com.lnc.service.admin.MenuView;
 import com.lnc.util.InputHandler;
-
-import static java.lang.Thread.sleep;
 
 public class AdminController {
     private final String name;

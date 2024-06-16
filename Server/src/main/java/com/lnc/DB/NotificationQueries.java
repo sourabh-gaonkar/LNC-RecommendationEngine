@@ -1,6 +1,6 @@
 package com.lnc.DB;
 
-import com.lnc.Connection.JDBCConnection;
+import com.lnc.connection.JDBCConnection;
 import com.lnc.model.Notification;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -49,10 +49,10 @@ public class NotificationQueries {
         notification.setCreatedAt(createdAt);
         notifications.add(notification);
       }
-        boolean isStatusUpdated = updateNotificationStatus(employeeID, "READ");
-        if (!isStatusUpdated) {
-            System.out.println("Failed to update notification status.");
-        }
+      boolean isStatusUpdated = updateNotificationStatus(employeeID, "READ");
+      if (!isStatusUpdated) {
+        System.out.println("Failed to update notification status.");
+      }
     } catch (SQLException ex) {
       throw new Exception("\nFailed to get notifications.\n" + ex.getMessage());
     }

@@ -1,7 +1,6 @@
 package com.lnc.DB;
 
-import com.lnc.Connection.JDBCConnection;
-
+import com.lnc.connection.JDBCConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;

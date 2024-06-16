@@ -4,41 +4,42 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class MenuItem {
 
-    @JsonProperty("item_name")
-    private String itemName;
-    private double price;
-    private boolean availability;
-    private String category;
+  @JsonProperty("item_name")
+  private String itemName;
 
-    public String getItemName() {
-        return itemName;
-    }
+  private double price;
+  private boolean availability;
+  private String category;
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
+  public String getItemName() {
+    return itemName;
+  }
 
-    public double getPrice() {
-        return price;
-    }
+  public void setItemName(String itemName) {
+    this.itemName = itemName;
+  }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
+  public double getPrice() {
+    return price;
+  }
 
-    public boolean isAvailable() {
-        return availability;
-    }
+  public void setPrice(double price) {
+    this.price = price;
+  }
 
-    public void setAvailability(boolean availability) {
-        this.availability = availability;
-    }
+  public boolean isAvailable() {
+    return availability;
+  }
 
-    public String getCategory() {
-        return category;
-    }
+  public void setAvailability(boolean availability) {
+    this.availability = availability;
+  }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
+  public String getCategory() {
+    return category;
+  }
+
+  public void setCategory(String category) {
+    this.category = category;
+  }
 }

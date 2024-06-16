@@ -4,7 +4,6 @@ import com.lnc.connection.ServerConnection;
 import com.lnc.model.Feedback;
 import com.lnc.util.InputHandler;
 import com.lnc.util.ToJsonConversion;
-
 import java.io.IOException;
 
 public class EmployeeFeedback {

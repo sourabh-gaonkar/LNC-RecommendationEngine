@@ -1,20 +1,31 @@
 package com.lnc.service.sentimentAnalysis;
 
 import com.lnc.model.Review;
-import libsvm.*;
-import opennlp.tools.stemmer.PorterStemmer;
-import opennlp.tools.tokenize.SimpleTokenizer;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import libsvm.*;
+import opennlp.tools.stemmer.PorterStemmer;
+import opennlp.tools.tokenize.SimpleTokenizer;
 
 public class SVMModel {
     private static final SimpleTokenizer tokenizer = SimpleTokenizer.INSTANCE;
     private static final PorterStemmer stemmer = new PorterStemmer();
     private final Tokenize tokenize = new Tokenize();
+
+    private static double convertLabelToDouble(String label) {
+        switch (label.toLowerCase()) {
+            case "positive":
+                return 1.0;
+            case "negative":
+                return -1.0;
+            default:
+                return 0.0;
+        }
+    }
+
     public double performStratifiedCrossValidation(List<Review> reviews, int folds) {
         Map<String, List<Review>> reviewsByLabel = reviews.stream()
                 .collect(Collectors.groupingBy(Review::getLabel));
@@ -96,17 +107,6 @@ public class SVMModel {
             }
         }
         return (double) correct / testSet.size();
-    }
-
-    private static double convertLabelToDouble(String label) {
-        switch (label.toLowerCase()) {
-            case "positive":
-                return 1.0;
-            case "negative":
-                return -1.0;
-            default:
-                return 0.0;
-        }
     }
 
     private String convertDoubleToLabel(double value) {

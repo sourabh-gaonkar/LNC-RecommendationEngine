@@ -2,87 +2,89 @@ package com.lnc.controller;
 
 import com.lnc.service.AuthService;
 import com.lnc.util.InputHandler;
-
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+
 public class LoginController {
-    AuthService auth = new AuthService();
-    public void loginUser() throws Exception {
-        String employeeID = getEmployeeID();
-        String password = getPassword();
-        String hashPassword = getHashPassword(password);
+  AuthService auth = new AuthService();
 
-        auth.authenticate(employeeID, hashPassword);
+  public void loginUser() throws Exception {
+    String employeeID = getEmployeeID();
+    String password = getPassword();
+    String hashPassword = getHashPassword(password);
+
+    auth.authenticate(employeeID, hashPassword);
+  }
+
+  private String getEmployeeID() throws IOException {
+    String employeeID;
+    while (true) {
+      employeeID = InputHandler.getString("\nEnter your Employee ID: ");
+      if (employeeID.isEmpty() || !isValidEmployeeID(employeeID)) {
+        System.out.println("Invalid Employee ID. Please enter a valid Employee ID.");
+        continue;
+      }
+      break;
+    }
+    return employeeID;
+  }
+
+  private boolean isValidEmployeeID(String employeeID) {
+    if (employeeID.length() != 6
+        || !(employeeID.startsWith("EMP")
+            || employeeID.startsWith("ADM")
+            || employeeID.startsWith("CHE"))) {
+      return false;
     }
 
-    private String getEmployeeID() throws IOException {
-        String employeeID;
-        while (true) {
-            employeeID = InputHandler.getString("\nEnter your Employee ID: ");
-            if (employeeID.isEmpty() || !isValidEmployeeID(employeeID)) {
-                System.out.println(
-                        "Invalid Employee ID. Please enter a valid Employee ID.");
-                continue;
-            }
-            break;
-        }
-        return employeeID;
+    String numberID = employeeID.substring(3);
+
+    return numberID.matches("\\d{3}");
+  }
+
+  private String getPassword() throws IOException {
+    String password;
+    while (true) {
+      password = InputHandler.getString("Enter your password: ");
+      if (password.isEmpty() || !isValidPassword(password)) {
+        System.out.println("Invalid Password.\n");
+        continue;
+      }
+      break;
+    }
+    return password;
+  }
+
+  private boolean isValidPassword(String password) {
+    if (password.length() < 8) {
+      return false;
     }
 
-    private boolean isValidEmployeeID(String employeeID) {
-        if(employeeID.length() != 6 || !(employeeID.startsWith("EMP") || employeeID.startsWith("ADM") || employeeID.startsWith("CHE"))) {
-            return false;
-        }
+    boolean hasUpperCase = false;
+    boolean hasLowerCase = false;
+    boolean hasDigit = false;
+    boolean hasSpecialChar = false;
 
-        String numberID = employeeID.substring(3);
-
-        return numberID.matches("\\d{3}");
+    for (char ch : password.toCharArray()) {
+      if (Character.isUpperCase(ch)) {
+        hasUpperCase = true;
+      } else if (Character.isLowerCase(ch)) {
+        hasLowerCase = true;
+      } else if (Character.isDigit(ch)) {
+        hasDigit = true;
+      } else if (!Character.isLetterOrDigit(ch)) {
+        hasSpecialChar = true;
+      }
     }
 
-    private String getPassword() throws IOException {
-        String password;
-        while (true) {
-            password = InputHandler.getString("Enter your password: ");
-            if (password.isEmpty() || !isValidPassword(password)) {
-                System.out.println(
-                        "Invalid Password.\n");
-                continue;
-            }
-            break;
-        }
-        return password;
-    }
+    return hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar;
+  }
 
-    private boolean isValidPassword(String password) {
-        if (password.length() < 8) {
-            return false;
-        }
-
-        boolean hasUpperCase = false;
-        boolean hasLowerCase = false;
-        boolean hasDigit = false;
-        boolean hasSpecialChar = false;
-
-        for (char ch : password.toCharArray()) {
-            if (Character.isUpperCase(ch)) {
-                hasUpperCase = true;
-            } else if (Character.isLowerCase(ch)) {
-                hasLowerCase = true;
-            } else if (Character.isDigit(ch)) {
-                hasDigit = true;
-            } else if (!Character.isLetterOrDigit(ch)) {
-                hasSpecialChar = true;
-            }
-        }
-
-        return hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar;
-    }
-
-    private String getHashPassword(String password) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        byte[] hashedPassword = md.digest(password.getBytes());
-        return Base64.getEncoder().encodeToString(hashedPassword);
-    }
+  private String getHashPassword(String password) throws NoSuchAlgorithmException {
+    MessageDigest md = MessageDigest.getInstance("SHA-256");
+    byte[] hashedPassword = md.digest(password.getBytes());
+    return Base64.getEncoder().encodeToString(hashedPassword);
+  }
 }

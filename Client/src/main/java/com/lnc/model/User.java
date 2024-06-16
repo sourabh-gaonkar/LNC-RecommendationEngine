@@ -3,50 +3,51 @@ package com.lnc.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public abstract class User {
-    @JsonProperty("employeeID")
-    private String userId;
-    private String name;
-    private String role;
-    private String email;
-    private String password;
+  @JsonProperty("employeeID")
+  private String userId;
 
-    public String getUserId() {
-        return userId;
-    }
+  private String name;
+  private String role;
+  private String email;
+  private String password;
 
-    public void setUserId(String userId){
-        this.userId = userId;
-    }
+  public String getUserId() {
+    return userId;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public void setUserId(String userId) {
+    this.userId = userId;
+  }
 
-    public void setName(String name){
-        this.name = name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public String getRole(){
-        return role;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public void setRole(String role){
-        this.role = role;
-    }
+  public String getRole() {
+    return role;
+  }
 
-    public String getEmail(){
-        return email;
-    }
+  public void setRole(String role) {
+    this.role = role;
+  }
 
-    public void setEmail(String email){
-        this.email = email;
-    }
+  public String getEmail() {
+    return email;
+  }
 
-    public String getPassword(){
-        return password;
-    }
+  public void setEmail(String email) {
+    this.email = email;
+  }
 
-    public void setPassword(String password){
-        this.password =  password;
-    }
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
 }

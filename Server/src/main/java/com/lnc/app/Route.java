@@ -1,19 +1,22 @@
 package com.lnc.app;
 
+import com.lnc.service.Authentication;
 import com.lnc.service.NewNotification;
 import com.lnc.service.Registration;
 import com.lnc.service.admin.MenuItemAddition;
 import com.lnc.service.admin.MenuItemDeletion;
 import com.lnc.service.admin.MenuItemDisplay;
 import com.lnc.service.admin.MenuItemUpdate;
-import com.lnc.service.authentication;
 import com.lnc.service.chef.FeedbackDisplay;
 import com.lnc.service.chef.ReportGenerator;
 import com.lnc.service.chef.RolloutMenu;
 import com.lnc.service.employee.*;
 import com.lnc.service.recommendationEngine.RecommendationEngine;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Route {
+    private final Logger logger = Logger.getLogger(Route.class.getName());
 
     public String redirect(String request) throws Exception {
         String[] parts = request.split("&");
@@ -23,7 +26,7 @@ public class Route {
         String response = null;
         switch (path) {
             case "/login":
-                authentication auth = new authentication();
+                Authentication auth = new Authentication();
                 response = auth.authenticate(data);
                 break;
 
@@ -106,7 +109,7 @@ public class Route {
                 throw new IllegalArgumentException("Invalid path: " + path);
         }
 
-        System.out.println("Response: " + response);
+        logger.log(Level.INFO, "Response: {0} ", response);
         return response;
     }
 }
