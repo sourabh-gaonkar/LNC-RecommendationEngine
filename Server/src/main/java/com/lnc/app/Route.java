@@ -10,8 +10,7 @@ import com.lnc.service.authentication;
 import com.lnc.service.chef.FeedbackDisplay;
 import com.lnc.service.chef.ReportGenerator;
 import com.lnc.service.chef.RolloutMenu;
-import com.lnc.service.employee.AllNotificationsOfEmployee;
-import com.lnc.service.employee.EmployeeFeedback;
+import com.lnc.service.employee.*;
 import com.lnc.service.recommendationEngine.RecommendationEngine;
 
 public class Route {
@@ -66,6 +65,21 @@ public class Route {
             case "/employee/getNotifications":
                 AllNotificationsOfEmployee allNotificationsOfEmployee = new AllNotificationsOfEmployee();
                 response = allNotificationsOfEmployee.getAllNotificationsOfEmployee(data);
+                break;
+
+            case "/employee/todaysMenu":
+                TodaysMenu todaysMenu = new TodaysMenu();
+                response = todaysMenu.getTodaysMenu();
+                break;
+
+            case "/employee/tomorrowsMenu":
+                TomorrowsMenu tomorrowsMenu = new TomorrowsMenu();
+                response = tomorrowsMenu.getTomorrowsMenu();
+                break;
+
+            case "/employee/vote":
+                MenuVote menuVote = new MenuVote();
+                response = menuVote.voteForMenu(data);
                 break;
 
             case "/chef/getFeedback":

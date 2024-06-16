@@ -8,6 +8,7 @@ import com.lnc.model.Feedback;
 import com.lnc.model.MenuItem;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ToJsonConversion {
@@ -90,5 +91,11 @@ public class ToJsonConversion {
 
 
         return objectMapper.writeValueAsString(employeeMap);
+    }
+
+    public String codeVotedItems(List<String> votedItemList) throws JsonProcessingException {
+        String jsonData = objectMapper.writeValueAsString(votedItemList);
+        String apiPath = "/employee/vote";
+        return apiPath+ "&" + jsonData;
     }
 }

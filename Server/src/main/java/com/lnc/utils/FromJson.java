@@ -7,6 +7,8 @@ import com.lnc.model.DailyMenu;
 import com.lnc.model.Feedback;
 import com.lnc.model.MenuItem;
 
+import java.util.List;
+
 public class FromJson {
     private final ObjectMapper objectMapper = new ObjectMapper();
     public String getJsonValue(String key, String jsonData) throws JsonProcessingException {
@@ -25,5 +27,9 @@ public class FromJson {
 
     public DailyMenu decodeDailyMenu(String jsonData) throws JsonProcessingException {
         return objectMapper.readValue(jsonData, DailyMenu.class);
+    }
+
+    public List<String> decodeVotedMenu(String jsonData) throws JsonProcessingException {
+        return objectMapper.readValue(jsonData, List.class);
     }
 }

@@ -5,9 +5,19 @@ import static java.lang.Thread.sleep;
 import com.lnc.service.AllNewNotifications;
 import com.lnc.service.employee.AllNotificationsOfEmployee;
 import com.lnc.service.employee.EmployeeFeedback;
+import com.lnc.service.employee.TodaysMenu;
+import com.lnc.service.employee.TomorrowsMenuVoting;
 import com.lnc.util.InputHandler;
 
+import java.awt.*;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 public class EmployeeController {
+    private final ZonedDateTime nowIST = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
+    private final LocalTime votingStartTime = LocalTime.of(10, 0);
+    private final LocalTime votingEndTime = LocalTime.of(17, 30);
     private final String name;
     private final String employeeID;
 
@@ -42,10 +52,19 @@ public class EmployeeController {
   private void processOption(int choice) throws Exception {
         switch (choice) {
             case 1:
-                System.out.println("View today's menu.");
+                TodaysMenu todaysMenu = new TodaysMenu();
+                todaysMenu.viewTodaysMenu();
                 break;
             case 2:
-                System.out.println("Select tomorrow's menu.");
+                LocalTime currentTime = nowIST.toLocalTime();
+                System.out.println("Current time: " + currentTime);
+                System.out.println(currentTime.isBefore(votingStartTime) + " - " + votingStartTime + " - " + currentTime.isAfter(votingEndTime) + " - " + votingEndTime);
+                if (currentTime.isBefore(votingStartTime) || currentTime.isAfter(votingEndTime)) {
+                    System.out.println("Voting is closed. Please try again tomorrow.");
+                    break;
+                }
+                TomorrowsMenuVoting tomorrowsMenu = new TomorrowsMenuVoting();
+                tomorrowsMenu.voteForTomorrowsMenu();
                 break;
             case 3:
                 EmployeeFeedback employeeFeedback = new EmployeeFeedback();
@@ -68,7 +87,7 @@ public class EmployeeController {
 
     private void displayOptions() {
         System.out.println("\n1. View today's menu.");
-        System.out.println("2. Select tomorrow's menu.");
+        System.out.println("2. Select tomorrow's menu. (Voting time: 10:00 AM to 5:30 PM)");
         System.out.println("3. Give Feedback.");
         System.out.println("4. View Notifications.");
         System.out.println("5. Logout");

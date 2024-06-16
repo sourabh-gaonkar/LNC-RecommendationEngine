@@ -10,6 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import static java.lang.Thread.sleep;
+
 public class AllNewNotifications {
     public void getNewNotifications(String employeeID) throws Exception {
         ToJsonConversion convertToJson = new ToJsonConversion();
@@ -37,6 +39,7 @@ public class AllNewNotifications {
                 System.out.println(formattedNotification);
                 System.out.println(" " + dashes + "\n");
             }
+            sleep(2000);
         }
     }
 }
