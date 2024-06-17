@@ -89,7 +89,7 @@ public class JsonDataFormat {
 
         System.out.println("\n" + day + "'S MENU\n");
 
-        System.out.printf("%-5s %-40s %-10s %-20s %-10s%n", "No.", "Item Name", "Price", "Overall Sentiment", "Category");
+        System.out.printf("%-5s %-35s %-10s %-20s %-10s%n", "No.", "Item Name", "Price", "Overall Sentiment", "Category");
         System.out.println("------------------------------------------------------------------------------------");
 
         int index = 1;
@@ -99,7 +99,7 @@ public class JsonDataFormat {
             String sentiment = (String) item.get("sentiment");
             String category = (String) item.get("category");
 
-            System.out.printf("%-5d %-40s %-10s %-20s %-10s%n", index, itemName, price, sentiment, category);
+            System.out.printf("%-5d %-35s %-10s %-20s %-10s%n", index, itemName, price, sentiment, category);
             printedItems.add(itemName);
             index++;
         }

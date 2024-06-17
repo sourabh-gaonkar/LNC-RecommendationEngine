@@ -76,8 +76,18 @@ public class MenuRolloutQueries {
         LocalDate currentDate = LocalDate.now();
         LocalDate yesterday = currentDate.minusDays(1);
 
-        String query = "SELECT m.item_name, m.price, m.category FROM menu_rollout mr " +
-                "JOIN menu m ON mr.item_id = m.item_id WHERE mr.date = ?";
+    String query = """
+                WITH RankedItems AS (
+                    SELECT m.item_name, m.price, m.category,
+                    ROW_NUMBER() OVER (PARTITION BY m.category ORDER BY mr.votes DESC, m.item_name) AS rn
+                    FROM menu_rollout mr
+                    JOIN menu m ON mr.item_id = m.item_id
+                    WHERE mr.date = ?
+                )
+                SELECT item_name, price, category
+                FROM RankedItems
+                WHERE rn <= 2;
+                """;
 
         try(PreparedStatement getTodaysMenuStmt = connection.prepareStatement(query)) {
             getTodaysMenuStmt.setString(1, yesterday.toString());
