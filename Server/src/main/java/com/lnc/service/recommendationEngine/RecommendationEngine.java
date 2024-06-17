@@ -2,15 +2,13 @@ package com.lnc.service.recommendationEngine;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lnc.DB.RecommendationEngineQueries;
-
+import com.lnc.utils.ToJson;
 import java.sql.*;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import com.lnc.utils.ToJson;
 
 public class RecommendationEngine {
     public String runEngine() throws SQLException, JsonProcessingException {

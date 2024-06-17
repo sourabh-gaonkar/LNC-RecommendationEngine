@@ -1,6 +1,6 @@
 package com.lnc.DB;
 
-import com.lnc.Connection.JDBCConnection;
+import com.lnc.connection.JDBCConnection;
 import com.lnc.model.Employee;
 
 import java.sql.Connection;
@@ -73,13 +73,12 @@ public class UserDetails {
                 employee.setRole(rs.getString("role"));
                 employee.setEmailID(rs.getString("email"));
                 employee.setPassword(null);
+                if(!password.equals(actualPassword)) {
+                    return null;
+                }
             }
         } catch (SQLException ex) {
             throw new Exception(ex.getMessage());
-        }
-
-        if(actualPassword!= null && actualPassword.equals(password)) {
-            return employee;
         }
 
         return employee;

@@ -1,6 +1,6 @@
 package com.lnc.DB;
 
-import com.lnc.Connection.JDBCConnection;
+import com.lnc.connection.JDBCConnection;
 import com.lnc.model.MenuItem;
 
 import java.sql.*;

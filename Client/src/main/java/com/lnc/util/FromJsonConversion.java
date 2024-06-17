@@ -5,10 +5,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class FromJsonConversion {
-    private final ObjectMapper objectMapper = new ObjectMapper();
-    public String getJsonValue(String key, String jsonData) throws JsonProcessingException {
-        JsonNode jsonNode = objectMapper.readTree(jsonData);
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
-        return jsonNode.get(key).asText();
-    }
+  public String getJsonValue(String key, String jsonData) throws JsonProcessingException {
+    JsonNode jsonNode = objectMapper.readTree(jsonData);
+
+    return jsonNode.get(key).asText();
+  }
 }

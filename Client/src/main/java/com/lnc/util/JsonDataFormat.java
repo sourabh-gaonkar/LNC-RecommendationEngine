@@ -3,10 +3,8 @@ package com.lnc.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lnc.model.MenuItem;
 import com.lnc.model.MenuItemResponse;
 import com.lnc.model.Notification;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;

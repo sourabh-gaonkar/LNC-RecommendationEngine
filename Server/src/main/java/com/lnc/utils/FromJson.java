@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lnc.model.DailyMenu;
 import com.lnc.model.Feedback;
 import com.lnc.model.MenuItem;
-
 import java.util.List;
 
 public class FromJson {
@@ -29,7 +28,7 @@ public class FromJson {
         return objectMapper.readValue(jsonData, DailyMenu.class);
     }
 
-    public List<String> decodeVotedMenu(String jsonData) throws JsonProcessingException {
+    public List decodeVotedMenu(String jsonData) throws JsonProcessingException {
         return objectMapper.readValue(jsonData, List.class);
     }
 }

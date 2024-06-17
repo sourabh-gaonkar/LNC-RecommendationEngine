@@ -8,7 +8,6 @@ import com.lnc.service.employee.EmployeeFeedback;
 import com.lnc.service.employee.TodaysMenu;
 import com.lnc.service.employee.TomorrowsMenuVoting;
 import com.lnc.util.InputHandler;
-
 import java.awt.*;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -57,8 +56,6 @@ public class EmployeeController {
                 break;
             case 2:
                 LocalTime currentTime = nowIST.toLocalTime();
-                System.out.println("Current time: " + currentTime);
-                System.out.println(currentTime.isBefore(votingStartTime) + " - " + votingStartTime + " - " + currentTime.isAfter(votingEndTime) + " - " + votingEndTime);
                 if (currentTime.isBefore(votingStartTime) || currentTime.isAfter(votingEndTime)) {
                     System.out.println("Voting is closed. Please try again tomorrow.");
                     break;

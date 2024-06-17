@@ -1,4 +1,4 @@
-package com.lnc.Connection;
+package com.lnc.connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

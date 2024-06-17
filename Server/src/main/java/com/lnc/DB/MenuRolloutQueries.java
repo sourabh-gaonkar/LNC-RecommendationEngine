@@ -1,6 +1,6 @@
 package com.lnc.DB;
 
-import com.lnc.Connection.JDBCConnection;
+import com.lnc.connection.JDBCConnection;
 import com.lnc.model.DailyMenu;
 
 import java.sql.Connection;
@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class MenuRolloutQueries {
     private final Connection connection;
-    Menu menuQueries = new Menu();
+    private final Menu menuQueries = new Menu();
 
     public MenuRolloutQueries() throws SQLException {
         JDBCConnection dbInstance = JDBCConnection.getInstance();

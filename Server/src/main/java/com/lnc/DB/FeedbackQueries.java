@@ -1,6 +1,6 @@
 package com.lnc.DB;
 
-import com.lnc.Connection.JDBCConnection;
+import com.lnc.connection.JDBCConnection;
 import com.lnc.model.Feedback;
 import java.sql.*;
 import java.time.LocalDate;
@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class FeedbackQueries {
   private final Connection connection;
-  Menu menu = new Menu();
+  private final Menu menu = new Menu();
 
   public FeedbackQueries() throws SQLException {
     JDBCConnection dbInstance = JDBCConnection.getInstance();

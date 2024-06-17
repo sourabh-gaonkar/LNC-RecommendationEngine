@@ -1,4 +1,4 @@
-package com.lnc.Connection;
+package com.lnc.connection;
 
 import java.io.IOException;
 import java.net.ServerSocket;

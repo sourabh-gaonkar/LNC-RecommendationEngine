@@ -5,13 +5,13 @@ import com.lnc.util.InputHandler;
 import com.lnc.util.ToJsonConversion;
 
 public class MenuItemDeletion {
-    public void deleteMenuItem() throws Exception {
-        String itemName = InputHandler.getString("\nEnter item name: ");
+  public void deleteMenuItem() throws Exception {
+    String itemName = InputHandler.getString("\nEnter item name: ");
 
-        ToJsonConversion jsonCoder = new ToJsonConversion();
-        String request = jsonCoder.codeMenuItemName(itemName);
+    ToJsonConversion jsonCoder = new ToJsonConversion();
+    String request = jsonCoder.codeMenuItemName(itemName);
 
-        String response = ServerConnection.requestServer(request);
-        System.out.println("Response: " + response);
-    }
+    String response = ServerConnection.requestServer(request);
+    System.out.println("Response: " + response);
+  }
 }

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lnc.connection.ServerConnection;
 import com.lnc.util.InputHandler;
 import com.lnc.util.ToJsonConversion;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -67,11 +66,7 @@ public class ReportGenerator {
 
         if (inputYear < currentYear) {
             return true;
-        } else if (inputYear == currentYear && inputMonth <= currentMonth) {
-            return true;
-        } else {
-            return false;
-        }
+        } else return inputYear == currentYear && inputMonth <= currentMonth;
     }
 
   public void writeReportToFile(String jsonResult, String year, String month) throws IOException {
