@@ -15,7 +15,7 @@ public class SentimentAnalysis {
     public SentimentAnalysis() throws SQLException {
     }
 
-    public List<Map<String, Object>> getSentiAnalysis(List<Map<String, Object>> menu) throws Exception {
+    public List<Map<String, Object>> getSentimentAnalysis(List<Map<String, Object>> menu) throws Exception {
         List<Map<String, Object>> updatedMenu = new ArrayList<>();
 
         ReviewQueries reviewQueries = new ReviewQueries();

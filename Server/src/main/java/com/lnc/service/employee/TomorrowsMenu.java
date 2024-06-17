@@ -17,7 +17,7 @@ public class TomorrowsMenu {
     }
 
     SentimentAnalysis sentimentAnalysis = new SentimentAnalysis();
-    List<Map<String, Object>> updatedMenu = sentimentAnalysis.getSentiAnalysis(tomorrowsMenu);
+    List<Map<String, Object>> updatedMenu = sentimentAnalysis.getSentimentAnalysis(tomorrowsMenu);
     if (updatedMenu == null) {
       throw new Exception("No reviews found for today's menu");
     } else {

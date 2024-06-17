@@ -79,7 +79,7 @@ public class SVMModel {
         return svm.svm_train(problem, params);
     }
 
-    public String preprocessReview(String text) {
+    private String preprocessReview(String text) {
         // Convert to lower case
         text = text.toLowerCase();
         // Remove punctuation
