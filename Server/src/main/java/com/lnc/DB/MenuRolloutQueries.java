@@ -15,6 +15,7 @@ import java.util.Map;
 public class MenuRolloutQueries {
     private final Connection connection;
     private final Menu menuQueries = new Menu();
+    private final FeedbackQueries feedbackQueries = new FeedbackQueries();
 
     public MenuRolloutQueries() throws SQLException {
         JDBCConnection dbInstance = JDBCConnection.getInstance();
@@ -76,8 +77,18 @@ public class MenuRolloutQueries {
         LocalDate currentDate = LocalDate.now();
         LocalDate yesterday = currentDate.minusDays(1);
 
-        String query = "SELECT m.item_name, m.price, m.category FROM menu_rollout mr " +
-                "JOIN menu m ON mr.item_id = m.item_id WHERE mr.date = ?";
+    String query = """
+                WITH RankedItems AS (
+                    SELECT m.item_name, m.price, m.category,
+                    ROW_NUMBER() OVER (PARTITION BY m.category ORDER BY mr.votes DESC, m.item_name) AS rn
+                    FROM menu_rollout mr
+                    JOIN menu m ON mr.item_id = m.item_id
+                    WHERE mr.date = ?
+                )
+                SELECT item_name, price, category
+                FROM RankedItems
+                WHERE rn <= 2;
+                """;
 
         try(PreparedStatement getTodaysMenuStmt = connection.prepareStatement(query)) {
             getTodaysMenuStmt.setString(1, yesterday.toString());
@@ -87,7 +98,8 @@ public class MenuRolloutQueries {
                 Map<String, Object> item = Map.of(
                         "item_name", rs.getString("item_name"),
                         "price", rs.getDouble("price"),
-                        "category", rs.getString("category")
+                        "category", rs.getString("category"),
+                        "average_rating", feedbackQueries.getAverageRating(rs.getString("item_name"))
                 );
                 todaysMenu.add(item);
             }
@@ -115,7 +127,8 @@ public class MenuRolloutQueries {
                 Map<String, Object> item = Map.of(
                         "item_name", rs.getString("item_name"),
                         "price", rs.getDouble("price"),
-                        "category", rs.getString("category")
+                        "category", rs.getString("category"),
+                        "average_rating", feedbackQueries.getAverageRating(rs.getString("item_name"))
                 );
                 tomorrowsMenu.add(item);
             }

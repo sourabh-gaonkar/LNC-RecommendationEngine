@@ -1,5 +1,6 @@
 package com.lnc.service.employee;
 
+import com.lnc.DB.EmployeeOrderQueries;
 import com.lnc.DB.FeedbackQueries;
 import com.lnc.DB.Menu;
 import com.lnc.DB.UserDetails;
@@ -11,15 +12,30 @@ public class EmployeeFeedback {
     FromJson fromJson = new FromJson();
     Feedback feedback = fromJson.decodeFeedback(jsonData);
 
-    Menu menu = new Menu();
-    UserDetails userDetails = new UserDetails();
-    FeedbackQueries feedbackQueries = new FeedbackQueries();
-    if (menu.checkMenuItemPresent(feedback.getMenuItem())
-        && userDetails.validateEmployeeID(feedback.getEmployeeID())) {
-      if (feedbackQueries.addFeedback(feedback)) {
-        return "Feedback added successfully.";
+    EmployeeOrderQueries employeeOrderQueries = new EmployeeOrderQueries();
+    if (employeeOrderQueries.isRowPresent(feedback)) {
+      int feedbacksLeft = employeeOrderQueries.getFeedbacksLeft(feedback);
+      if(feedbacksLeft > 0) {
+        Menu menu = new Menu();
+        UserDetails userDetails = new UserDetails();
+        FeedbackQueries feedbackQueries = new FeedbackQueries();
+        if (menu.checkMenuItemPresent(feedback.getMenuItem())
+                && userDetails.validateEmployeeID(feedback.getEmployeeID())) {
+          if (feedbackQueries.addFeedback(feedback)) {
+            if(employeeOrderQueries.subtractFeedbackCount(feedback)) {
+              return "Feedback added successfully.";
+            } else {
+              System.out.println("Unable to subtract feedback count.");
+              return "Feedback Successful";
+            }
+          } else {
+            return "Unable to add feedback.";
+          }
+        } else {
+          return "Invalid menu item or employee ID.";
+        }
       } else {
-        return "Unable to add feedback.";
+        return "You have not voted for this item. You can give feedback once you vote for the item.";
       }
     } else {
       return "Invalid menu item or employee ID.";

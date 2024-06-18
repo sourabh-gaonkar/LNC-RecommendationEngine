@@ -106,6 +106,7 @@ public class Route {
                 break;
 
             default:
+                response = "Invalid Server call.";
                 throw new IllegalArgumentException("Invalid path: " + path);
         }
 

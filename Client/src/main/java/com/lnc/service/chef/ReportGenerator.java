@@ -5,11 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lnc.connection.ServerConnection;
 import com.lnc.util.InputHandler;
 import com.lnc.util.ToJsonConversion;
-import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import com.opencsv.CSVWriter;
 
 public class ReportGenerator {
   public void generateReport() throws Exception {
@@ -31,7 +31,7 @@ public class ReportGenerator {
 
         String response = ServerConnection.requestServer(request);
 
-        writeReportToFile(response, year, month);
+        writeReportToCSV(response, year, month);
     }
 
     private String getMonth() throws IOException {
@@ -69,20 +69,20 @@ public class ReportGenerator {
         } else return inputYear == currentYear && inputMonth <= currentMonth;
     }
 
-  public void writeReportToFile(String jsonResult, String year, String month) throws IOException {
+    public void writeReportToCSV(String jsonResult, String year, String month) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        String reportFileName = "feedback_report_" + year + "_" + month + ".txt";
+        String reportFileName = "feedback_report_" + year + "_" + month + ".csv";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         JsonNode rootNode = objectMapper.readTree(jsonResult);
-        BufferedWriter writer = new BufferedWriter(new FileWriter(reportFileName));
+        CSVWriter writer = new CSVWriter(new FileWriter(reportFileName));
+
+        String[] header = { "Item Name", "Employee Name", "Rating", "Comment", "Date", "Average Rating" };
+        writer.writeNext(header);
 
         for (JsonNode itemNode : rootNode) {
             String itemName = itemNode.path("item_name").asText();
             double avgRating = itemNode.path("average_rating").asDouble();
-
-            writer.write("Feedback for item: " + itemName + "\n");
-            writer.write("====================\n");
 
             for (JsonNode feedbackNode : itemNode.path("feedbacks")) {
                 String employeeName = feedbackNode.path("employee_name").asText();
@@ -91,14 +91,10 @@ public class ReportGenerator {
                 long dateMillis = feedbackNode.path("date").asLong();
                 String date = dateFormat.format(new Date(dateMillis));
 
-                writer.write("Employee: " + employeeName + "\n");
-                writer.write("Rating: " + rating + "\n");
-                writer.write("Comment: " + comment + "\n");
-                writer.write("Date: " + date + "\n");
-                writer.write("------------------------\n");
+                // Write feedback details
+                String[] feedbackDetails = { itemName, employeeName, String.valueOf(rating), comment, date, String.valueOf(avgRating) };
+                writer.writeNext(feedbackDetails);
             }
-
-            writer.write("Average rating for " + itemName + ": " + avgRating + "\n\n\n\n\n");
         }
 
         writer.close();

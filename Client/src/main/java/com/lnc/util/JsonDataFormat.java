@@ -89,8 +89,8 @@ public class JsonDataFormat {
 
         System.out.println("\n" + day + "'S MENU\n");
 
-        System.out.printf("%-5s %-40s %-10s %-20s %-10s%n", "No.", "Item Name", "Price", "Overall Sentiment", "Category");
-        System.out.println("------------------------------------------------------------------------------------");
+        System.out.printf("%-5s %-35s %-10s %-20s %-15s %-15s%n", "No.", "Item Name", "Price", "Overall Sentiment", "Category", "Average Rating");
+        System.out.println("--------------------------------------------------------------------------------------------------------");
 
         int index = 1;
         for (Map<String, Object> item : items) {
@@ -98,8 +98,9 @@ public class JsonDataFormat {
             Double price = (Double) item.get("price");
             String sentiment = (String) item.get("sentiment");
             String category = (String) item.get("category");
+            Double averageRating = (Double) item.get("average_rating");
 
-            System.out.printf("%-5d %-40s %-10s %-20s %-10s%n", index, itemName, price, sentiment, category);
+            System.out.printf("%-5d %-35s %-10s %-20s %-15s %-15s%n", index, itemName, price, sentiment, category, averageRating);
             printedItems.add(itemName);
             index++;
         }

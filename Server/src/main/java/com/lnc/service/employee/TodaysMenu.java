@@ -1,13 +1,21 @@
 package com.lnc.service.employee;
 
+import com.lnc.DB.FeedbackQueries;
 import com.lnc.DB.MenuRolloutQueries;
 import com.lnc.service.sentimentAnalysis.SentimentAnalysis;
 import com.lnc.utils.ToJson;
+
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 public class TodaysMenu {
-  public String getTodaysMenu() throws Exception {
+  private final FeedbackQueries feedbackQueries = new FeedbackQueries();
+
+    public TodaysMenu() throws SQLException {
+    }
+
+    public String getTodaysMenu() throws Exception {
     MenuRolloutQueries menuRolloutQueries = new MenuRolloutQueries();
     List<Map<String, Object>> todaysMenu = menuRolloutQueries.getTodaysMenu();
     if (todaysMenu == null) {
@@ -17,7 +25,7 @@ public class TodaysMenu {
     }
 
     SentimentAnalysis sentimentAnalysis = new SentimentAnalysis();
-    List<Map<String, Object>> updatedMenu = sentimentAnalysis.getSentiAnalysis(todaysMenu);
+    List<Map<String, Object>> updatedMenu = sentimentAnalysis.getSentimentAnalysis(todaysMenu);
     if (updatedMenu == null) {
       throw new Exception("No reviews found for today's menu");
     } else {
@@ -25,7 +33,6 @@ public class TodaysMenu {
     }
 
     ToJson toJson = new ToJson();
-
     return toJson.codeTodaysMenu(updatedMenu);
   }
 }

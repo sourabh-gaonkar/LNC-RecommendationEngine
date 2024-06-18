@@ -191,19 +191,44 @@ public class FeedbackQueries {
     return reportData;
   }
 
-  public List<String> getReviewCommentsOfItem(String itemName) throws Exception {
-    List<String> comments = new ArrayList<>();
+  public List<String[]> getReviewCommentsOfItem(String itemName) throws Exception {
+    List<String[]> comments = new ArrayList<>();
     int itemID = menu.getItemID(itemName);
-    String query = "SELECT comment FROM feedback WHERE item_id = ? LIMIT 100";
+    String query = "SELECT comment, rating FROM feedback WHERE item_id = ?";
     try (PreparedStatement getCommentsStmt = connection.prepareStatement(query)) {
       getCommentsStmt.setInt(1, itemID);
       ResultSet rs = getCommentsStmt.executeQuery();
       while (rs.next()) {
-        comments.add(rs.getString("comment"));
+        comments.add(new String[] {rs.getString("comment"), ratingToLabel(rs.getInt("rating"))});
       }
     } catch (SQLException e) {
       throw new Exception("\nError getting review comments.\n" + e.getMessage());
     }
     return comments;
+  }
+
+  private String ratingToLabel(int rating) {
+    if (rating >= 4) {
+      return "positive";
+    } else if (rating == 3) {
+      return "neutral";
+    } else {
+      return "negative";
+    }
+  }
+
+  public double getAverageRating(String itemName) throws Exception {
+    int itemID = menu.getItemID(itemName);
+    String query = "SELECT AVG(rating) AS average_rating FROM feedback WHERE item_id = ?";
+    try (PreparedStatement getAverageRatingStmt = connection.prepareStatement(query)) {
+      getAverageRatingStmt.setInt(1, itemID);
+      ResultSet rs = getAverageRatingStmt.executeQuery();
+      if (rs.next()) {
+        return rs.getDouble("average_rating");
+      }
+    } catch (SQLException e) {
+      throw new Exception("\nError getting average rating.\n" + e.getMessage());
+    }
+    return 0;
   }
 }
