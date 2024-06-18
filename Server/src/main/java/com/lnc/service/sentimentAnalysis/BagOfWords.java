@@ -122,23 +122,6 @@ public class BagOfWords {
         return negativeWords;
     }
 
-    public void printBagOfWords() {
-        System.out.println("Positive Words:");
-        printMap(positiveWords);
-
-        System.out.println("\nNeutral Words:");
-        printMap(neutralWords);
-
-        System.out.println("\nNegative Words:");
-        printMap(negativeWords);
-    }
-
-    private void printMap(Map<String, Integer> map) {
-        for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
-        }
-    }
-
     public int getSmoothingFactor() {
         return SMOOTHING_FACTOR;
     }

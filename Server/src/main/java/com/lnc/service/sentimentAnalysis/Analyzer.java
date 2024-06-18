@@ -32,12 +32,6 @@ public class Analyzer {
             }
         }
 
-        // Debug information
-        System.out.println("Processed string: " + cleanedString);
-        System.out.println("Positive score: " + positiveScore);
-        System.out.println("Neutral score: " + neutralScore);
-        System.out.println("Negative score: " + negativeScore);
-
         if (positiveScore > neutralScore && positiveScore > negativeScore) {
             return "Positive";
         } else if (neutralScore > positiveScore && neutralScore > negativeScore) {
