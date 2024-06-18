@@ -2,8 +2,8 @@ package com.lnc.service.employee;
 
 import com.lnc.DB.EmployeeOrderQueries;
 import com.lnc.DB.FeedbackQueries;
-import com.lnc.DB.Menu;
-import com.lnc.DB.UserDetails;
+import com.lnc.DB.MenuQueries;
+import com.lnc.DB.UserDetailsQueries;
 import com.lnc.model.Feedback;
 import com.lnc.utils.FromJson;
 
@@ -16,8 +16,8 @@ public class EmployeeFeedback {
     if (employeeOrderQueries.isRowPresent(feedback)) {
       int feedbacksLeft = employeeOrderQueries.getFeedbacksLeft(feedback);
       if(feedbacksLeft > 0) {
-        Menu menu = new Menu();
-        UserDetails userDetails = new UserDetails();
+        MenuQueries menu = new MenuQueries();
+        UserDetailsQueries userDetails = new UserDetailsQueries();
         FeedbackQueries feedbackQueries = new FeedbackQueries();
         if (menu.checkMenuItemPresent(feedback.getMenuItem())
                 && userDetails.validateEmployeeID(feedback.getEmployeeID())) {

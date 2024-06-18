@@ -1,6 +1,6 @@
 package com.lnc.service.admin;
 
-import com.lnc.DB.Menu;
+import com.lnc.DB.MenuQueries;
 import com.lnc.utils.FromJson;
 
 public class MenuItemDeletion {
@@ -8,7 +8,7 @@ public class MenuItemDeletion {
     FromJson jsonDecoder = new FromJson();
     String itemName = jsonDecoder.getJsonValue("itemName", jsonData);
 
-    Menu menu = new Menu();
+    MenuQueries menu = new MenuQueries();
     if (menu.checkMenuItemPresent(itemName)) {
       if (menu.deleteMenuItem(itemName)) {
         return "Deleted Item Successfully";

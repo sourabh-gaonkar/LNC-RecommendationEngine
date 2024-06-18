@@ -1,6 +1,6 @@
 package com.lnc.service.chef;
 
-import com.lnc.DB.Menu;
+import com.lnc.DB.MenuQueries;
 import com.lnc.DB.MenuRolloutQueries;
 import com.lnc.DB.NotificationQueries;
 import com.lnc.model.DailyMenu;
@@ -8,7 +8,7 @@ import com.lnc.utils.FromJson;
 import java.sql.SQLException;
 
 public class RolloutMenu {
-  private final Menu menuQueries = new Menu();
+  private final MenuQueries menuQueries = new MenuQueries();
   private final MenuRolloutQueries menuRolloutQueries = new MenuRolloutQueries();
   private final NotificationQueries notificationQueries = new NotificationQueries();
 

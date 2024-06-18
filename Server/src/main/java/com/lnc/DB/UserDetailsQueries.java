@@ -9,11 +9,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
-public class UserDetails {
-    Logger logger = Logger.getLogger(UserDetails.class.getName());
+public class UserDetailsQueries {
+    Logger logger = Logger.getLogger(UserDetailsQueries.class.getName());
     private Connection connection;
 
-    public UserDetails() {
+    public UserDetailsQueries() {
         try{
             JDBCConnection dbInstance = JDBCConnection.getInstance();
             this.connection = dbInstance.getConnection();

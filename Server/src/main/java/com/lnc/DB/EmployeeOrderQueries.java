@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 public class EmployeeOrderQueries {
     private final Logger logger = Logger.getLogger(EmployeeOrderQueries.class.getName());
     private Connection connection;
-    private final Menu menuQueries = new Menu();
+  private final MenuQueries menuQueries = new MenuQueries();
 
     public EmployeeOrderQueries() {
         try{

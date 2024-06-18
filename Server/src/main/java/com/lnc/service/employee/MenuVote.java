@@ -1,7 +1,7 @@
 package com.lnc.service.employee;
 
 import com.lnc.DB.EmployeeOrderQueries;
-import com.lnc.DB.Menu;
+import com.lnc.DB.MenuQueries;
 import com.lnc.DB.MenuRolloutQueries;
 import com.lnc.utils.FromJson;
 import java.sql.SQLException;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MenuVote {
-  private final Menu menu = new Menu();
+  private final MenuQueries menu = new MenuQueries();
   private final MenuRolloutQueries menuRolloutQueries = new MenuRolloutQueries();
 
   public MenuVote() throws SQLException {}

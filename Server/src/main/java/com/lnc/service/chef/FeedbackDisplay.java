@@ -1,7 +1,7 @@
 package com.lnc.service.chef;
 
 import com.lnc.DB.FeedbackQueries;
-import com.lnc.DB.Menu;
+import com.lnc.DB.MenuQueries;
 import com.lnc.utils.FromJson;
 import com.lnc.utils.ToJson;
 import java.util.List;
@@ -12,7 +12,7 @@ public class FeedbackDisplay {
     FromJson fromJson = new FromJson();
     String itemName = fromJson.getJsonValue("itemName", jsonData);
 
-    Menu menu = new Menu();
+    MenuQueries menu = new MenuQueries();
     if (menu.checkMenuItemPresent(itemName)) {
       FeedbackQueries feedbackQueries = new FeedbackQueries();
       List<Map<String, Object>> feedbackList = feedbackQueries.viewFeedback(itemName);

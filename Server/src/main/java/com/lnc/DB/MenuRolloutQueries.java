@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class MenuRolloutQueries {
     Logger logger = Logger.getLogger(MenuRolloutQueries.class.getName());
     private Connection connection;
-    private final Menu menuQueries = new Menu();
+    private final MenuQueries menuQueries = new MenuQueries();
     private final FeedbackQueries feedbackQueries = new FeedbackQueries();
 
     public MenuRolloutQueries() {

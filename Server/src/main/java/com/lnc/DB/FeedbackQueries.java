@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class FeedbackQueries {
   Logger logger = Logger.getLogger(FeedbackQueries.class.getName());
   private Connection connection;
-  private final Menu menu = new Menu();
+  private final MenuQueries menu = new MenuQueries();
 
   public FeedbackQueries() {
     try{
@@ -63,7 +63,7 @@ public class FeedbackQueries {
       while (rs.next()) {
         Map<String, Object> feedbacks = new HashMap<>();
 
-        UserDetails userDetails = new UserDetails();
+        UserDetailsQueries userDetails = new UserDetailsQueries();
         String user_name = userDetails.getUserName(rs.getString("employee_id"));
 
         feedbacks.put("user_name", user_name);

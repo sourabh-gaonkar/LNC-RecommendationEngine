@@ -1,7 +1,7 @@
 package com.lnc.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.lnc.DB.UserDetails;
+import com.lnc.DB.UserDetailsQueries;
 import com.lnc.model.Employee;
 import com.lnc.utils.FromJson;
 import com.lnc.utils.ToJson;
@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.logging.Logger;
 
 public class Authentication {
-  private final UserDetails user = new UserDetails();
+  private final UserDetailsQueries user = new UserDetailsQueries();
   private final Logger logger = Logger.getLogger(Authentication.class.getName());
 
   public Authentication() throws SQLException {}

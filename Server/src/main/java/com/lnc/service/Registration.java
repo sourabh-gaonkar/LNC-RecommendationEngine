@@ -1,12 +1,12 @@
 package com.lnc.service;
 
-import com.lnc.DB.UserDetails;
+import com.lnc.DB.UserDetailsQueries;
 import com.lnc.model.Employee;
 import com.lnc.utils.FromJson;
 import java.sql.SQLException;
 
 public class Registration {
-  private final UserDetails user = new UserDetails();
+  private final UserDetailsQueries user = new UserDetailsQueries();
 
   public Registration() throws SQLException {}
 

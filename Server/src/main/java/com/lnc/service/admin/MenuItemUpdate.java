@@ -1,6 +1,6 @@
 package com.lnc.service.admin;
 
-import com.lnc.DB.Menu;
+import com.lnc.DB.MenuQueries;
 import com.lnc.model.MenuItem;
 import com.lnc.utils.FromJson;
 
@@ -9,7 +9,7 @@ public class MenuItemUpdate {
     FromJson jsonDecoder = new FromJson();
     MenuItem item = jsonDecoder.decodeMenuItem(jsonData);
 
-    Menu menu = new Menu();
+    MenuQueries menu = new MenuQueries();
     if (menu.checkMenuItemPresent(item.getItemName())) {
       if (menu.updateMenuItem(item)) {
         return "Updated menu item.";

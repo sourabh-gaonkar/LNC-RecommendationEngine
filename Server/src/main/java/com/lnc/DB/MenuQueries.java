@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public class Menu {
-    Logger logger = Logger.getLogger(Menu.class.getName());
+public class MenuQueries {
+    Logger logger = Logger.getLogger(MenuQueries.class.getName());
     private Connection connection;
 
-    public Menu() {
+    public MenuQueries() {
         try{
             JDBCConnection dbInstance = JDBCConnection.getInstance();
             this.connection = dbInstance.getConnection();
