@@ -56,12 +56,12 @@ public class EmployeeController {
                 break;
             case 2:
                 LocalTime currentTime = nowIST.toLocalTime();
-                if (currentTime.isBefore(votingStartTime) || currentTime.isAfter(votingEndTime)) {
-                    System.out.println("Voting is closed. Please try again tomorrow.");
-                    break;
-                }
+//                if (currentTime.isBefore(votingStartTime) || currentTime.isAfter(votingEndTime)) {
+//                    System.out.println("Voting is closed. Please try again tomorrow.");
+//                    break;
+//                }
                 TomorrowsMenuVoting tomorrowsMenu = new TomorrowsMenuVoting();
-                tomorrowsMenu.voteForTomorrowsMenu();
+                tomorrowsMenu.voteForTomorrowsMenu(employeeID);
                 break;
             case 3:
                 EmployeeFeedback employeeFeedback = new EmployeeFeedback();

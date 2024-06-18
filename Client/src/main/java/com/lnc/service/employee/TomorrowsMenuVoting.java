@@ -6,10 +6,12 @@ import com.lnc.util.JsonDataFormat;
 import com.lnc.util.ToJsonConversion;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TomorrowsMenuVoting {
-    public void voteForTomorrowsMenu() throws Exception {
+    public void voteForTomorrowsMenu(String employeeId) throws Exception {
         String apiPath = "/employee/tomorrowsMenu";
         String requestTomorrowsMenu = apiPath + "& ";
 
@@ -30,8 +32,12 @@ public class TomorrowsMenuVoting {
         votedItemList.add(menu.get(snackChoice - 1));
         votedItemList.add(menu.get(dinnerChoice - 1));
 
+        Map<String, Object> employeeVotingData = new HashMap<>();
+        employeeVotingData.put("employeeID", employeeId);
+        employeeVotingData.put("votedItems", votedItemList);
+
         ToJsonConversion convertToJson = new ToJsonConversion();
-        String requestVoting = convertToJson.codeVotedItems(votedItemList);
+        String requestVoting = convertToJson.codeVotedItems(employeeVotingData);
 
         String responseVoting = ServerConnection.requestServer(requestVoting);
         System.out.println(responseVoting);

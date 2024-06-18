@@ -15,6 +15,7 @@ import java.util.Map;
 public class MenuRolloutQueries {
     private final Connection connection;
     private final Menu menuQueries = new Menu();
+    private final FeedbackQueries feedbackQueries = new FeedbackQueries();
 
     public MenuRolloutQueries() throws SQLException {
         JDBCConnection dbInstance = JDBCConnection.getInstance();
@@ -97,7 +98,8 @@ public class MenuRolloutQueries {
                 Map<String, Object> item = Map.of(
                         "item_name", rs.getString("item_name"),
                         "price", rs.getDouble("price"),
-                        "category", rs.getString("category")
+                        "category", rs.getString("category"),
+                        "average_rating", feedbackQueries.getAverageRating(rs.getString("item_name"))
                 );
                 todaysMenu.add(item);
             }
@@ -125,7 +127,8 @@ public class MenuRolloutQueries {
                 Map<String, Object> item = Map.of(
                         "item_name", rs.getString("item_name"),
                         "price", rs.getDouble("price"),
-                        "category", rs.getString("category")
+                        "category", rs.getString("category"),
+                        "average_rating", feedbackQueries.getAverageRating(rs.getString("item_name"))
                 );
                 tomorrowsMenu.add(item);
             }

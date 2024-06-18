@@ -92,8 +92,8 @@ public class ToJsonConversion {
         return objectMapper.writeValueAsString(employeeMap);
     }
 
-    public String codeVotedItems(List<String> votedItemList) throws JsonProcessingException {
-        String jsonData = objectMapper.writeValueAsString(votedItemList);
+    public String codeVotedItems(Map<String, Object> employeeVotingData) throws JsonProcessingException {
+        String jsonData = objectMapper.writeValueAsString(employeeVotingData);
         String apiPath = "/employee/vote";
         return apiPath+ "&" + jsonData;
     }
