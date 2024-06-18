@@ -7,16 +7,22 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 public class UserDetails {
-    private final Connection connection;
+    Logger logger = Logger.getLogger(UserDetails.class.getName());
+    private Connection connection;
 
-    public UserDetails() throws SQLException {
-        JDBCConnection dbInstance = JDBCConnection.getInstance();
-        this.connection = dbInstance.getConnection();
+    public UserDetails() {
+        try{
+            JDBCConnection dbInstance = JDBCConnection.getInstance();
+            this.connection = dbInstance.getConnection();
+        } catch (SQLException ex) {
+            logger.severe("Failed to establish connection to the database.\n" + ex.getMessage());
+        }
     }
 
-    public boolean addUser(Employee employee) throws Exception {
+        public boolean addUser(Employee employee) {
         boolean isUserAdded = false;
 
         String query = "INSERT INTO user_details VALUES (?, ?, ?, ?, ?)";
@@ -33,12 +39,12 @@ public class UserDetails {
                 isUserAdded = true;
             }
         } catch (SQLException ex) {
-            throw new Exception("\nFailed to add user.\n" + ex.getMessage());
+            logger.severe("Failed to add user.\n" + ex.getMessage());
         }
         return isUserAdded;
     }
 
-    public boolean validateEmployeeID(String employeeID) throws Exception {
+    public boolean validateEmployeeID(String employeeID) {
         boolean isEmployeeIDValid = false;
 
         String query = "SELECT * FROM user_details WHERE employee_id =?";
@@ -51,12 +57,12 @@ public class UserDetails {
                 isEmployeeIDValid = true;
             }
         } catch (SQLException ex) {
-            throw new Exception("\nFailed to validate employee ID.\n" + ex.getMessage());
+            logger.severe("Failed to validate employee ID.\n" + ex.getMessage());
         }
         return isEmployeeIDValid;
     }
 
-    public Employee authenticateUser(String employeeID, String password) throws Exception {
+    public Employee authenticateUser(String employeeID, String password) {
         Employee employee = new Employee();
         String actualPassword = null;
 
@@ -78,13 +84,13 @@ public class UserDetails {
                 }
             }
         } catch (SQLException ex) {
-            throw new Exception(ex.getMessage());
+            logger.severe("Failed to authenticate user.\n" + ex.getMessage());
         }
 
         return employee;
     }
 
-    public String getUserName(String employeeID) throws Exception {
+    public String getUserName(String employeeID) {
         String name = null;
 
         String query = "SELECT * FROM user_details WHERE employee_id =?";
@@ -97,7 +103,7 @@ public class UserDetails {
                 name = rs.getString("name");
             }
         } catch (SQLException ex) {
-            throw new Exception("\nFailed to get user name.\n" + ex.getMessage());
+            logger.severe("Failed to get user name.\n" + ex.getMessage());
         }
         return name;
     }

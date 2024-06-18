@@ -7,17 +7,23 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 public class EmployeeOrderQueries {
-    private final Connection connection;
+    private final Logger logger = Logger.getLogger(EmployeeOrderQueries.class.getName());
+    private Connection connection;
     private final Menu menuQueries = new Menu();
 
-    public EmployeeOrderQueries() throws SQLException {
-        JDBCConnection dbInstance = JDBCConnection.getInstance();
-        connection = dbInstance.getConnection();
+    public EmployeeOrderQueries() {
+        try{
+            JDBCConnection dbInstance = JDBCConnection.getInstance();
+            connection = dbInstance.getConnection();
+        } catch (SQLException ex) {
+            logger.severe("Failed to connect to database: " + ex.getMessage());
+        }
     }
 
-    public int getFeedbacksLeft(Feedback feedback) throws Exception {
+    public int getFeedbacksLeft(Feedback feedback) {
         int feedbacksLeft = 0;
 
         String query = "SELECT available_feedbacks FROM employee_orders WHERE employee_id = ? AND item_id = ?";
@@ -33,13 +39,13 @@ public class EmployeeOrderQueries {
                 feedbacksLeft = rs.getInt("available_feedbacks");
             }
         } catch (SQLException e) {
-            throw new Exception("Error while fetching available feedbacks: " + e.getMessage());
+            logger.severe("Error while getting available feedbacks: " + e.getMessage());
         }
 
         return feedbacksLeft;
     }
 
-    public boolean isRowPresent(Feedback feedback) throws Exception {
+    public boolean isRowPresent(Feedback feedback) {
         boolean isRowPresent = false;
 
         String query = "SELECT * FROM employee_orders WHERE employee_id = ? AND item_id = ?";
@@ -52,13 +58,13 @@ public class EmployeeOrderQueries {
 
             isRowPresent = checkRowStmt.executeQuery().next();
         } catch (SQLException e) {
-            throw new Exception("Error while checking if row is present: " + e.getMessage());
+            logger.severe("Error while checking if row is present: " + e.getMessage());
         }
 
         return isRowPresent;
     }
 
-    public boolean isRowPresent(String employeeId, String itemName) throws Exception {
+    public boolean isRowPresent(String employeeId, String itemName) {
         boolean isRowPresent = false;
 
         String query = "SELECT * FROM employee_orders WHERE employee_id = ? AND item_id = ?";
@@ -71,13 +77,13 @@ public class EmployeeOrderQueries {
 
             isRowPresent = checkRowStmt.executeQuery().next();
         } catch (SQLException e) {
-            throw new Exception("Error while checking if row is present: " + e.getMessage());
+            logger.severe("Error while checking if row is present: " + e.getMessage());
         }
 
         return isRowPresent;
     }
 
-    public boolean addFeedbackCount(String employeeId, String itemName) throws Exception {
+    public boolean addFeedbackCount(String employeeId, String itemName) {
         boolean isAdded = false;
 
         String query = "UPDATE employee_orders SET available_feedbacks = available_feedbacks + 1 WHERE employee_id = ? AND item_id = ?";
@@ -90,13 +96,13 @@ public class EmployeeOrderQueries {
 
             isAdded = addFeedbackCountStmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new Exception("Error while adding feedback count: " + e.getMessage());
+            logger.severe("Error while adding feedback count: " + e.getMessage());
         }
 
         return isAdded;
     }
 
-    public boolean subtractFeedbackCount(Feedback feedback) throws Exception {
+    public boolean subtractFeedbackCount(Feedback feedback) {
         boolean isSubtracted = false;
 
         String query = "UPDATE employee_orders SET available_feedbacks = available_feedbacks - 1 WHERE employee_id = ? AND item_id = ?";
@@ -109,13 +115,13 @@ public class EmployeeOrderQueries {
 
             isSubtracted = subtractFeedbackCountStmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new Exception("Error while subtracting feedback count: " + e.getMessage());
+            logger.severe("Error while subtracting feedback count: " + e.getMessage());
         }
 
         return isSubtracted;
     }
 
-    public boolean addNewItemFeedbackValue(String employeeID, String menuItem) throws Exception {
+    public boolean addNewItemFeedbackValue(String employeeID, String menuItem) {
         boolean isAdded = false;
 
         String query = "INSERT INTO employee_orders (employee_id, item_id, available_feedbacks) VALUES (?, ?, 1)";
@@ -128,7 +134,7 @@ public class EmployeeOrderQueries {
 
             isAdded = addNewItemFeedbackValueStmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new Exception("Error while adding new item feedback value: " + e.getMessage());
+            logger.severe("Error while adding new item feedback value: " + e.getMessage());
         }
 
         return isAdded;

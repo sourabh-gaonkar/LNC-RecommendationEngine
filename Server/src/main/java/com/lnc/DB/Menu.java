@@ -8,16 +8,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class Menu {
-    private final Connection connection;
+    Logger logger = Logger.getLogger(Menu.class.getName());
+    private Connection connection;
 
-    public Menu() throws SQLException {
-        JDBCConnection dbInstance = JDBCConnection.getInstance();
-        this.connection = dbInstance.getConnection();
+    public Menu() {
+        try{
+            JDBCConnection dbInstance = JDBCConnection.getInstance();
+            this.connection = dbInstance.getConnection();
+        } catch (SQLException ex) {
+            logger.severe("Failed to connect to database: " + ex.getMessage());
+        }
     }
 
-    public boolean addMenuItem(MenuItem item) throws Exception {
+    public boolean addMenuItem(MenuItem item) {
         boolean isMenuItemAdded = false;
 
         String query = "INSERT INTO menu (item_name, price, availability, category) VALUES (?, ?, ?, ?)";
@@ -30,12 +36,12 @@ public class Menu {
 
             isMenuItemAdded = addMenuItemStmt.executeUpdate() > 0;
         } catch (SQLException ex) {
-            throw new Exception("\nFailed to add menu item.\n" + ex.getMessage());
+            logger.severe("Failed to add menu item: " + ex.getMessage());
         }
         return isMenuItemAdded;
     }
 
-    public boolean updateMenuItem(MenuItem item) throws Exception {
+    public boolean updateMenuItem(MenuItem item) {
         boolean isMenuItemUpdated = false;
 
         String query = "UPDATE menu SET price =?, availability =? WHERE item_name =?";
@@ -47,12 +53,12 @@ public class Menu {
 
             isMenuItemUpdated = updateMenuItemStmt.executeUpdate() > 0;
         } catch (SQLException ex) {
-            throw new Exception("\nFailed to update menu item.\n" + ex.getMessage());
+            logger.severe("Failed to update menu item: " + ex.getMessage());
         }
         return isMenuItemUpdated;
     }
 
-    public boolean deleteMenuItem(String item) throws Exception {
+    public boolean deleteMenuItem(String item) {
 
         String query = "{CALL delete_menu_item(?)}";
         try (CallableStatement callableStatement = connection.prepareCall(query)) {
@@ -60,12 +66,12 @@ public class Menu {
 
             callableStatement.execute();
         } catch (SQLException ex) {
-            throw new Exception("\nFailed to delete menu item.\n" + ex.getMessage());
+            logger.severe("Failed to delete menu item: " + ex.getMessage());
         }
         return !checkMenuItemPresent(item);
     }
 
-    public boolean checkMenuItemPresent(String item) throws Exception {
+    public boolean checkMenuItemPresent(String item) {
         boolean isMenuItemPresent = false;
 
         String query = "SELECT * FROM menu WHERE item_name =?";
@@ -78,13 +84,13 @@ public class Menu {
                 isMenuItemPresent = true;
             }
         } catch (SQLException ex) {
-            throw new Exception("\nFailed to check.\n" + ex.getMessage());
+            logger.severe("Failed to check if menu item is present: " + ex.getMessage());
         }
 
         return isMenuItemPresent;
     }
 
-    public List<Map<String, Object>> viewMenuItems() throws Exception {
+    public List<Map<String, Object>> viewMenuItems() {
         List<Map<String, Object>> menuList = new ArrayList<>();
 
         String query = "SELECT item_name, price, availability, category FROM menu";
@@ -101,13 +107,13 @@ public class Menu {
                 menuList.add(item);
             }
         } catch (SQLException ex) {
-            throw new Exception("\nFailed to view menu items.\n" + ex.getMessage());
+            logger.severe("Failed to view menu items: " + ex.getMessage());
         }
 
         return menuList;
     }
 
-    public int getItemID(String menuItem) throws Exception {
+    public int getItemID(String menuItem) {
         int itemID = 0;
         String query = "SELECT item_id FROM menu WHERE item_name =?";
         try(PreparedStatement getItemIDStmt = connection.prepareStatement(query)) {
@@ -117,7 +123,7 @@ public class Menu {
                 itemID = rs.getInt("item_id");
             }
         } catch (SQLException ex) {
-            throw new Exception("\nFailed to get item ID.\n" + ex.getMessage());
+            logger.severe("Error while getting item ID: " + ex.getMessage());
         }
         return itemID;
     }}

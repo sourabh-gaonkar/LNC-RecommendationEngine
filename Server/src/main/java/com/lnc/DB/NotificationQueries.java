@@ -8,16 +8,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class NotificationQueries {
-  private final Connection connection;
+  Logger logger = Logger.getLogger(NotificationQueries.class.getName());
+  private Connection connection;
 
-  public NotificationQueries() throws SQLException {
-    JDBCConnection dbInstance = JDBCConnection.getInstance();
-    connection = dbInstance.getConnection();
+  public NotificationQueries() {
+    try{
+      JDBCConnection dbInstance = JDBCConnection.getInstance();
+      connection = dbInstance.getConnection();
+    } catch (SQLException ex) {
+      logger.severe("Failed to connect to database.\n" + ex.getMessage());
+    }
   }
 
-  public boolean insertRolloutNotification() throws Exception {
+  public boolean insertRolloutNotification() {
     boolean isNotificationInserted = false;
 
     String query = "INSERT INTO notification (message) VALUES ('Menu rolled out for today')";
@@ -25,13 +31,13 @@ public class NotificationQueries {
     try (PreparedStatement insertNotificationStmt = connection.prepareStatement(query)) {
       isNotificationInserted = insertNotificationStmt.executeUpdate() > 0;
     } catch (SQLException ex) {
-      throw new Exception("\nFailed to insert notification.\n" + ex.getMessage());
+      logger.severe("Failed to insert notification.\n" + ex.getMessage());
     }
 
     return isNotificationInserted;
   }
 
-  public List<Notification> getAllUserNotifications(String employeeID) throws Exception {
+  public List<Notification> getAllUserNotifications(String employeeID) {
     List<Notification> notifications = new ArrayList<>();
 
     String query =
@@ -54,13 +60,13 @@ public class NotificationQueries {
             System.out.println("Failed to update notification status.");
         }
     } catch (SQLException ex) {
-      throw new Exception("\nFailed to get notifications.\n" + ex.getMessage());
+      logger.severe("Failed to get notifications.\n" + ex.getMessage());
     }
 
     return notifications;
   }
 
-  public List<Notification> getNewNotifications(String employeeID) throws Exception {
+  public List<Notification> getNewNotifications(String employeeID) {
     List<Notification> notifications = new ArrayList<>();
 
     String query =
@@ -83,7 +89,7 @@ public class NotificationQueries {
         System.out.println("Failed to update notification status.");
       }
     } catch (SQLException ex) {
-      throw new Exception("\nFailed to get notifications.\n" + ex.getMessage());
+      logger.severe("Failed to get notifications.\n" + ex.getMessage());
     }
 
     return notifications;
@@ -98,7 +104,7 @@ public class NotificationQueries {
       updateNotificationStatusStmt.setString(2, employeeID);
       isStatusUpdated = updateNotificationStatusStmt.executeUpdate() > 0;
     } catch (SQLException ex) {
-      System.out.println("\nFailed to update notification status.\n" + ex.getMessage());
+      logger.severe("Failed to update notification status.\n" + ex.getMessage());
     }
     return isStatusUpdated;
   }

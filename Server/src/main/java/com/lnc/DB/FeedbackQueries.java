@@ -8,17 +8,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class FeedbackQueries {
-  private final Connection connection;
+  Logger logger = Logger.getLogger(FeedbackQueries.class.getName());
+  private Connection connection;
   private final Menu menu = new Menu();
 
-  public FeedbackQueries() throws SQLException {
-    JDBCConnection dbInstance = JDBCConnection.getInstance();
-    this.connection = dbInstance.getConnection();
+  public FeedbackQueries() {
+    try{
+      JDBCConnection dbInstance = JDBCConnection.getInstance();
+      this.connection = dbInstance.getConnection();
+    } catch (SQLException e) {
+      logger.severe("Failed to connect to the database.\n" + e.getMessage());
+    }
   }
 
-  public boolean addFeedback(Feedback feedback) throws Exception {
+  public boolean addFeedback(Feedback feedback) {
     boolean isFeedbackAdded = false;
 
     int itemID = menu.getItemID(feedback.getMenuItem());
@@ -37,12 +43,12 @@ public class FeedbackQueries {
 
       isFeedbackAdded = addFeedbackStmt.executeUpdate() > 0;
     } catch (SQLException ex) {
-      throw new Exception("\nFailed to add feedback.\n" + ex.getMessage());
+      logger.severe("Failed to add feedback.\n" + ex.getMessage());
     }
     return isFeedbackAdded;
   }
 
-  public List<Map<String, Object>> viewFeedback(String itemName) throws Exception {
+  public List<Map<String, Object>> viewFeedback(String itemName) {
     List<Map<String, Object>> feedbackList = new ArrayList<>();
 
     int itemID = menu.getItemID(itemName);
@@ -67,13 +73,13 @@ public class FeedbackQueries {
         feedbackList.add(feedbacks);
       }
     } catch (SQLException e) {
-      throw new Exception("\nFailed to view feedback.\n" + e.getMessage());
+      logger.severe("Failed to view feedback.\n" + e.getMessage());
     }
 
     return feedbackList;
   }
 
-  public Map<String, Object> getWeeklyStats(String itemName) throws Exception {
+  public Map<String, Object> getWeeklyStats(String itemName) {
     Map<String, Object> weeklyStats = new HashMap<>();
 
     int itemID = menu.getItemID(itemName);
@@ -89,13 +95,13 @@ public class FeedbackQueries {
         weeklyStats.put("weekly_reviews", rs.getInt("weekly_reviews"));
       }
     } catch (SQLException e) {
-      throw new Exception("\nError getting weekly stats.\n" + e.getMessage());
+      logger.severe("Failed to get weekly stats.\n" + e.getMessage());
     }
 
     return weeklyStats;
   }
 
-  public Map<String, Object> getOverallStats(String itemName) throws Exception {
+  public Map<String, Object> getOverallStats(String itemName) {
     Map<String, Object> overallStats = new HashMap<>();
 
     int itemID = menu.getItemID(itemName);
@@ -111,14 +117,13 @@ public class FeedbackQueries {
         overallStats.put("overall_reviews", rs.getInt("overall_reviews"));
       }
     } catch (SQLException e) {
-      throw new Exception("\nError getting overall stats.\n" + e.getMessage());
+      logger.severe("Failed to get overall stats.\n" + e.getMessage());
     }
 
     return overallStats;
   }
 
-  public List<Map<String, Object>> generateFeedbackReport(String month, String year)
-      throws Exception {
+  public List<Map<String, Object>> generateFeedbackReport(String month, String year) {
 
     String query =
         "SELECT m.item_name, u.name AS employee_name, f.rating, f.comment, f.feedback_date, "
@@ -185,13 +190,13 @@ public class FeedbackQueries {
       }
 
     } catch (SQLException e) {
-      throw new Exception("\nError generating feedback report.\n" + e.getMessage());
+      logger.severe("Failed to generate feedback report.\n" + e.getMessage());
     }
 
     return reportData;
   }
 
-  public List<String[]> getReviewCommentsOfItem(String itemName) throws Exception {
+  public List<String[]> getReviewCommentsOfItem(String itemName) {
     List<String[]> comments = new ArrayList<>();
     int itemID = menu.getItemID(itemName);
     String query = "SELECT comment, rating FROM feedback WHERE item_id = ?";
@@ -202,7 +207,7 @@ public class FeedbackQueries {
         comments.add(new String[] {rs.getString("comment"), ratingToLabel(rs.getInt("rating"))});
       }
     } catch (SQLException e) {
-      throw new Exception("\nError getting review comments.\n" + e.getMessage());
+      logger.severe("Failed to get review comments.\n" + e.getMessage());
     }
     return comments;
   }
@@ -217,7 +222,7 @@ public class FeedbackQueries {
     }
   }
 
-  public double getAverageRating(String itemName) throws Exception {
+  public double getAverageRating(String itemName) {
     int itemID = menu.getItemID(itemName);
     String query = "SELECT AVG(rating) AS average_rating FROM feedback WHERE item_id = ?";
     try (PreparedStatement getAverageRatingStmt = connection.prepareStatement(query)) {
@@ -227,7 +232,7 @@ public class FeedbackQueries {
         return rs.getDouble("average_rating");
       }
     } catch (SQLException e) {
-      throw new Exception("\nError getting average rating.\n" + e.getMessage());
+      logger.severe("Failed to get average rating.\n" + e.getMessage());
     }
     return 0;
   }
