@@ -3,7 +3,7 @@ package com.lnc.service.employee;
 import com.lnc.DB.EmployeeOrderQueries;
 import com.lnc.DB.MenuQueries;
 import com.lnc.DB.MenuRolloutQueries;
-import com.lnc.utils.FromJson;
+import com.lnc.utils.ConversionFromJson;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +15,7 @@ public class MenuVote {
   public MenuVote() throws SQLException {}
 
   public String voteForMenu(String jsonData) throws Exception {
-    FromJson fromJson = new FromJson();
+    ConversionFromJson fromJson = new ConversionFromJson();
     Map<String, Object> employeeVotingData = fromJson.decodeVotedMenu(jsonData);
     String employeeId = (String) employeeVotingData.get("employeeID");
     List<String> votedMenu = (List<String>) employeeVotingData.get("votedItems");

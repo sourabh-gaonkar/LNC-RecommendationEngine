@@ -4,7 +4,7 @@ import com.lnc.DB.MenuQueries;
 import com.lnc.DB.MenuRolloutQueries;
 import com.lnc.DB.NotificationQueries;
 import com.lnc.model.DailyMenu;
-import com.lnc.utils.FromJson;
+import com.lnc.utils.ConversionFromJson;
 import java.sql.SQLException;
 
 public class RolloutMenu {
@@ -15,7 +15,7 @@ public class RolloutMenu {
   public RolloutMenu() throws SQLException {}
 
   public String rolloutMenu(String jsonData) throws Exception {
-    FromJson fromJson = new FromJson();
+    ConversionFromJson fromJson = new ConversionFromJson();
     DailyMenu dailyMenu = fromJson.decodeDailyMenu(jsonData);
 
     for (String item : dailyMenu.getBreakfastItems()) {

@@ -10,7 +10,7 @@ import com.lnc.model.Notification;
 import java.util.List;
 import java.util.Map;
 
-public class ToJson {
+public class ConversionToJson {
     private final ObjectMapper objectMapper = new ObjectMapper();
     public String codeUserDetails(Employee employee) throws JsonProcessingException {
         return objectMapper.writeValueAsString(employee);

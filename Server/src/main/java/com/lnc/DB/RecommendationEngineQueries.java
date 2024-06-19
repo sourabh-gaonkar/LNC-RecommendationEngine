@@ -1,13 +1,12 @@
 package com.lnc.DB;
 
+import com.lnc.connection.JDBCConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
-import com.lnc.connection.JDBCConnection;
 
 public class RecommendationEngineQueries {
     Logger logger = Logger.getLogger(RecommendationEngineQueries.class.getName());
@@ -23,19 +22,14 @@ public class RecommendationEngineQueries {
     }
 
     public Map<String, List<Map<String, Object>>> getAllData() {
-        try{
-            Map<String, String> queries = getQueries();
-            Map<String, List<Map<String, Object>>> dataFrames = new HashMap<>();
+        Map<String, String> queries = getQueries();
+        Map<String, List<Map<String, Object>>> dataFrames = new HashMap<>();
 
-            for (Map.Entry<String, String> entry : queries.entrySet()) {
-                dataFrames.put(entry.getKey(), getData(entry.getValue()));
-            }
-
-            return dataFrames;
-        } catch (SQLException e) {
-            logger.severe("Error fetching data: " + e.getMessage());
+        for (Map.Entry<String, String> entry : queries.entrySet()) {
+            dataFrames.put(entry.getKey(), getData(entry.getValue()));
         }
-        return null;
+
+        return dataFrames;
     }
 
     public List<Map<String, Object>> getData(String query) {

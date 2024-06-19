@@ -1,13 +1,10 @@
 package com.lnc.service.sentimentAnalysis;
 
 import com.lnc.DB.FeedbackQueries;
-import com.lnc.DB.ReviewQueries;
-import com.lnc.model.Review;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import libsvm.svm_model;
 
 public class SentimentAnalysis {
     private final FeedbackQueries feedbackQueries = new FeedbackQueries();

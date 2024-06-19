@@ -2,7 +2,7 @@ package com.lnc.service.recommendationEngine;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lnc.DB.RecommendationEngineQueries;
-import com.lnc.utils.ToJson;
+import com.lnc.utils.ConversionToJson;
 import java.sql.*;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -16,7 +16,7 @@ public class RecommendationEngine {
         Map<String, List<Map<String, Object>>> dataFrames = engineData.getAllData();
 
         List<Map<String, Object>> recommendations = processDataFrames(dataFrames);
-        ToJson toJson = new ToJson();
+        ConversionToJson toJson = new ConversionToJson();
         return toJson.codeEngineResponse(recommendations);
     }
 

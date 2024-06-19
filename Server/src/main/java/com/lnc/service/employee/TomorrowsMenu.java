@@ -2,7 +2,7 @@ package com.lnc.service.employee;
 
 import com.lnc.DB.MenuRolloutQueries;
 import com.lnc.service.sentimentAnalysis.SentimentAnalysis;
-import com.lnc.utils.ToJson;
+import com.lnc.utils.ConversionToJson;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +24,7 @@ public class TomorrowsMenu {
       System.out.println(updatedMenu.size());
     }
 
-    ToJson toJson = new ToJson();
+    ConversionToJson toJson = new ConversionToJson();
 
     return toJson.codeTodaysMenu(updatedMenu);
   }

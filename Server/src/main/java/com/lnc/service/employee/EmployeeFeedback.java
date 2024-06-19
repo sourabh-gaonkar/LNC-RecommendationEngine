@@ -5,11 +5,11 @@ import com.lnc.DB.FeedbackQueries;
 import com.lnc.DB.MenuQueries;
 import com.lnc.DB.UserDetailsQueries;
 import com.lnc.model.Feedback;
-import com.lnc.utils.FromJson;
+import com.lnc.utils.ConversionFromJson;
 
 public class EmployeeFeedback {
   public String getEmployeeFeedback(String jsonData) throws Exception {
-    FromJson fromJson = new FromJson();
+    ConversionFromJson fromJson = new ConversionFromJson();
     Feedback feedback = fromJson.decodeFeedback(jsonData);
 
     EmployeeOrderQueries employeeOrderQueries = new EmployeeOrderQueries();

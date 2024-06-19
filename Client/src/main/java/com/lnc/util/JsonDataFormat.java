@@ -55,13 +55,14 @@ public class JsonDataFormat {
             List<Map<String, Object>> recommendations = objectMapper.readValue(jsonString, new TypeReference<List<Map<String, Object>>>() {});
             List<String> order = Arrays.asList("BREAKFAST", "LUNCH", "SNACK", "DINNER");
 
-            System.out.printf("%-30s %-10s %-10s %-20s%n", "Item Name", "Category", "Price", "Average Rating");
+            System.out.printf("%-30s %-10s %-10s %-20s %-15s%n", "Item Name", "Category", "Price", "Average Rating", "Composite Score");
+            System.out.println("\n--------------------------------------------------------------------------------------------------------");
 
             for (String category : order) {
                 for (Map<String, Object> row : recommendations) {
                     if (category.equals(row.get("category"))) {
-                        System.out.printf("%-30s %-10s %-10.2f %-20.2f%n",
-                                row.get("item_name"), row.get("category"), row.get("price"), row.get("avg_overall_rating"));
+                        System.out.printf("%-30s %-10s %-10.2f %-20.2f %-15s%n",
+                                row.get("item_name"), row.get("category"), row.get("price"), row.get("avg_overall_rating"), row.get("composite_score"));
                     }
                 }
             }

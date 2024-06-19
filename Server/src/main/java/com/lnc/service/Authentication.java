@@ -3,36 +3,56 @@ package com.lnc.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lnc.DB.UserDetailsQueries;
 import com.lnc.model.Employee;
-import com.lnc.utils.FromJson;
-import com.lnc.utils.ToJson;
-import java.sql.SQLException;
+import com.lnc.utils.ConversionFromJson;
+import com.lnc.utils.ConversionToJson;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Authentication {
-  private final UserDetailsQueries user = new UserDetailsQueries();
-  private final Logger logger = Logger.getLogger(Authentication.class.getName());
+    private final UserDetailsQueries userDetailsQueries = new UserDetailsQueries();
+    private final Logger logger = Logger.getLogger(Authentication.class.getName());
 
-  public Authentication() throws SQLException {}
+    public String authenticate(String jsonData) {
+        try {
+            String employeeID = extractEmployeeID(jsonData);
+            String password = extractPassword(jsonData);
 
-  public String authenticate(String jsonData) {
-    try {
-      FromJson converter = new FromJson();
-      String employeeID = converter.getJsonValue("employeeID", jsonData);
-      String password = converter.getJsonValue("password", jsonData);
-
-      if (user.validateEmployeeID(employeeID)) {
-        Employee employee = user.authenticateUser(employeeID, password);
-        if (employee != null) {
-          ToJson json = new ToJson();
-          return json.codeUserDetails(employee);
-        } else {
-          return "Wrong username, password.";
+            if (isEmployeeIDValid(employeeID)) {
+                return authenticateUser(employeeID, password);
+            } else {
+                return "EmployeeID does not exist.";
+            }
+        } catch (JsonProcessingException | NullPointerException e) {
+            logger.log(Level.SEVERE, "JSON processing error: ", e);
+            return "Wrong request format.";
         }
-      }
-      return "EmployeeID does not exist.";
-    } catch (Exception e) {
-      logger.severe(e.getMessage());
-      return "Wrong request format.";
     }
-  }
+
+    private String extractEmployeeID(String jsonData) throws JsonProcessingException, NullPointerException {
+        ConversionFromJson fromJsonConverter = new ConversionFromJson();
+        return fromJsonConverter.getJsonValue("employeeID", jsonData);
+    }
+
+    private String extractPassword(String jsonData) throws JsonProcessingException, NullPointerException {
+        ConversionFromJson fromJsonConverter = new ConversionFromJson();
+        return fromJsonConverter.getJsonValue("password", jsonData);
+    }
+
+    private boolean isEmployeeIDValid(String employeeID) {
+        return userDetailsQueries.validateEmployeeID(employeeID);
+    }
+
+    public String authenticateUser(String employeeID, String password) throws JsonProcessingException {
+        Employee employee = userDetailsQueries.authenticateUser(employeeID, password);
+        if (employee.getEmployeeID() != null) {
+            return convertEmployeeToJson(employee);
+        } else {
+            return "Wrong username or password.";
+        }
+    }
+
+    private String convertEmployeeToJson(Employee employee) throws JsonProcessingException {
+        ConversionToJson toJsonConverter = new ConversionToJson();
+        return toJsonConverter.codeUserDetails(employee);
+    }
 }

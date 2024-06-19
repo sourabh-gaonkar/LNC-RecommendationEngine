@@ -2,7 +2,6 @@ package com.lnc.DB;
 
 import com.lnc.connection.JDBCConnection;
 import com.lnc.model.Employee;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
