@@ -44,7 +44,10 @@ public class Authentication {
 
     public String authenticateUser(String employeeID, String password) throws JsonProcessingException {
         Employee employee = userDetailsQueries.authenticateUser(employeeID, password);
-        if (employee.getEmployeeID() != null) {
+        if(employee == null) {
+            return "Wrong username or password.";
+        }
+        else if (employee.getEmployeeID() != null) {
             return convertEmployeeToJson(employee);
         } else {
             return "Wrong username or password.";

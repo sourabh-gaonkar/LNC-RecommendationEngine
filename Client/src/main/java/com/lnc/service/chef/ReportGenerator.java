@@ -5,11 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lnc.connection.ServerConnection;
 import com.lnc.util.InputHandler;
 import com.lnc.util.ToJsonConversion;
+import com.opencsv.CSVWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import com.opencsv.CSVWriter;
 
 public class ReportGenerator {
   public void generateReport() throws Exception {
