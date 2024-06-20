@@ -6,22 +6,25 @@ import com.lnc.util.InputHandler;
 import com.lnc.util.JsonDataFormat;
 import com.lnc.util.ToJsonConversion;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class FeedbackView {
-  public void getFeedbacks() throws IOException {
-    String menuItem = getMenuItem();
+  private final Logger logger = Logger.getLogger(FeedbackView.class.getName());
 
-    ToJsonConversion toJson = new ToJsonConversion();
-    String request = toJson.codeItemName(menuItem);
-
+  public void getFeedbacks() {
     try {
+      String menuItem = getMenuItem();
+
+      ToJsonConversion toJson = new ToJsonConversion();
+      String request = toJson.codeItemName(menuItem);
+
       String response = ServerConnection.requestServer(request);
       JsonDataFormat jsonDataFormat = new JsonDataFormat();
       jsonDataFormat.viewFormattedFeedbacks(response);
     } catch (JsonProcessingException ex) {
-      System.out.println("Enter valid menu Item");
+      logger.severe("Error in json parsing feedbacks: " + ex.getMessage());
     } catch (Exception ex) {
-      System.out.println(ex.getMessage());
+      logger.severe("Error in fetching feedbacks: " + ex.getMessage());
     }
   }
 

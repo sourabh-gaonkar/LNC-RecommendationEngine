@@ -24,7 +24,7 @@ public class RecommendationEngine {
             return toJson.codeEngineResponse(recommendations);
         } catch (JsonProcessingException | NullPointerException e) {
             logger.severe("Error in Recommendation Engine: " + e.getMessage());
-            return "Error in Recommendation Engine: ";
+            return "Error in Recommendation Engine.";
         }
     }
 
