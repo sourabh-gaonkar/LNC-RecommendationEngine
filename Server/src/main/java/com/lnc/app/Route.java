@@ -1,6 +1,7 @@
 package com.lnc.app;
 
 import com.lnc.service.Authentication;
+import com.lnc.service.LogoutUser;
 import com.lnc.service.NewNotification;
 import com.lnc.service.Registration;
 import com.lnc.service.admin.MenuItemAddition;
@@ -29,6 +30,12 @@ public class Route {
                 Authentication auth = new Authentication();
                 response = auth.authenticate(data);
                 break;
+
+            case "/logout":
+                LogoutUser logoutUser = new LogoutUser();
+                response = logoutUser.logout(data);
+                break;
+
 
             case "/register":
                 Registration register = new Registration();

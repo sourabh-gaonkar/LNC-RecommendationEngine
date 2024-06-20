@@ -2,6 +2,7 @@ package com.lnc.controller;
 
 import static java.lang.Thread.sleep;
 
+import com.lnc.service.UserLogout;
 import com.lnc.service.admin.MenuItemAddition;
 import com.lnc.service.admin.MenuItemDeletion;
 import com.lnc.service.admin.MenuItemUpdate;
@@ -52,8 +53,15 @@ public class AdminController {
                 menuItemDisplay.displayMenu();
                 break;
             case 5:
-                System.out.println("Logging out...");
-                sleep(5);
+                UserLogout userLogout = new UserLogout();
+                boolean isLoggedOut = userLogout.logout(employeeID);
+                if (isLoggedOut) {
+                    System.out.println("Logging out...");
+                    sleep(5);
+                } else {
+                    choice = 0;
+                    System.out.println("Error in logging out");
+                }
                 break;
             default:
                 System.out.println("Invalid choice");
