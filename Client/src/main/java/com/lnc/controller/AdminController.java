@@ -1,13 +1,14 @@
 package com.lnc.controller;
 
-import static java.lang.Thread.sleep;
-
 import com.lnc.service.UserLogout;
 import com.lnc.service.admin.MenuItemAddition;
 import com.lnc.service.admin.MenuItemDeletion;
 import com.lnc.service.admin.MenuItemUpdate;
 import com.lnc.service.admin.MenuView;
+import com.lnc.service.discardedItem.DiscardedItemProcessor;
 import com.lnc.util.InputHandler;
+
+import static java.lang.Thread.sleep;
 
 public class AdminController {
     private final String name;
@@ -28,7 +29,7 @@ public class AdminController {
             displayOptions();
             int choice = InputHandler.getInt("Enter your choice: ");
             processOption(choice);
-            if (choice == 5) {
+            if (choice == 6) {
                 break;
             }
         }
@@ -53,6 +54,10 @@ public class AdminController {
                 menuItemDisplay.displayMenu();
                 break;
             case 5:
+                DiscardedItemProcessor discardedItemProcessor = new DiscardedItemProcessor();
+                discardedItemProcessor.processDiscardedItems();
+                break;
+            case 6:
                 UserLogout userLogout = new UserLogout();
                 boolean isLoggedOut = userLogout.logout(employeeID);
                 if (isLoggedOut) {
@@ -75,6 +80,7 @@ public class AdminController {
         System.out.println("2. Update Menu Item");
         System.out.println("3. Delete Menu Item");
         System.out.println("4. View Menu Items");
-        System.out.println("5. Logout");
+        System.out.println("5. View Discard Items. (Available 1st of every month)");
+        System.out.println("6. Logout");
     }
 }

@@ -2,6 +2,7 @@ package com.lnc.DB;
 
 import com.lnc.connection.JDBCConnection;
 import com.lnc.model.Feedback;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -235,5 +236,26 @@ public class FeedbackQueries {
       logger.severe("Failed to get average rating.\n" + e.getMessage());
     }
     return 0;
+  }
+
+  public List<Map<String, Object>> getFeedbacksFromLastMonth() {
+    String query = "SELECT item_id, comment FROM feedback WHERE feedback_date >= ?";
+    List<Map<String, Object>> feedbackList = new ArrayList<>();
+
+    try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+      pstmt.setDate(1, Date.valueOf(LocalDate.now().minusMonths(1)));
+      try (ResultSet rs = pstmt.executeQuery()) {
+        while (rs.next()) {
+          Map<String, Object> feedback = new HashMap<>();
+          feedback.put("item_id", rs.getInt("item_id"));
+          feedback.put("comment", rs.getString("comment"));
+          feedbackList.add(feedback);
+        }
+      }
+    } catch (SQLException e) {
+      logger.severe("Failed to get feedbacks from last month.\n" + e.getMessage());
+    }
+
+    return feedbackList;
   }
 }

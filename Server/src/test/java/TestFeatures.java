@@ -1,23 +1,19 @@
-import com.lnc.DB.MenuRolloutQueries;
-import java.util.List;
-import java.util.Map;
-
-import com.lnc.DB.RecommendationEngineQueries;
+import com.lnc.DB.DiscardMenuQueries;
+import com.lnc.service.discardItem.ItemDiscard;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 public class TestFeatures {
     @Test
     public void testVoting() {
 
         try{
-            RecommendationEngineQueries engineData = new RecommendationEngineQueries();
-            Map<String, List<Map<String, Object>>> dataFrames = engineData.getAllData();
-            for (Map.Entry<String, List<Map<String, Object>>> entry : dataFrames.entrySet()) {
-                if(entry.getKey().equals("last_rollout")){
-                    for (Map<String, Object> row : entry.getValue()) {
-                        System.out.println(row);
-                    }
-                }
+            DiscardMenuQueries discardMenuQueries = new DiscardMenuQueries();
+            List<String> discardedItems = discardMenuQueries.getAllDiscardedItems();
+            for (String discardedItem : discardedItems) {
+                ItemDiscard itemDiscard = new ItemDiscard();
+                itemDiscard.getDiscardItemList();
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lnc.DB.UserDetailsQueries;
 import com.lnc.model.Employee;
 import com.lnc.utils.ConversionFromJson;
-import java.sql.SQLException;
 
 public class Registration {
   private final UserDetailsQueries user = new UserDetailsQueries();

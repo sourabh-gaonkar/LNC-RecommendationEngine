@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lnc.model.MenuItemResponse;
 import com.lnc.model.Notification;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -108,4 +109,20 @@ public class JsonDataFormat {
 
         return printedItems;
     }
+
+    public List<String> printDiscardedItems(String jsonData) throws JsonProcessingException {
+        List<String> discardedItems = objectMapper.readValue(jsonData, new TypeReference<List<String>>() {});
+
+        System.out.println("\nDiscarded Items\n");
+        System.out.println("ID   Item Name");
+        System.out.println("-----------------");
+
+        int id = 1;
+        for (String itemName : discardedItems) {
+            System.out.printf("%-4d %s%n", id, itemName);
+            id++;
+        }
+        return discardedItems;
+    }
+
 }

@@ -1,15 +1,16 @@
 package com.lnc.service;
 
-import static java.lang.Thread.sleep;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lnc.connection.ServerConnection;
 import com.lnc.model.Notification;
 import com.lnc.util.ToJsonConversion;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+
+import static java.lang.Thread.sleep;
 
 public class NotificationService {
 

@@ -4,6 +4,7 @@ import com.lnc.connection.ServerConnection;
 import com.lnc.model.Employee;
 import com.lnc.util.InputHandler;
 import com.lnc.util.ToJsonConversion;
+
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

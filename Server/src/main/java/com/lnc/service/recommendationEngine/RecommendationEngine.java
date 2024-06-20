@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lnc.DB.RecommendationEngineQueries;
 import com.lnc.utils.ConversionFromJson;
 import com.lnc.utils.ConversionToJson;
-import java.util.*;
+
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class RecommendationEngine {

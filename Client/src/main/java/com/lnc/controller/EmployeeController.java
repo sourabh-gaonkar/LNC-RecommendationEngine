@@ -1,7 +1,5 @@
 package com.lnc.controller;
 
-import static java.lang.Thread.sleep;
-
 import com.lnc.service.NotificationService;
 import com.lnc.service.UserLogout;
 import com.lnc.service.employee.AllNotificationsOfEmployee;
@@ -9,10 +7,12 @@ import com.lnc.service.employee.EmployeeFeedback;
 import com.lnc.service.employee.TodaysMenu;
 import com.lnc.service.employee.TomorrowsMenuVoting;
 import com.lnc.util.InputHandler;
-import java.awt.*;
+
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+
+import static java.lang.Thread.sleep;
 
 public class EmployeeController {
     private final ZonedDateTime nowIST = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));

@@ -2,6 +2,7 @@ package com.lnc.DB;
 
 import com.lnc.connection.JDBCConnection;
 import com.lnc.model.MenuItem;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +15,7 @@ public class MenuQueries {
     private Connection connection;
 
     public MenuQueries() {
-        try{
+        try {
             JDBCConnection dbInstance = JDBCConnection.getInstance();
             this.connection = dbInstance.getConnection();
         } catch (SQLException ex) {
@@ -27,7 +28,7 @@ public class MenuQueries {
 
         String query = "INSERT INTO menu (item_name, price, availability, category) VALUES (?, ?, ?, ?)";
 
-        try(PreparedStatement addMenuItemStmt = connection.prepareStatement(query)) {
+        try (PreparedStatement addMenuItemStmt = connection.prepareStatement(query)) {
             addMenuItemStmt.setString(1, item.getItemName());
             addMenuItemStmt.setDouble(2, item.getPrice());
             addMenuItemStmt.setBoolean(3, item.isAvailable());
@@ -45,7 +46,7 @@ public class MenuQueries {
 
         String query = "UPDATE menu SET price =?, availability =? WHERE item_name =?";
 
-        try(PreparedStatement updateMenuItemStmt = connection.prepareStatement(query)) {
+        try (PreparedStatement updateMenuItemStmt = connection.prepareStatement(query)) {
             updateMenuItemStmt.setDouble(1, item.getPrice());
             updateMenuItemStmt.setBoolean(2, item.isAvailable());
             updateMenuItemStmt.setString(3, item.getItemName());
@@ -75,11 +76,11 @@ public class MenuQueries {
 
         String query = "SELECT * FROM menu WHERE item_name =?";
 
-        try(PreparedStatement checkMenuItemPresentStmt = connection.prepareStatement(query)) {
+        try (PreparedStatement checkMenuItemPresentStmt = connection.prepareStatement(query)) {
             checkMenuItemPresentStmt.setString(1, item);
 
             ResultSet rs = checkMenuItemPresentStmt.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 isMenuItemPresent = true;
             }
         } catch (SQLException ex) {
@@ -94,10 +95,10 @@ public class MenuQueries {
 
         String query = "SELECT item_name, price, availability, category FROM menu";
 
-        try(PreparedStatement viewMenuItemsStmt = connection.prepareStatement(query)) {
+        try (PreparedStatement viewMenuItemsStmt = connection.prepareStatement(query)) {
             ResultSet rs = viewMenuItemsStmt.executeQuery();
 
-            while(rs.next()) {
+            while (rs.next()) {
                 Map<String, Object> item = new HashMap<>();
                 item.put("item_name", rs.getString("item_name"));
                 item.put("price", rs.getBigDecimal("price"));
@@ -115,14 +116,29 @@ public class MenuQueries {
     public int getItemID(String menuItem) {
         int itemID = 0;
         String query = "SELECT item_id FROM menu WHERE item_name =?";
-        try(PreparedStatement getItemIDStmt = connection.prepareStatement(query)) {
+        try (PreparedStatement getItemIDStmt = connection.prepareStatement(query)) {
             getItemIDStmt.setString(1, menuItem);
             ResultSet rs = getItemIDStmt.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 itemID = rs.getInt("item_id");
             }
         } catch (SQLException ex) {
             logger.severe("Error while getting item ID: " + ex.getMessage());
         }
         return itemID;
-    }}
+    }
+
+    public List<Integer> getAllMenuIds() {
+        List<Integer> menuIds = new ArrayList<>();
+        String query = "SELECT item_id FROM menu";
+        try (PreparedStatement getAllMenuIdsStmt = connection.prepareStatement(query)) {
+            ResultSet rs = getAllMenuIdsStmt.executeQuery();
+            while (rs.next()) {
+                menuIds.add(rs.getInt("item_id"));
+            }
+        } catch (SQLException ex) {
+            logger.severe("Error while getting all menu IDs: " + ex.getMessage());
+        }
+        return menuIds;
+    }
+}

@@ -1,6 +1,5 @@
 package com.lnc.service.admin;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lnc.DB.MenuQueries;
 import com.lnc.model.MenuItem;

@@ -11,8 +11,10 @@ import com.lnc.service.admin.MenuItemUpdate;
 import com.lnc.service.chef.FeedbackDisplay;
 import com.lnc.service.chef.ReportGenerator;
 import com.lnc.service.chef.RolloutMenu;
+import com.lnc.service.discardItem.ItemDiscard;
 import com.lnc.service.employee.*;
 import com.lnc.service.recommendationEngine.RecommendationEngine;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,6 +47,11 @@ public class Route {
             case "/getNotifications":
                 NewNotification newNotification = new NewNotification();
                 response = newNotification.getNewNotifications(data);
+                break;
+
+            case "/getDiscardItems":
+                ItemDiscard itemDiscard = new ItemDiscard();
+                response = itemDiscard.getDiscardItemList();
                 break;
 
             case "/admin/addItem":
