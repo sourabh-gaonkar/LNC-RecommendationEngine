@@ -6,12 +6,10 @@ import java.util.stream.Collectors;
 public class TextCleaner {
 
     public String cleanText(String text) {
-        // Remove non-alphanumeric characters
         text = text.replaceAll("[^a-zA-Z0-9\\s]", "");
 
         text = text.toLowerCase();
 
-        // Tokenize
         List<String> words = Arrays.asList(text.split("\\s+"));
 
         List<String> filteredWords = removeStopwords(words);

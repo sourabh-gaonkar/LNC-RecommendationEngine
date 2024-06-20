@@ -1,38 +1,41 @@
 package com.lnc.service.employee;
 
-import com.lnc.DB.FeedbackQueries;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lnc.DB.MenuRolloutQueries;
 import com.lnc.service.sentimentAnalysis.SentimentAnalysis;
-import com.lnc.utils.ToJson;
-
-import java.sql.SQLException;
+import com.lnc.utils.ConversionToJson;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class TodaysMenu {
-  private final FeedbackQueries feedbackQueries = new FeedbackQueries();
+    private final Logger logger = Logger.getLogger(TodaysMenu.class.getName());
+    private final MenuRolloutQueries menuRolloutQueries = new MenuRolloutQueries();
+    private final SentimentAnalysis sentimentAnalysis = new SentimentAnalysis();
+    private final ConversionToJson toJson = new ConversionToJson();
 
-    public TodaysMenu() throws SQLException {
+    public String getTodaysMenu() {
+      List<Map<String, Object>> todaysMenu = menuRolloutQueries.getTodaysMenu();
+      if (todaysMenu == null) {
+        logger.severe("Null menu returned from database");
+        return null;
+      } else {
+        System.out.println(todaysMenu.size());
+      }
+
+      List<Map<String, Object>> updatedMenu = sentimentAnalysis.getSentimentAnalysis(todaysMenu);
+      if (updatedMenu == null) {
+        logger.severe("Null menu returned from sentiment analysis");
+        return null;
+      } else {
+        System.out.println(updatedMenu.size());
+      }
+
+      try{
+        return toJson.codeTodaysMenu(updatedMenu);
+      } catch (JsonProcessingException | NullPointerException e) {
+        logger.severe("Error in converting to JSON");
+        return null;
+      }
     }
-
-    public String getTodaysMenu() throws Exception {
-    MenuRolloutQueries menuRolloutQueries = new MenuRolloutQueries();
-    List<Map<String, Object>> todaysMenu = menuRolloutQueries.getTodaysMenu();
-    if (todaysMenu == null) {
-      throw new Exception("No menu found for today");
-    } else {
-      System.out.println(todaysMenu.size());
-    }
-
-    SentimentAnalysis sentimentAnalysis = new SentimentAnalysis();
-    List<Map<String, Object>> updatedMenu = sentimentAnalysis.getSentimentAnalysis(todaysMenu);
-    if (updatedMenu == null) {
-      throw new Exception("No reviews found for today's menu");
-    } else {
-      System.out.println(updatedMenu.size());
-    }
-
-    ToJson toJson = new ToJson();
-    return toJson.codeTodaysMenu(updatedMenu);
-  }
 }

@@ -2,7 +2,7 @@ package com.lnc.controller;
 
 import static java.lang.Thread.sleep;
 
-import com.lnc.service.AllNewNotifications;
+import com.lnc.service.NotificationService;
 import com.lnc.service.employee.AllNotificationsOfEmployee;
 import com.lnc.service.employee.EmployeeFeedback;
 import com.lnc.service.employee.TodaysMenu;
@@ -33,8 +33,8 @@ public class EmployeeController {
     }
 
     private void getNotifications() throws Exception {
-    AllNewNotifications newNotifications = new AllNewNotifications();
-        newNotifications.getNewNotifications(employeeID);
+    NotificationService newNotifications = new NotificationService();
+        newNotifications.fetchAndDisplayNotifications(employeeID);
     }
 
   private void run() throws Exception {

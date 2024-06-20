@@ -1,31 +1,41 @@
 package com.lnc.service.employee;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lnc.DB.MenuRolloutQueries;
 import com.lnc.service.sentimentAnalysis.SentimentAnalysis;
-import com.lnc.utils.ToJson;
+import com.lnc.utils.ConversionToJson;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class TomorrowsMenu {
-  public String getTomorrowsMenu() throws Exception {
-    MenuRolloutQueries menuRolloutQueries = new MenuRolloutQueries();
+  private final Logger logger = Logger.getLogger(TomorrowsMenu.class.getName());
+  private final ConversionToJson toJson = new ConversionToJson();
+  private final SentimentAnalysis sentimentAnalysis = new SentimentAnalysis();
+  private final MenuRolloutQueries menuRolloutQueries = new MenuRolloutQueries();
+
+  public String getTomorrowsMenu() {
     List<Map<String, Object>> tomorrowsMenu = menuRolloutQueries.getTomorrowsMenu();
     if (tomorrowsMenu == null) {
-      throw new Exception("No menu found for today");
+      logger.severe("No menu found for tomorrow");
+      return null;
     } else {
       System.out.println(tomorrowsMenu.size());
     }
 
-    SentimentAnalysis sentimentAnalysis = new SentimentAnalysis();
     List<Map<String, Object>> updatedMenu = sentimentAnalysis.getSentimentAnalysis(tomorrowsMenu);
     if (updatedMenu == null) {
-      throw new Exception("No reviews found for today's menu");
+      logger.severe("Sentiment analysis failed");
+      return null;
     } else {
       System.out.println(updatedMenu.size());
     }
 
-    ToJson toJson = new ToJson();
-
-    return toJson.codeTodaysMenu(updatedMenu);
+    try{
+      return toJson.codeTodaysMenu(updatedMenu);
+    } catch (JsonProcessingException | NullPointerException e) {
+      logger.severe("Failed to convert menu to JSON");
+      return null;
+    }
   }
 }

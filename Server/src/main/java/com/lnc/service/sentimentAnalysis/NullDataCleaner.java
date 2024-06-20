@@ -3,7 +3,7 @@ package com.lnc.service.sentimentAnalysis;
 import java.util.Iterator;
 import java.util.List;
 
-public class DataCleaner {
+public class NullDataCleaner {
     public List<String[]> cleanData(List<String[]> data, int labelIndex, int cleanedTextIndex) {
         Iterator<String[]> iterator = data.iterator();
         while (iterator.hasNext()) {

@@ -7,14 +7,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lnc.model.DailyMenu;
 import com.lnc.model.Feedback;
 import com.lnc.model.MenuItem;
-import java.util.List;
 import java.util.Map;
 
-public class FromJson {
+public class ConversionFromJson {
     private final ObjectMapper objectMapper = new ObjectMapper();
-    public String getJsonValue(String key, String jsonData) throws JsonProcessingException {
+    public String getJsonValue(String key, String jsonData) throws JsonProcessingException, NullPointerException {
         JsonNode jsonNode = objectMapper.readTree(jsonData);
-
         return jsonNode.get(key).asText();
     }
 

@@ -1,16 +1,24 @@
 package com.lnc.service.admin;
 
-import com.lnc.DB.Menu;
-import com.lnc.utils.ToJson;
+import com.lnc.DB.MenuQueries;
+import com.lnc.utils.ConversionToJson;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MenuItemDisplay {
+  private final Logger logger = Logger.getLogger(MenuItemDisplay.class.getName());
   public String displayMenu() throws Exception {
-    Menu menu = new Menu();
+    MenuQueries menu = new MenuQueries();
     List<Map<String, Object>> items = menu.viewMenuItems();
 
-    ToJson jsonCoder = new ToJson();
+    if(items.isEmpty()) {
+      logger.info("No menu items found.");
+      return null;
+    }
+
+    ConversionToJson jsonCoder = new ConversionToJson();
     return jsonCoder.codeAllMenuItems(items);
   }
 }

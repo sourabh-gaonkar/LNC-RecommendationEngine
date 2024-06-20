@@ -1,17 +1,33 @@
 package com.lnc.service;
 
-import com.lnc.DB.UserDetails;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.lnc.DB.UserDetailsQueries;
 import com.lnc.model.Employee;
-import com.lnc.utils.FromJson;
+import com.lnc.utils.ConversionFromJson;
 import java.sql.SQLException;
 
 public class Registration {
-  private final UserDetails user = new UserDetails();
+  private final UserDetailsQueries user = new UserDetailsQueries();
 
-  public Registration() throws SQLException {}
+  public Registration() {}
 
-  public String addUser(String jsonData) throws Exception {
-    FromJson converter = new FromJson();
+  public String addUser(String jsonData) {
+    try{
+      Employee employee = extractJsonData(jsonData);
+
+      boolean success = user.addUser(employee);
+      if (success) {
+        return "Employee added successfully.";
+      } else {
+        return "Unable to add employee.";
+      }
+    } catch (JsonProcessingException | NullPointerException e) {
+      return "Invalid data format.";
+    }
+  }
+
+  private Employee extractJsonData(String jsonData) throws JsonProcessingException, NullPointerException {
+    ConversionFromJson converter = new ConversionFromJson();
     String employeeID = converter.getJsonValue("employeeID", jsonData);
     String name = converter.getJsonValue("name", jsonData);
     String role = converter.getJsonValue("role", jsonData);
@@ -24,12 +40,6 @@ public class Registration {
     employee.setRole(role);
     employee.setEmailID(emailID);
     employee.setPassword(password);
-
-    boolean success = user.addUser(employee);
-    if (success) {
-      return "Employee added successfully.";
-    } else {
-      return "Unable to add employee.";
-    }
+    return employee;
   }
 }

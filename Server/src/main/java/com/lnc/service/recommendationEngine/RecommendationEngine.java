@@ -2,22 +2,29 @@ package com.lnc.service.recommendationEngine;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lnc.DB.RecommendationEngineQueries;
-import com.lnc.utils.ToJson;
-import java.sql.*;
+import com.lnc.utils.ConversionToJson;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class RecommendationEngine {
-    public String runEngine() throws SQLException, JsonProcessingException {
-        RecommendationEngineQueries engineData = new RecommendationEngineQueries();
-        Map<String, List<Map<String, Object>>> dataFrames = engineData.getAllData();
+    private final Logger logger = Logger.getLogger(RecommendationEngine.class.getName());
 
-        List<Map<String, Object>> recommendations = processDataFrames(dataFrames);
-        ToJson toJson = new ToJson();
-        return toJson.codeEngineResponse(recommendations);
+    public String runEngine() {
+        try {
+            RecommendationEngineQueries engineData = new RecommendationEngineQueries();
+            Map<String, List<Map<String, Object>>> dataFrames = engineData.getAllData();
+
+            List<Map<String, Object>> recommendations = processDataFrames(dataFrames);
+            ConversionToJson toJson = new ConversionToJson();
+            return toJson.codeEngineResponse(recommendations);
+        } catch (JsonProcessingException | NullPointerException e) {
+            logger.severe("Error in Recommendation Engine: " + e.getMessage());
+            return "Error in Recommendation Engine.";
+        }
     }
 
     private List<Map<String, Object>> processDataFrames(Map<String, List<Map<String, Object>>> dataFrames) {
@@ -30,7 +37,6 @@ public class RecommendationEngine {
         List<Map<String, Object>> lastRollout = dataFrames.get("last_rollout");
         List<Map<String, Object>> dayOfWeekVotes = dataFrames.get("day_of_week_votes");
 
-        // Convert decimal values to double
         convertDecimalToDouble(weeklyRatings, "avg_weekly_rating");
         convertDecimalToDouble(monthlyRatings, "avg_monthly_rating");
         convertDecimalToDouble(overallRatings, "avg_overall_rating");
@@ -40,14 +46,11 @@ public class RecommendationEngine {
         lastRollout.forEach(row -> row.put("last_rollout_date", ((Date) row.get("last_rollout_date")).toLocalDate()));
         convertDecimalToDouble(dayOfWeekVotes, "total_day_votes");
 
-        // Get current day of week
         int currentDayOfWeek = LocalDate.now().getDayOfWeek().getValue();
 
-        // Calculate days since last rollout
         lastRollout.forEach(row -> row.put("days_since_last_rollout",
                 ChronoUnit.DAYS.between((LocalDate) row.get("last_rollout_date"), LocalDate.now())));
 
-        // Normalize days since last rollout
         double maxDaysSinceLastRollout = lastRollout.stream()
                 .mapToDouble(row -> (Long) row.get("days_since_last_rollout"))
                 .max()
@@ -56,7 +59,6 @@ public class RecommendationEngine {
         lastRollout.forEach(row -> row.put("norm_days_since_last_rollout",
                 (double) (Long) row.get("days_since_last_rollout") / maxDaysSinceLastRollout));
 
-        // Filter day of week ratings and votes for the current day
         List<Map<String, Object>> currentDayRatings = dayOfWeekRatings.stream()
                 .filter(row -> (Integer) row.get("day_of_week") == currentDayOfWeek)
                 .collect(Collectors.toList());
@@ -65,19 +67,16 @@ public class RecommendationEngine {
                 .filter(row -> (Integer) row.get("day_of_week") == currentDayOfWeek)
                 .collect(Collectors.toList());
 
-        // Merge all data into a single list of maps
         Map<String, Map<String, Object>> data = mergeData(
                 Arrays.asList(weeklyRatings, monthlyRatings, overallRatings, votes, prices, currentDayRatings, currentDayVotes, lastRollout)
         );
 
-        // Fill NaN values with 0 for day-specific ratings and votes, and normalized days since last rollout
         data.values().forEach(row -> {
             row.putIfAbsent("avg_rating", 0.0);
             row.putIfAbsent("total_day_votes", 0.0);
             row.putIfAbsent("norm_days_since_last_rollout", 0.0);
         });
 
-        // Normalize ratings and votes
         normalizeValues(data, "avg_weekly_rating");
         normalizeValues(data, "avg_monthly_rating");
         normalizeValues(data, "avg_overall_rating");
@@ -85,31 +84,24 @@ public class RecommendationEngine {
         normalizeValues(data, "avg_rating");
         normalizeValues(data, "total_day_votes");
 
-        // Determine the part of the month
         int currentDayOfMonth = LocalDate.now().getDayOfMonth();
         String partOfMonth = getPartOfMonth(currentDayOfMonth);
 
-        // Calculate price categories
         List<Double> priceList = prices.stream().map(row -> (Double) row.get("price")).sorted().collect(Collectors.toList());
         double lowPrice = priceList.get((int) (priceList.size() * 0.33));
         double highPrice = priceList.get((int) (priceList.size() * 0.66));
 
-        // Add a column for price category
         data.values().forEach(row -> row.put("price_category", categorizePrice((Double) row.get("price"), lowPrice, highPrice)));
 
-        // Calculate the initial composite score
         data.values().forEach(row -> row.put("composite_score", calculateCompositeScore(row)));
 
-        // Adjust composite score based on the part of the month
         data.values().forEach(row -> row.put("composite_score", adjustCompositeScore(row, partOfMonth)));
 
-        // Sort by category and composite score
         List<Map<String, Object>> recommendations = data.values().stream()
                 .sorted(Comparator.comparing((Map<String, Object> row) -> (String) row.get("category"))
                         .thenComparing(row -> -(Double) row.get("composite_score")))
                 .collect(Collectors.toList());
 
-        // Select top items for each category
         return selectTopItems(recommendations, "BREAKFAST", 3, "LUNCH", 4, "SNACK", 4, "DINNER", 4);
     }
 
@@ -132,7 +124,7 @@ public class RecommendationEngine {
 
     private void normalizeValues(Map<String, Map<String, Object>> data, String key) {
         double maxValue = data.values().stream()
-                .filter(row -> row.get(key) != null) // Filter out rows with null values for the key
+                .filter(row -> row.get(key) != null)
                 .mapToDouble(row -> (Double) row.get(key))
                 .max()
                 .orElse(1);

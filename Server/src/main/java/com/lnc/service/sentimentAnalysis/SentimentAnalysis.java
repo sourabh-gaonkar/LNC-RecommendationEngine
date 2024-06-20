@@ -1,24 +1,21 @@
 package com.lnc.service.sentimentAnalysis;
 
 import com.lnc.DB.FeedbackQueries;
-import com.lnc.DB.ReviewQueries;
-import com.lnc.model.Review;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import libsvm.svm_model;
 
 public class SentimentAnalysis {
     private final FeedbackQueries feedbackQueries = new FeedbackQueries();
     private final TextCleaner textCleaner = new TextCleaner();
     private final LabelMapper labelMapper = new LabelMapper();
-    private final DataCleaner dataCleaner = new DataCleaner();
+    private final NullDataCleaner nullDataCleaner = new NullDataCleaner();
 
-    public SentimentAnalysis() throws SQLException {
+    public SentimentAnalysis() {
     }
 
-    public List<Map<String, Object>> getSentimentAnalysis(List<Map<String, Object>> menu) throws Exception {
+    public List<Map<String, Object>> getSentimentAnalysis(List<Map<String, Object>> menu) {
         List<Map<String, Object>> updatedMenu = new ArrayList<>();
 
         for (Map<String, Object> item : menu) {
@@ -43,7 +40,7 @@ public class SentimentAnalysis {
             }
 
             List<String[]> modifiedData = labelMapper.mapLabels(cleanedReviewList);
-            List<String[]> validData = dataCleaner.cleanData(modifiedData, 1, 0);
+            List<String[]> validData = nullDataCleaner.cleanData(modifiedData, 1, 0);
 
             BagOfWords bow = new BagOfWords();
             bow.processWords(validData);

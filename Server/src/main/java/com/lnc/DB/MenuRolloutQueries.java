@@ -2,7 +2,6 @@ package com.lnc.DB;
 
 import com.lnc.connection.JDBCConnection;
 import com.lnc.model.DailyMenu;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,15 +10,21 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class MenuRolloutQueries {
-    private final Connection connection;
-    private final Menu menuQueries = new Menu();
+    Logger logger = Logger.getLogger(MenuRolloutQueries.class.getName());
+    private Connection connection;
+    private final MenuQueries menuQueries = new MenuQueries();
     private final FeedbackQueries feedbackQueries = new FeedbackQueries();
 
-    public MenuRolloutQueries() throws SQLException {
-        JDBCConnection dbInstance = JDBCConnection.getInstance();
-        connection = dbInstance.getConnection();
+    public MenuRolloutQueries() {
+        try{
+            JDBCConnection dbInstance = JDBCConnection.getInstance();
+            connection = dbInstance.getConnection();
+        } catch (SQLException ex) {
+            logger.severe("Failed to connect to database.\n" + ex.getMessage());
+        }
     }
 
     public boolean rolloutMenu(DailyMenu dailyMenu) {
@@ -64,7 +69,7 @@ public class MenuRolloutQueries {
 
             isRolledOut = isBFAdded && isLunchAdded && isSnackAdded && isDinnerAdded;
         } catch (SQLException ex) {
-            System.out.println("\nFailed to roll out menu.\n" + ex.getMessage());
+            logger.severe("Failed to roll out menu.\n" + ex.getMessage());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -104,7 +109,7 @@ public class MenuRolloutQueries {
                 todaysMenu.add(item);
             }
         } catch (SQLException ex) {
-            System.out.println("\nFailed to get today's menu.\n" + ex.getMessage());
+            logger.severe("Failed to get today's menu.\n" + ex.getMessage());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -133,7 +138,7 @@ public class MenuRolloutQueries {
                 tomorrowsMenu.add(item);
             }
         } catch (SQLException ex) {
-            System.out.println("\nFailed to get tomorrow's menu.\n" + ex.getMessage());
+            logger.severe("Failed to get tomorrow's menu.\n" + ex.getMessage());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -141,7 +146,7 @@ public class MenuRolloutQueries {
         return tomorrowsMenu;
     }
 
-    public boolean voteForItem(String itemName) throws Exception {
+    public boolean voteForItem(String itemName) {
         boolean isVoted = false;
         LocalDate currentDate = LocalDate.now();
 
@@ -153,7 +158,7 @@ public class MenuRolloutQueries {
             voteForItemStmt.setString(2, currentDate.toString());
             isVoted = voteForItemStmt.executeUpdate() > 0;
         } catch (SQLException ex) {
-            throw new Exception("Failed to vote for item.\n" + ex.getMessage());
+            logger.severe("Failed to vote for item.\n" + ex.getMessage());
         }
 
         return isVoted;

@@ -1,22 +1,27 @@
 package com.lnc.DB;
 
+import com.lnc.connection.JDBCConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.lnc.connection.JDBCConnection;
+import java.util.logging.Logger;
 
 public class RecommendationEngineQueries {
-    private final Connection connection;
+    Logger logger = Logger.getLogger(RecommendationEngineQueries.class.getName());
+    private Connection connection;
 
-    public RecommendationEngineQueries() throws SQLException {
-        JDBCConnection dbInstance = JDBCConnection.getInstance();
-        this.connection = dbInstance.getConnection();
+    public RecommendationEngineQueries() {
+        try{
+            JDBCConnection dbInstance = JDBCConnection.getInstance();
+            this.connection = dbInstance.getConnection();
+        } catch (SQLException e) {
+            logger.severe("Error connecting to database: " + e.getMessage());
+        }
     }
 
-    public Map<String, List<Map<String, Object>>> getAllData() throws SQLException {
+    public Map<String, List<Map<String, Object>>> getAllData() {
         Map<String, String> queries = getQueries();
         Map<String, List<Map<String, Object>>> dataFrames = new HashMap<>();
 
@@ -27,23 +32,28 @@ public class RecommendationEngineQueries {
         return dataFrames;
     }
 
-    public List<Map<String, Object>> getData(String query) throws SQLException {
-        List<Map<String, Object>> result = new ArrayList<>();
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+    public List<Map<String, Object>> getData(String query) {
+        try{
+            List<Map<String, Object>> result = new ArrayList<>();
+            try (Statement stmt = connection.createStatement();
+                 ResultSet rs = stmt.executeQuery(query)) {
 
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnCount = rsmd.getColumnCount();
+                ResultSetMetaData rsmd = rs.getMetaData();
+                int columnCount = rsmd.getColumnCount();
 
-            while (rs.next()) {
-                Map<String, Object> row = new HashMap<>();
-                for (int i = 1; i <= columnCount; i++) {
-                    row.put(rsmd.getColumnName(i), rs.getObject(i));
+                while (rs.next()) {
+                    Map<String, Object> row = new HashMap<>();
+                    for (int i = 1; i <= columnCount; i++) {
+                        row.put(rsmd.getColumnName(i), rs.getObject(i));
+                    }
+                    result.add(row);
                 }
-                result.add(row);
             }
+            return result;
+        } catch (SQLException e) {
+            logger.severe("Error fetching data: " + e.getMessage());
         }
-        return result;
+        return null;
     }
 
     private Map<String, String> getQueries() {

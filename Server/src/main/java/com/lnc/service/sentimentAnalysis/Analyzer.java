@@ -1,7 +1,5 @@
 package com.lnc.service.sentimentAnalysis;
 
-import java.util.*;
-
 public class Analyzer {
     private final BagOfWords bagOfWords;
 
@@ -22,8 +20,8 @@ public class Analyzer {
                 negateNext = true;
             } else {
                 if (negateNext) {
-                    word = "NOT_" + word; // Add NOT_ prefix if negation is active
-                    negateNext = false; // Reset negation flag
+                    word = "NOT_" + word;
+                    negateNext = false;
                 }
 
                 positiveScore += bagOfWords.getPositiveWords().getOrDefault(word, bagOfWords.getSmoothingFactor());
@@ -31,12 +29,6 @@ public class Analyzer {
                 negativeScore += bagOfWords.getNegativeWords().getOrDefault(word, bagOfWords.getSmoothingFactor());
             }
         }
-
-        // Debug information
-        System.out.println("Processed string: " + cleanedString);
-        System.out.println("Positive score: " + positiveScore);
-        System.out.println("Neutral score: " + neutralScore);
-        System.out.println("Negative score: " + negativeScore);
 
         if (positiveScore > neutralScore && positiveScore > negativeScore) {
             return "Positive";
@@ -47,26 +39,6 @@ public class Analyzer {
         } else {
             return "Neutral";  // Default to neutral if there's a tie
         }
-    }
-
-    private String handleNegations(String text) {
-        String[] negationWords = {"not", "never", "no"};
-        String[] words = text.split("\\s+");
-        StringBuilder modifiedText = new StringBuilder();
-
-        boolean negate = false;
-        for (String word : words) {
-            if (Arrays.asList(negationWords).contains(word)) {
-                negate = true;
-                modifiedText.append(word).append(" ");
-            } else if (negate) {
-                modifiedText.append("NOT_").append(word).append(" ");
-                negate = false; // Negate only the word following the negation
-            } else {
-                modifiedText.append(word).append(" ");
-            }
-        }
-        return modifiedText.toString().trim();
     }
 }
 

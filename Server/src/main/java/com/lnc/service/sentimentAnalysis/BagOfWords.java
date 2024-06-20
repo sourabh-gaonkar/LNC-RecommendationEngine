@@ -2,8 +2,10 @@ package com.lnc.service.sentimentAnalysis;
 
 import java.io.*;
 import java.util.*;
+import java.util.logging.Logger;
 
 public class BagOfWords {
+    private final Logger logger = Logger.getLogger(BagOfWords.class.getName());
     private Map<String, Integer> positiveWords;
     private Map<String, Integer> neutralWords;
     private Map<String, Integer> negativeWords;
@@ -33,7 +35,7 @@ public class BagOfWords {
             boolean firstLine = true;
             while ((line = br.readLine()) != null) {
                 if (firstLine) {
-                    firstLine = false; // Skip the header row
+                    firstLine = false;
                     continue;
                 }
                 String[] parts = line.split(",");
@@ -42,7 +44,7 @@ public class BagOfWords {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.severe("Error reading CSV file: " + e.getMessage());
         }
     }
 
@@ -55,7 +57,7 @@ public class BagOfWords {
                 bw.newLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.severe("Error writing to CSV file: " + e.getMessage());
         }
     }
 
@@ -87,29 +89,6 @@ public class BagOfWords {
         updateCSV(NEGATIVE_CSV, negativeWords);
     }
 
-    public void updateWords(String cleanedString, int label) {
-        String[] words = cleanedString.split("\\s+");
-        boolean negate = false;
-        for (String word : words) {
-            if (negationWords.contains(word.toLowerCase())) {
-                negate = true;
-            } else {
-                String processedWord = negate ? "NOT_" + word : word;
-                negate = false; // Reset negate after using it
-                if (label == 2) {
-                    positiveWords.put(processedWord, positiveWords.getOrDefault(processedWord, 0) + 1);
-                } else if (label == 1) {
-                    neutralWords.put(processedWord, neutralWords.getOrDefault(processedWord, 0) + 1);
-                } else if (label == 0) {
-                    negativeWords.put(processedWord, negativeWords.getOrDefault(processedWord, 0) + 1);
-                }
-            }
-        }
-        updateCSV(POSITIVE_CSV, positiveWords);
-        updateCSV(NEUTRAL_CSV, neutralWords);
-        updateCSV(NEGATIVE_CSV, negativeWords);
-    }
-
     public Map<String, Integer> getPositiveWords() {
         return positiveWords;
     }
@@ -120,23 +99,6 @@ public class BagOfWords {
 
     public Map<String, Integer> getNegativeWords() {
         return negativeWords;
-    }
-
-    public void printBagOfWords() {
-        System.out.println("Positive Words:");
-        printMap(positiveWords);
-
-        System.out.println("\nNeutral Words:");
-        printMap(neutralWords);
-
-        System.out.println("\nNegative Words:");
-        printMap(negativeWords);
-    }
-
-    private void printMap(Map<String, Integer> map) {
-        for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
-        }
     }
 
     public int getSmoothingFactor() {

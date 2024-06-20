@@ -33,7 +33,7 @@ public class AdminController {
         }
     }
 
-    private void processOption(int choice) throws Exception {
+  private void processOption(int choice) throws Exception {
         switch (choice) {
             case 1:
                 MenuItemAddition menuItemAddition = new MenuItemAddition();
