@@ -3,7 +3,6 @@ package com.lnc.service.recommendationEngine;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lnc.DB.RecommendationEngineQueries;
 import com.lnc.utils.ConversionToJson;
-import java.sql.*;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
