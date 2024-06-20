@@ -99,7 +99,7 @@ public class Route {
 
             case "/chef/getRecommendation":
                 RecommendationEngine recommendationEngine = new RecommendationEngine();
-                response = recommendationEngine.runEngine();
+                response = recommendationEngine.runEngine(data);
                 break;
 
             case "/chef/rolloutMenu":

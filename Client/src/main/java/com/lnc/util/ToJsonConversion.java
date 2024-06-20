@@ -95,4 +95,14 @@ public class ToJsonConversion {
         String apiPath = "/employee/vote";
         return apiPath+ "&" + jsonData;
     }
+
+    public String codeItemsCount(int itemCount) throws JsonProcessingException {
+        Map<String, Integer> itemNameMap = new HashMap<>();
+        itemNameMap.put("itemCount", itemCount);
+        String jsonData = objectMapper.writeValueAsString(itemNameMap);
+
+        String apiPath = "/chef/getRecommendation";
+
+        return apiPath+ "&" + jsonData;
+    }
 }

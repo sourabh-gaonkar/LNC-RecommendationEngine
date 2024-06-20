@@ -7,7 +7,7 @@ import java.util.*;
 
 public class DataProcessor {
 
-    public List<Map<String, Object>> processDataFrames(Map<String, List<Map<String, Object>>> dataFrames) {
+    public List<Map<String, Object>> processDataFrames(Map<String, List<Map<String, Object>>> dataFrames, int itemCount) {
         List<Map<String, Object>> weeklyRatings = dataFrames.get("weekly_ratings");
         List<Map<String, Object>> monthlyRatings = dataFrames.get("monthly_ratings");
         List<Map<String, Object>> overallRatings = dataFrames.get("overall_ratings");
@@ -113,7 +113,7 @@ public class DataProcessor {
             }
         });
 
-        return Utils.selectTopItems(recommendations, "BREAKFAST", 3, "LUNCH", 4, "SNACK", 4, "DINNER", 4);
+        return Utils.selectTopItems(recommendations, "BREAKFAST", itemCount, "LUNCH", itemCount, "SNACK", itemCount, "DINNER", itemCount);
     }
 
     private Map<String, Map<String, Object>> mergeData(List<List<Map<String, Object>>> dataFrames) {
