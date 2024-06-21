@@ -2,6 +2,7 @@ package com.lnc.DB;
 
 import com.lnc.connection.JDBCConnection;
 import com.lnc.model.Notification;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

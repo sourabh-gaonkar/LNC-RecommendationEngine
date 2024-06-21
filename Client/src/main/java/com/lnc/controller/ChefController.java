@@ -1,12 +1,14 @@
 package com.lnc.controller;
 
-import static java.lang.Thread.sleep;
-
+import com.lnc.service.UserLogout;
 import com.lnc.service.chef.EngineRecommendation;
 import com.lnc.service.chef.FeedbackView;
 import com.lnc.service.chef.MenuRollout;
 import com.lnc.service.chef.ReportGenerator;
+import com.lnc.service.discardedItem.DiscardedItemProcessor;
 import com.lnc.util.InputHandler;
+
+import static java.lang.Thread.sleep;
 
 public class ChefController {
   private final String name;
@@ -27,7 +29,7 @@ public class ChefController {
       displayOptions();
       int choice = InputHandler.getInt("Enter your choice: ");
       processOption(choice);
-      if (choice == 5) {
+      if (choice == 6) {
         break;
       }
     }
@@ -52,8 +54,19 @@ public class ChefController {
         reportGenerator.generateReport();
         break;
       case 5:
-        System.out.println("Logging out...");
-        sleep(300);
+        DiscardedItemProcessor discardedItemProcessor = new DiscardedItemProcessor();
+        discardedItemProcessor.processDiscardedItems();
+        break;
+      case 6:
+        UserLogout userLogout = new UserLogout();
+        boolean isLoggedOut = userLogout.logout(employeeID);
+        if (isLoggedOut) {
+          System.out.println("Logging out...");
+          sleep(5);
+        } else {
+          choice = 0;
+          System.out.println("Error in logging out");
+        }
         break;
       default:
         System.out.println("Invalid choice");
@@ -67,6 +80,7 @@ public class ChefController {
     System.out.println("2. View Recommendation from Engine.");
     System.out.println("3. View Feedback");
     System.out.println("4. Generate Report");
-    System.out.println("5. Logout");
+    System.out.println("5. View Discard Items. (Available 1st of every month)");
+    System.out.println("6. Logout");
   }
 }

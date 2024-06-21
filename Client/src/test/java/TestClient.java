@@ -1,4 +1,5 @@
 import com.lnc.connection.ServerConnection;
+import com.lnc.util.ToJsonConversion;
 import org.junit.Test;
 
 public class TestClient {
@@ -10,8 +11,9 @@ public class TestClient {
 
         while(iterations > 0) {
             try {
-                String response = ServerConnection.requestServer(request);
-                System.out.println(response);
+                ToJsonConversion toJsonConversion = new ToJsonConversion();
+                String response = toJsonConversion.codeItemsCount(5);
+                System.out.println("Request: " + response);
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }

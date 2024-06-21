@@ -1,17 +1,19 @@
-import com.lnc.DB.MenuRolloutQueries;
-import java.util.List;
-import java.util.Map;
+import com.lnc.DB.DiscardMenuQueries;
+import com.lnc.service.discardItem.ItemDiscard;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 public class TestFeatures {
     @Test
     public void testVoting() {
 
         try{
-            MenuRolloutQueries menuRolloutQueries = new MenuRolloutQueries();
-            List<Map<String, Object>> todaysMenu = menuRolloutQueries.getTodaysMenu();
-            for (Map<String, Object> item : todaysMenu) {
-                System.out.println(item.get("average_rating"));
+            DiscardMenuQueries discardMenuQueries = new DiscardMenuQueries();
+            List<String> discardedItems = discardMenuQueries.getAllDiscardedItems();
+            for (String discardedItem : discardedItems) {
+                ItemDiscard itemDiscard = new ItemDiscard();
+                itemDiscard.getDiscardItemList();
             }
         } catch (Exception e) {
             e.printStackTrace();

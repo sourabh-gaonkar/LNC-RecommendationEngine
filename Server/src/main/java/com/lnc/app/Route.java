@@ -1,6 +1,7 @@
 package com.lnc.app;
 
 import com.lnc.service.Authentication;
+import com.lnc.service.LogoutUser;
 import com.lnc.service.NewNotification;
 import com.lnc.service.Registration;
 import com.lnc.service.admin.MenuItemAddition;
@@ -10,8 +11,11 @@ import com.lnc.service.admin.MenuItemUpdate;
 import com.lnc.service.chef.FeedbackDisplay;
 import com.lnc.service.chef.ReportGenerator;
 import com.lnc.service.chef.RolloutMenu;
+import com.lnc.service.discardItem.DiscardItemDeletion;
+import com.lnc.service.discardItem.ItemDiscard;
 import com.lnc.service.employee.*;
 import com.lnc.service.recommendationEngine.RecommendationEngine;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,6 +34,12 @@ public class Route {
                 response = auth.authenticate(data);
                 break;
 
+            case "/logout":
+                LogoutUser logoutUser = new LogoutUser();
+                response = logoutUser.logout(data);
+                break;
+
+
             case "/register":
                 Registration register = new Registration();
                 response = register.addUser(data);
@@ -38,6 +48,16 @@ public class Route {
             case "/getNotifications":
                 NewNotification newNotification = new NewNotification();
                 response = newNotification.getNewNotifications(data);
+                break;
+
+            case "/getDiscardItems":
+                ItemDiscard itemDiscard = new ItemDiscard();
+                response = itemDiscard.getDiscardItemList();
+                break;
+
+            case "/discardItem/deleteItem":
+                DiscardItemDeletion discardItemDeletion = new DiscardItemDeletion();
+                response = discardItemDeletion.deleteDiscardedItem(data);
                 break;
 
             case "/admin/addItem":
@@ -92,7 +112,7 @@ public class Route {
 
             case "/chef/getRecommendation":
                 RecommendationEngine recommendationEngine = new RecommendationEngine();
-                response = recommendationEngine.runEngine();
+                response = recommendationEngine.runEngine(data);
                 break;
 
             case "/chef/rolloutMenu":

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.lnc.model.Employee;
 import com.lnc.model.Notification;
+
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,6 @@ public class ConversionToJson {
     }
 
     public String codeEngineResponse(List<Map<String, Object>> recommendations) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         return objectMapper.writeValueAsString(recommendations);
     }
@@ -49,5 +49,9 @@ public class ConversionToJson {
 
     public String codeTodaysMenu(List<Map<String, Object>> todaysMenu) throws JsonProcessingException {
         return objectMapper.writeValueAsString(todaysMenu);
+    }
+
+    public String codeDiscardedItems(List<String> discardedItems) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(discardedItems);
     }
 }

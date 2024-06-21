@@ -6,6 +6,7 @@ import com.lnc.model.DailyMenu;
 import com.lnc.model.Employee;
 import com.lnc.model.Feedback;
 import com.lnc.model.MenuItem;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,13 +88,32 @@ public class ToJsonConversion {
         Map<String,String> employeeMap = new HashMap<>();
         employeeMap.put("employee_id", employeeID);
 
-
         return objectMapper.writeValueAsString(employeeMap);
     }
 
     public String codeVotedItems(Map<String, Object> employeeVotingData) throws JsonProcessingException {
         String jsonData = objectMapper.writeValueAsString(employeeVotingData);
         String apiPath = "/employee/vote";
+        return apiPath+ "&" + jsonData;
+    }
+
+    public String codeItemsCount(int itemCount) throws JsonProcessingException {
+        Map<String, Integer> itemNameMap = new HashMap<>();
+        itemNameMap.put("itemCount", itemCount);
+        String jsonData = objectMapper.writeValueAsString(itemNameMap);
+
+        String apiPath = "/chef/getRecommendation";
+
+        return apiPath+ "&" + jsonData;
+    }
+
+    public String codeDiscardItemName(String itemName) throws JsonProcessingException {
+        Map<String,String> itemNameMap = new HashMap<>();
+        itemNameMap.put("itemName", itemName);
+        String jsonData = objectMapper.writeValueAsString(itemNameMap);
+
+        String apiPath = "/discardItem/deleteItem";
+
         return apiPath+ "&" + jsonData;
     }
 }

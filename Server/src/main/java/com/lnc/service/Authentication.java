@@ -2,14 +2,17 @@ package com.lnc.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lnc.DB.UserDetailsQueries;
+import com.lnc.DB.UserLoginLogQueries;
 import com.lnc.model.Employee;
 import com.lnc.utils.ConversionFromJson;
 import com.lnc.utils.ConversionToJson;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Authentication {
     private final UserDetailsQueries userDetailsQueries = new UserDetailsQueries();
+    private final UserLoginLogQueries userLoginLogQueries = new UserLoginLogQueries();
     private final Logger logger = Logger.getLogger(Authentication.class.getName());
 
     public String authenticate(String jsonData) {
@@ -48,6 +51,11 @@ public class Authentication {
             return "Wrong username or password.";
         }
         else if (employee.getEmployeeID() != null) {
+            if(userLoginLogQueries.addLoginLog(employee.getEmployeeID())) {
+                logger.info("Login log added for employee: " + employee.getEmployeeID());
+            } else {
+                logger.warning("Failed to add login log for employee: " + employee.getEmployeeID());
+            }
             return convertEmployeeToJson(employee);
         } else {
             return "Wrong username or password.";

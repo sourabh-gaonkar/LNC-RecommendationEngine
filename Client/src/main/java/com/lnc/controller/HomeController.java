@@ -1,8 +1,8 @@
 package com.lnc.controller;
 
-import static java.lang.Thread.sleep;
-
 import com.lnc.util.InputHandler;
+
+import static java.lang.Thread.sleep;
 
 public class HomeController {
   RegistrationController registrationController = new RegistrationController();

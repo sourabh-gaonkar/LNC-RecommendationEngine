@@ -1,6 +1,7 @@
 package com.lnc.app;
 
 import com.lnc.connection.Server;
+
 import java.util.logging.Logger;
 
 public class Main {

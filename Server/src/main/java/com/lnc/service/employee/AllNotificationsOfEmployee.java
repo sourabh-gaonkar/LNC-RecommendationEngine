@@ -5,6 +5,7 @@ import com.lnc.DB.NotificationQueries;
 import com.lnc.model.Notification;
 import com.lnc.utils.ConversionFromJson;
 import com.lnc.utils.ConversionToJson;
+
 import java.util.List;
 import java.util.logging.Logger;
 

@@ -1,7 +1,7 @@
 package com.lnc.service.sentimentAnalysis;
 
 import com.lnc.DB.FeedbackQueries;
-import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
