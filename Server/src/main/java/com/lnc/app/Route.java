@@ -11,6 +11,7 @@ import com.lnc.service.admin.MenuItemUpdate;
 import com.lnc.service.chef.FeedbackDisplay;
 import com.lnc.service.chef.ReportGenerator;
 import com.lnc.service.chef.RolloutMenu;
+import com.lnc.service.discardItem.DiscardItemDeletion;
 import com.lnc.service.discardItem.ItemDiscard;
 import com.lnc.service.employee.*;
 import com.lnc.service.recommendationEngine.RecommendationEngine;
@@ -52,6 +53,11 @@ public class Route {
             case "/getDiscardItems":
                 ItemDiscard itemDiscard = new ItemDiscard();
                 response = itemDiscard.getDiscardItemList();
+                break;
+
+            case "/discardItem/deleteItem":
+                DiscardItemDeletion discardItemDeletion = new DiscardItemDeletion();
+                response = discardItemDeletion.deleteDiscardedItem(data);
                 break;
 
             case "/admin/addItem":

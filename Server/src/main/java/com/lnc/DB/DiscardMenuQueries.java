@@ -51,4 +51,21 @@ public class DiscardMenuQueries {
         }
         return discardedItems;
     }
+
+    public boolean removeFromDiscardMenu(String itemName) {
+        boolean isItemRemoved = false;
+        MenuQueries menuQueries = new MenuQueries();
+        int itemID = menuQueries.getItemID(itemName);
+
+        String query = "DELETE FROM discard_menu WHERE item_id = ?";
+
+        try (var removeDiscardItemStmt = connection.prepareStatement(query)) {
+            removeDiscardItemStmt.setInt(1, itemID);
+
+            isItemRemoved = removeDiscardItemStmt.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            logger.severe("Failed to remove item from discard menu.\n" + ex.getMessage());
+        }
+        return isItemRemoved;
+    }
 }
