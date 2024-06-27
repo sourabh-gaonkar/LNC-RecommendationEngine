@@ -8,6 +8,7 @@ import com.lnc.model.Feedback;
 import com.lnc.model.MenuItem;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ToJsonConversion {
@@ -37,16 +38,6 @@ public class ToJsonConversion {
         return apiPath+ "&" + jsonData;
     }
 
-    public String codeMenuItemName(String itemName) throws JsonProcessingException {
-        Map<String,String> items = new HashMap<>();
-        items.put("itemName", itemName);
-        String jsonData = objectMapper.writeValueAsString(items);
-
-        String apiPath = "/admin/deleteItem";
-
-        return apiPath+ "&" + jsonData;
-    }
-
     public String codeEmployeeFeedback(Feedback feedback) throws JsonProcessingException {
         String jsonData = objectMapper.writeValueAsString(feedback);
 
@@ -55,12 +46,10 @@ public class ToJsonConversion {
         return apiPath+ "&" + jsonData;
     }
 
-    public String codeItemName(String itemName) throws JsonProcessingException {
+    public String codeItemName(String itemName, String apiPath) throws JsonProcessingException {
         Map<String,String> itemNameMap = new HashMap<>();
         itemNameMap.put("itemName", itemName);
         String jsonData = objectMapper.writeValueAsString(itemNameMap);
-
-        String apiPath = "/chef/getFeedback";
 
         return apiPath+ "&" + jsonData;
     }
@@ -107,13 +96,25 @@ public class ToJsonConversion {
         return apiPath+ "&" + jsonData;
     }
 
-    public String codeDiscardItemName(String itemName) throws JsonProcessingException {
-        Map<String,String> itemNameMap = new HashMap<>();
-        itemNameMap.put("itemName", itemName);
-        String jsonData = objectMapper.writeValueAsString(itemNameMap);
+    public String codeQuestions(List<String> questions, String itemName) throws JsonProcessingException {
+        Map<String, Object> questionsMap = new HashMap<>();
+        questionsMap.put("questions", questions);
+        questionsMap.put("itemName", itemName);
 
-        String apiPath = "/discardItem/deleteItem";
+        String jsonData = objectMapper.writeValueAsString(questionsMap);
+        String apiPath = "/discardItem/addQuestions";
 
-        return apiPath+ "&" + jsonData;
+        return apiPath + "&" + jsonData;
+    }
+
+    public String codeAnswers(List<Map<Integer, String>> answers, String employeeId) throws JsonProcessingException {
+        Map<String, Object> answersMap = new HashMap<>();
+        answersMap.put("answers", answers);
+        answersMap.put("employeeId", employeeId);
+
+        String jsonData = objectMapper.writeValueAsString(answersMap);
+        String apiPath = "/discardItem/submitAnswers";
+
+        return apiPath + "&" + jsonData;
     }
 }

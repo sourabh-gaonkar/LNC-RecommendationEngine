@@ -17,7 +17,7 @@ public class FeedbackView {
       String menuItem = getMenuItem();
 
       ToJsonConversion toJson = new ToJsonConversion();
-      String request = toJson.codeItemName(menuItem);
+      String request = toJson.codeItemName(menuItem, "/chef/getFeedback");
 
       String response = ServerConnection.requestServer(request);
       JsonDataFormat jsonDataFormat = new JsonDataFormat();

@@ -8,6 +8,7 @@ import com.lnc.model.DailyMenu;
 import com.lnc.model.Feedback;
 import com.lnc.model.MenuItem;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class ConversionFromJson {
@@ -31,5 +32,13 @@ public class ConversionFromJson {
 
     public Map<String, Object> decodeVotedMenu(String jsonData) throws JsonProcessingException {
         return objectMapper.readValue(jsonData, new TypeReference<Map<String, Object>>(){});
+    }
+
+    public Map<String, Object> decodeQuestions(String jsonData) throws JsonProcessingException {
+        return objectMapper.readValue(jsonData, HashMap.class);
+    }
+
+    public HashMap decodeAnswers(String jsonData) throws JsonProcessingException {
+        return objectMapper.readValue(jsonData, HashMap.class);
     }
 }

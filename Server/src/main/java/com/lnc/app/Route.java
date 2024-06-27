@@ -12,8 +12,12 @@ import com.lnc.service.chef.FeedbackDisplay;
 import com.lnc.service.chef.ReportGenerator;
 import com.lnc.service.chef.RolloutMenu;
 import com.lnc.service.discardItem.DiscardItemDeletion;
+import com.lnc.service.discardItem.ImproviseQuestions;
 import com.lnc.service.discardItem.ItemDiscard;
 import com.lnc.service.employee.*;
+import com.lnc.service.employee.improviseItem.AnswerSubmission;
+import com.lnc.service.employee.improviseItem.ImproviseItemList;
+import com.lnc.service.employee.improviseItem.ImproviseItemQuestions;
 import com.lnc.service.recommendationEngine.RecommendationEngine;
 
 import java.util.logging.Level;
@@ -58,6 +62,26 @@ public class Route {
             case "/discardItem/deleteItem":
                 DiscardItemDeletion discardItemDeletion = new DiscardItemDeletion();
                 response = discardItemDeletion.deleteDiscardedItem(data);
+                break;
+
+            case "/discardItem/addQuestions":
+                ImproviseQuestions improviseQuestions = new ImproviseQuestions();
+                response = improviseQuestions.addQuestions(data);
+                break;
+
+            case "/discardItem/viewImproviseItem":
+                ImproviseItemList improviseItemList = new ImproviseItemList();
+                response = improviseItemList.getImproviseItemList();
+                break;
+
+            case "/discardItem/getQuestions":
+                ImproviseItemQuestions improviseQuestions1 = new ImproviseItemQuestions();
+                response = improviseQuestions1.getQuestions(data);
+                break;
+
+            case "/discardItem/submitAnswers":
+                AnswerSubmission answerSubmission = new AnswerSubmission();
+                response = answerSubmission.submitAnswer(data);
                 break;
 
             case "/admin/addItem":

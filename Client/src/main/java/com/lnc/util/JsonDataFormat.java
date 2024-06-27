@@ -125,4 +125,19 @@ public class JsonDataFormat {
         return discardedItems;
     }
 
+    public List<String> printImprovisedItems(String jsonData) throws JsonProcessingException {
+        List<String> improvisedItems = objectMapper.readValue(jsonData, new TypeReference<List<String>>() {});
+
+        System.out.println("\nDiscarded Items\n");
+        System.out.println("ID   Item Name");
+        System.out.println("-----------------");
+
+        int id = 1;
+        for (String itemName : improvisedItems) {
+            System.out.printf("%-4d %s%n", id, itemName);
+            id++;
+        }
+        return improvisedItems;
+    }
+
 }

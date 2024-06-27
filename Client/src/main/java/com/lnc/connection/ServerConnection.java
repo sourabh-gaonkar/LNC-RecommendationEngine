@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 public class ServerConnection {
   private static final Logger logger = Logger.getLogger(ServerConnection.class.getName());
-  private static final String SERVER_ADDRESS = "localhost";
+  private static final String SERVER_ADDRESS = "127.0.0.1";
   private static final int SERVER_PORT = 9999;
   private static BufferedReader in;
   private static PrintWriter out;
