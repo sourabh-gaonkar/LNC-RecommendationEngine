@@ -58,4 +58,8 @@ public class ConversionToJson {
     public String codeQuestions(List<Map<Integer, String>> questions) throws JsonProcessingException {
         return objectMapper.writeValueAsString(questions);
     }
+
+    public String codeQuestionAnswers(List<Map<String, List<String>>> questionAnswers) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(questionAnswers);
+    }
 }

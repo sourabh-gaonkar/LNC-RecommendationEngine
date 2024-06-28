@@ -140,4 +140,18 @@ public class JsonDataFormat {
         return improvisedItems;
     }
 
+    public void printImprovisedItemFeedbacks(String jsonData) throws JsonProcessingException {
+        List<Map<String, List<String>>> questionsAndAnswers = objectMapper.readValue(jsonData, new TypeReference<List<Map<String, List<String>>>>() {});
+
+        for (Map<String, List<String>> entry : questionsAndAnswers) {
+            for (Map.Entry<String, List<String>> qa : entry.entrySet()) {
+                System.out.println("\nQuestion: " + qa.getKey());
+                System.out.println("Answers:");
+                for (String answer : qa.getValue()) {
+                    System.out.println("    " + answer);
+                }
+            }
+        }
+    }
+
 }

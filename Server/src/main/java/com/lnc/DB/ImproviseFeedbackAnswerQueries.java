@@ -4,9 +4,13 @@ import com.lnc.connection.JDBCConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.HashMap;
 
 public class ImproviseFeedbackAnswerQueries {
     private final Logger logger = Logger.getLogger(DiscardMenuQueries.class.getName());
@@ -53,5 +57,46 @@ public class ImproviseFeedbackAnswerQueries {
             logger.severe("Failed to check if answer exists in the database.\n" + e.getMessage());
             return false;
         }
+    }
+
+    public List<Map<String, List<String>>> getAnswersWithQuestion(int itemId) {
+        List<Map<String, List<String>>> questionAnswers = new ArrayList<>();
+
+        String query = "SELECT q.question_text, a.answer_text " +
+                "FROM improvise_feedback_answer a " +
+                "JOIN improvise_feedback_question q ON a.question_id = q.question_id " +
+                "JOIN improvise_feedback_session s ON q.session_id = s.session_id " +
+                "WHERE s.item_id = ? " +
+                "ORDER BY a.answer_id DESC " +
+                "LIMIT 10";
+
+        try(PreparedStatement getQuestionAnswersStmt = connection.prepareStatement(query)){
+            getQuestionAnswersStmt.setInt(1, itemId);
+
+            try(ResultSet rs = getQuestionAnswersStmt.executeQuery()){
+                Map<String, List<String>> questionAnswersMap = new HashMap<>();
+
+                while(rs.next()){
+                    String question = rs.getString("question_text");
+                    String answer = rs.getString("answer_text");
+
+                    if (!questionAnswersMap.containsKey(question)) {
+                        questionAnswersMap.put(question, new ArrayList<>());
+                    }
+
+                    questionAnswersMap.get(question).add(answer);
+                }
+
+                for (Map.Entry<String, List<String>> entry : questionAnswersMap.entrySet()) {
+                    Map<String, List<String>> questionAnswer = new HashMap<>();
+                    questionAnswer.put(entry.getKey(), entry.getValue());
+                    questionAnswers.add(questionAnswer);
+                }
+            }
+        } catch (SQLException e) {
+            logger.severe("Failed to get answers from the database.\n" + e.getMessage());
+        }
+
+        return questionAnswers;
     }
 }

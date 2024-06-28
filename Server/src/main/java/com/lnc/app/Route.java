@@ -12,6 +12,7 @@ import com.lnc.service.chef.FeedbackDisplay;
 import com.lnc.service.chef.ReportGenerator;
 import com.lnc.service.chef.RolloutMenu;
 import com.lnc.service.discardItem.DiscardItemDeletion;
+import com.lnc.service.discardItem.ImproviseItemFeedbackFetcher;
 import com.lnc.service.discardItem.ImproviseQuestions;
 import com.lnc.service.discardItem.ItemDiscard;
 import com.lnc.service.employee.*;
@@ -82,6 +83,11 @@ public class Route {
             case "/discardItem/submitAnswers":
                 AnswerSubmission answerSubmission = new AnswerSubmission();
                 response = answerSubmission.submitAnswer(data);
+                break;
+
+            case "/discardItem/getFeedback":
+                ImproviseItemFeedbackFetcher improviseItemFeedbackFetcher = new ImproviseItemFeedbackFetcher();
+                response = improviseItemFeedbackFetcher.fetchFeedbacks(data);
                 break;
 
             case "/admin/addItem":

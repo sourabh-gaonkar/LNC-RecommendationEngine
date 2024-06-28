@@ -1,19 +1,24 @@
-package com.lnc.service.employee.improviseItem;
+package com.lnc.service.discardedItem;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lnc.connection.ServerConnection;
+import com.lnc.service.employee.improviseItem.ImproviseFeedback;
+import com.lnc.util.FromJsonConversion;
 import com.lnc.util.InputHandler;
 import com.lnc.util.JsonDataFormat;
+import com.lnc.util.ToJsonConversion;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
-public class ImproviseItem {
-    private final Logger logger = Logger.getLogger(ImproviseItem.class.getName());
+public class ImproviseItemFeedbackDisplay {
+    private final Logger logger = Logger.getLogger(ImproviseFeedback.class.getName());
+    private final ToJsonConversion toJsonConversion = new ToJsonConversion();
     private final JsonDataFormat jsonDataFormat = new JsonDataFormat();
 
-    public void giveFeedbackToImproviseItem(String employeeId){
+    public void displayFeedback() {
         try{
             List<String> improviseItemList = getImproviseItemList();
             if(improviseItemList == null || improviseItemList.isEmpty()){
@@ -23,9 +28,17 @@ public class ImproviseItem {
 
             System.out.println("\nSelect item to give Feedback.");
             int itemChoice = getValidChoice(improviseItemList.size());
-
             String improviseItem = improviseItemList.get(itemChoice - 1);
-            new ImproviseFeedback().giveImprovisationFeedback(improviseItem, employeeId);
+
+            String request = toJsonConversion.codeItemName(improviseItem, "/discardItem/getFeedback");
+            String response = ServerConnection.requestServer(request);
+
+            System.out.println("\n---------------------------------------------------");
+            System.out.println("Feedback for " + improviseItem + " is:\n");
+            jsonDataFormat.printImprovisedItemFeedbacks(response);
+            System.out.println("---------------------------------------------------");
+
+
         } catch (JsonProcessingException ex){
             logger.severe("Failed to get improvise items.\n" + ex.getMessage());
         } catch (IOException e) {
