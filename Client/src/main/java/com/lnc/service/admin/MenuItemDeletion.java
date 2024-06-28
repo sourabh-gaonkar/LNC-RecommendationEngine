@@ -14,7 +14,7 @@ public class MenuItemDeletion {
       String itemName = InputHandler.getString("\nEnter item name: ");
 
       ToJsonConversion jsonCoder = new ToJsonConversion();
-      String request = jsonCoder.codeMenuItemName(itemName);
+      String request = jsonCoder.codeItemName(itemName, "/admin/deleteItem");
 
       String response = ServerConnection.requestServer(request);
       System.out.println("Response: " + response);

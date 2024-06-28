@@ -2,10 +2,8 @@ package com.lnc.controller;
 
 import com.lnc.service.NotificationService;
 import com.lnc.service.UserLogout;
-import com.lnc.service.employee.AllNotificationsOfEmployee;
-import com.lnc.service.employee.EmployeeFeedback;
-import com.lnc.service.employee.TodaysMenu;
-import com.lnc.service.employee.TomorrowsMenuVoting;
+import com.lnc.service.employee.*;
+import com.lnc.service.employee.improviseItem.ImproviseItem;
 import com.lnc.util.InputHandler;
 
 import java.time.LocalTime;
@@ -43,7 +41,7 @@ public class EmployeeController {
             displayOptions();
             int choice = InputHandler.getInt("Enter your choice: ");
             processOption(choice);
-            if (choice == 5) {
+            if (choice == 6) {
                 break;
             }
         }
@@ -73,6 +71,10 @@ public class EmployeeController {
                 allNotificationsOfEmployee.getAllNotifications(employeeID);
                 break;
             case 5:
+                ImproviseItem improviseItem = new ImproviseItem();
+                improviseItem.giveFeedbackToImproviseItem(employeeID);
+                break;
+            case 6:
                 UserLogout userLogout = new UserLogout();
                 boolean isLoggedOut = userLogout.logout(employeeID);
                 if (isLoggedOut) {
@@ -95,6 +97,7 @@ public class EmployeeController {
         System.out.println("2. Select tomorrow's menu. (Voting time: 10:00 AM to 5:30 PM)");
         System.out.println("3. Give Feedback.");
         System.out.println("4. View Notifications.");
-        System.out.println("5. Logout");
+        System.out.println("5. Give Feedback on Improvise Item.");
+        System.out.println("6. Logout");
     }
 }

@@ -3,6 +3,7 @@ package com.lnc.DB;
 import com.lnc.connection.JDBCConnection;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +60,7 @@ public class DiscardMenuQueries {
 
         String query = "DELETE FROM discard_menu WHERE item_id = ?";
 
-        try (var removeDiscardItemStmt = connection.prepareStatement(query)) {
+        try (PreparedStatement removeDiscardItemStmt = connection.prepareStatement(query)) {
             removeDiscardItemStmt.setInt(1, itemID);
 
             isItemRemoved = removeDiscardItemStmt.executeUpdate() > 0;

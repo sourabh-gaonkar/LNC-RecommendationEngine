@@ -125,4 +125,33 @@ public class JsonDataFormat {
         return discardedItems;
     }
 
+    public List<String> printImprovisedItems(String jsonData) throws JsonProcessingException {
+        List<String> improvisedItems = objectMapper.readValue(jsonData, new TypeReference<List<String>>() {});
+
+        System.out.println("\nDiscarded Items\n");
+        System.out.println("ID   Item Name");
+        System.out.println("-----------------");
+
+        int id = 1;
+        for (String itemName : improvisedItems) {
+            System.out.printf("%-4d %s%n", id, itemName);
+            id++;
+        }
+        return improvisedItems;
+    }
+
+    public void printImprovisedItemFeedbacks(String jsonData) throws JsonProcessingException {
+        List<Map<String, List<String>>> questionsAndAnswers = objectMapper.readValue(jsonData, new TypeReference<List<Map<String, List<String>>>>() {});
+
+        for (Map<String, List<String>> entry : questionsAndAnswers) {
+            for (Map.Entry<String, List<String>> qa : entry.entrySet()) {
+                System.out.println("\nQuestion: " + qa.getKey());
+                System.out.println("Answers:");
+                for (String answer : qa.getValue()) {
+                    System.out.println("    " + answer);
+                }
+            }
+        }
+    }
+
 }

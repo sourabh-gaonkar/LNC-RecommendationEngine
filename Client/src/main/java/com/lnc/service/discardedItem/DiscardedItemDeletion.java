@@ -12,7 +12,7 @@ public class DiscardedItemDeletion {
     private final ToJsonConversion toJsonConversion = new ToJsonConversion();
     public void deleteDiscardedItem(String discardedItem) {
         try{
-            String request = toJsonConversion.codeDiscardItemName(discardedItem);
+            String request = toJsonConversion.codeItemName(discardedItem, "/discardItem/deleteItem");
 
             String response = ServerConnection.requestServer(request);
             System.out.println(response);

@@ -28,7 +28,7 @@ public class ItemDiscard {
             }
 
             List<String> discardedItems = discardMenuQueries.getAllDiscardedItems();
-            return toJsonConverter.codeDiscardedItems(discardedItems);
+            return toJsonConverter.codeItemList(discardedItems);
         } catch (JsonProcessingException | NullPointerException e) {
             logger.severe("Failed to convert discarded items to JSON: " + e.getMessage());
             return "Error converting discarded items to JSON.";

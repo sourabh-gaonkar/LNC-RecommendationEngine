@@ -51,7 +51,15 @@ public class ConversionToJson {
         return objectMapper.writeValueAsString(todaysMenu);
     }
 
-    public String codeDiscardedItems(List<String> discardedItems) throws JsonProcessingException {
-        return objectMapper.writeValueAsString(discardedItems);
+    public String codeItemList(List<String> itemList) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(itemList);
+    }
+
+    public String codeQuestions(List<Map<Integer, String>> questions) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(questions);
+    }
+
+    public String codeQuestionAnswers(List<Map<String, List<String>>> questionAnswers) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(questionAnswers);
     }
 }
