@@ -2,10 +2,7 @@ package com.lnc.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lnc.model.DailyMenu;
-import com.lnc.model.Employee;
-import com.lnc.model.Feedback;
-import com.lnc.model.MenuItem;
+import com.lnc.model.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +25,12 @@ public class ToJsonConversion {
         String jsonData = objectMapper.writeValueAsString(employee);
 
         String apiPath = "/register";
+
+        return apiPath+ "&" + jsonData;
+    }
+
+    public String codeUserPreference(EmployeeProfile employeeProfile, String apiPath) throws JsonProcessingException {
+        String jsonData = objectMapper.writeValueAsString(employeeProfile);
 
         return apiPath+ "&" + jsonData;
     }

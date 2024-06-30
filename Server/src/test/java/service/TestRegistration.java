@@ -1,6 +1,6 @@
 package service;
 
-import com.lnc.service.Registration;
+import com.lnc.service.registration.Registration;
 import org.junit.jupiter.api.Test;
 
 public class TestRegistration {

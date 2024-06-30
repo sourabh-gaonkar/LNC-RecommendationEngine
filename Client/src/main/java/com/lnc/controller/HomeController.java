@@ -1,11 +1,12 @@
 package com.lnc.controller;
 
+import com.lnc.service.regiteration.Registration;
 import com.lnc.util.InputHandler;
 
 import static java.lang.Thread.sleep;
 
 public class HomeController {
-  RegistrationController registrationController = new RegistrationController();
+  Registration register = new Registration();
   LoginController loginController = new LoginController();
 
   public void runHomePage() throws Exception {
@@ -27,7 +28,7 @@ public class HomeController {
         runHomePage();
         break;
       case 2:
-        registrationController.registerUser();
+        register.registerUser();
         runHomePage();
         break;
       case 3:

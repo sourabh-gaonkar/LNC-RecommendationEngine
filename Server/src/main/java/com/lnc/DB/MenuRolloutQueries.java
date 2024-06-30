@@ -93,7 +93,7 @@ public class MenuRolloutQueries {
                 )
                 SELECT item_name, price, category
                 FROM RankedItems
-                WHERE rn <= 2;
+                WHERE rn <= 3;
                 """;
 
         try(PreparedStatement getTodaysMenuStmt = connection.prepareStatement(query)) {

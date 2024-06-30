@@ -3,7 +3,8 @@ package com.lnc.app;
 import com.lnc.service.Authentication;
 import com.lnc.service.LogoutUser;
 import com.lnc.service.NewNotification;
-import com.lnc.service.Registration;
+import com.lnc.service.registration.EmployeeProfileCreator;
+import com.lnc.service.registration.Registration;
 import com.lnc.service.admin.MenuItemAddition;
 import com.lnc.service.admin.MenuItemDeletion;
 import com.lnc.service.admin.MenuItemDisplay;
@@ -48,6 +49,11 @@ public class Route {
             case "/register":
                 Registration register = new Registration();
                 response = register.addUser(data);
+                break;
+
+            case "/register/userPreference":
+                EmployeeProfileCreator employeeProfileCreator = new EmployeeProfileCreator();
+                response = employeeProfileCreator.createEmployeeProfile(data);
                 break;
 
             case "/getNotifications":
@@ -122,7 +128,7 @@ public class Route {
 
             case "/employee/todaysMenu":
                 TodaysMenu todaysMenu = new TodaysMenu();
-                response = todaysMenu.getTodaysMenu();
+                response = todaysMenu.getTodaysMenu(data);
                 break;
 
             case "/employee/tomorrowsMenu":
@@ -133,6 +139,11 @@ public class Route {
             case "/employee/vote":
                 MenuVote menuVote = new MenuVote();
                 response = menuVote.voteForMenu(data);
+                break;
+
+            case "/employee/editProfile":
+                EmployeeProfileEditor employeeProfileEditor = new EmployeeProfileEditor();
+                response = employeeProfileEditor.editEmployeeProfile(data);
                 break;
 
             case "/chef/getFeedback":

@@ -1,4 +1,4 @@
-package com.lnc.service;
+package com.lnc.service.registration;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lnc.DB.UserDetailsQueries;

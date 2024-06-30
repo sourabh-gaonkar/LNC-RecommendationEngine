@@ -8,4 +8,8 @@ public class Employee extends User {
   public void setEmployeeID(String employeeID) {
     setUserId(employeeID);
   }
+
+  public String getEmployeeID() {
+    return getUserId();
+  }
 }

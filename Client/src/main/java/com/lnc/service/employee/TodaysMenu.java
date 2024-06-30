@@ -2,11 +2,16 @@ package com.lnc.service.employee;
 
 import com.lnc.connection.ServerConnection;
 import com.lnc.util.JsonDataFormat;
+import com.lnc.util.ToJsonConversion;
 
 public class TodaysMenu {
-  public void viewTodaysMenu() throws Exception {
+  public void viewTodaysMenu(String employeeId) throws Exception {
     String apiPath = "/employee/todaysMenu";
-    String request = apiPath + "& ";
+
+    ToJsonConversion toJsonConversion = new ToJsonConversion();
+    String jsonData = toJsonConversion.codeEmployeeID(employeeId);
+
+    String request = apiPath + "&" + jsonData;
 
     String response = ServerConnection.requestServer(request);
 

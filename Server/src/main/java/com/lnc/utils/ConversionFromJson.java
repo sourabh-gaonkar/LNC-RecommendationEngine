@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lnc.model.DailyMenu;
+import com.lnc.model.EmployeeProfile;
 import com.lnc.model.Feedback;
 import com.lnc.model.MenuItem;
 
@@ -40,5 +41,9 @@ public class ConversionFromJson {
 
     public HashMap decodeAnswers(String jsonData) throws JsonProcessingException {
         return objectMapper.readValue(jsonData, HashMap.class);
+    }
+
+    public EmployeeProfile decodeEmployeeProfile(String jsonData) throws JsonProcessingException {
+        return objectMapper.readValue(jsonData, EmployeeProfile.class);
     }
 }
