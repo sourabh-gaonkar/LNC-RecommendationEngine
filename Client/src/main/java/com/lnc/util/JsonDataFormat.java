@@ -1,0 +1,157 @@
+package com.lnc.util;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lnc.model.MenuItemResponse;
+import com.lnc.model.Notification;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+public class JsonDataFormat {
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    public void prettyView(String jsonData) throws Exception {
+        List<MenuItemResponse> items;
+        try {
+            items = objectMapper.readValue(jsonData, new TypeReference<List<MenuItemResponse>>() {});
+        } catch (IOException ex) {
+            throw new Exception("Error formatting JSON data.\n" + ex.getMessage());
+        }
+
+        System.out.printf("%-30s %-10s %-15s %-10s%n", "Item Name", "Price", "Availability", "Category");
+        System.out.println("--------------------------------------------------------------------------");
+
+        for (MenuItemResponse item : items) {
+            System.out.printf("%-30s %-10.2f %-15s %-10s%n",
+                    item.getItemName(),
+                    item.getPrice(),
+                    item.isAvailable() ? "Yes" : "No",
+                    item.getCategory());
+        }
+    }
+
+    public void viewFormattedFeedbacks(String jsonData) throws JsonProcessingException {
+        Map<String, Object> dataMap = objectMapper.readValue(jsonData, Map.class);
+
+        Double weeklyRating = (Double) ((Map) dataMap.get("weeklyStat")).get("weekly_rating");
+        Double overallRating = (Double) ((Map) dataMap.get("overallStat")).get("overall_rating");
+        System.out.println("\nweekly_rating: " + weeklyRating + "\t\t\toverall_rating: " + overallRating + "\n");
+
+        List<Map<String, Object>> feedbackList = (List<Map<String, Object>>) dataMap.get("feedback");
+        System.out.printf("%-16s %-7s %-50s %s%n", "Employee Name", "Rating", "Comment", "Date");
+        System.out.println("----------------------------------------------------------------------------------------");
+
+        for (Map<String, Object> feedback : feedbackList) {
+            System.out.printf("%-16s %-7d %-50s %s%n", feedback.get("user_name"), feedback.get("rating"), feedback.get("comment"), feedback.get("feedback_date"));
+        }
+    }
+
+    public void printFormattedRecommendation(String jsonString) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Map<String, Object>> recommendations = objectMapper.readValue(jsonString, new TypeReference<List<Map<String, Object>>>() {});
+            List<String> order = Arrays.asList("BREAKFAST", "LUNCH", "SNACK", "DINNER");
+
+            System.out.printf("%-30s %-10s %-10s %-20s %-15s%n", "Item Name", "Category", "Price", "Average Rating", "Composite Score");
+            System.out.println("\n--------------------------------------------------------------------------------------------------------");
+
+            for (String category : order) {
+                for (Map<String, Object> row : recommendations) {
+                    if (category.equals(row.get("category"))) {
+                        System.out.printf("%-30s %-10s %-10.2f %-20.2f %-15s%n",
+                                row.get("item_name"), row.get("category"), row.get("price"), row.get("avg_overall_rating"), row.get("composite_score"));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred while printing recommendations: " + e.getMessage());
+        }
+    }
+
+    public void printAllNotifications(String jsonData) throws JsonProcessingException {
+        List<Notification> notifications = objectMapper.readValue(jsonData, new TypeReference<List<Notification>>() {});
+
+        System.out.println();
+        System.out.printf("%-10s %-50s %-20s%n", "Serial No", "Message", "Sent At");
+        System.out.println("---------------------------------------------------------------------------------");
+
+        for (int i = 0; i < notifications.size(); i++) {
+            Notification notification = notifications.get(i);
+            System.out.printf("%-10d %-50s %-20s%n", i + 1, notification.getMessage(), notification.getCreatedAt());
+        }
+    }
+
+    public List<String> printDaysMenu(String jsonData, String day) throws JsonProcessingException {
+        List<Map<String, Object>> items = objectMapper.readValue(jsonData, new TypeReference<List<Map<String, Object>>>() {});
+        List<String> printedItems = new ArrayList<>();
+
+        System.out.println("\n" + day + "'S MENU\n");
+
+        System.out.printf("%-5s %-35s %-10s %-20s %-15s %-15s%n", "No.", "Item Name", "Price", "Overall Sentiment", "Category", "Average Rating");
+        System.out.println("--------------------------------------------------------------------------------------------------------");
+
+        int index = 1;
+        for (Map<String, Object> item : items) {
+            String itemName = (String) item.get("item_name");
+            Double price = (Double) item.get("price");
+            String sentiment = (String) item.get("sentiment");
+            String category = (String) item.get("category");
+            Double averageRating = (Double) item.get("average_rating");
+
+            System.out.printf("%-5d %-35s %-10s %-20s %-15s %-15s%n", index, itemName, price, sentiment, category, averageRating);
+            printedItems.add(itemName);
+            index++;
+        }
+
+        return printedItems;
+    }
+
+    public List<String> printDiscardedItems(String jsonData) throws JsonProcessingException {
+        List<String> discardedItems = objectMapper.readValue(jsonData, new TypeReference<List<String>>() {});
+
+        System.out.println("\nDiscarded Items\n");
+        System.out.println("ID   Item Name");
+        System.out.println("-----------------");
+
+        int id = 1;
+        for (String itemName : discardedItems) {
+            System.out.printf("%-4d %s%n", id, itemName);
+            id++;
+        }
+        return discardedItems;
+    }
+
+    public List<String> printImprovisedItems(String jsonData) throws JsonProcessingException {
+        List<String> improvisedItems = objectMapper.readValue(jsonData, new TypeReference<List<String>>() {});
+
+        System.out.println("\nDiscarded Items\n");
+        System.out.println("ID   Item Name");
+        System.out.println("-----------------");
+
+        int id = 1;
+        for (String itemName : improvisedItems) {
+            System.out.printf("%-4d %s%n", id, itemName);
+            id++;
+        }
+        return improvisedItems;
+    }
+
+    public void printImprovisedItemFeedbacks(String jsonData) throws JsonProcessingException {
+        List<Map<String, List<String>>> questionsAndAnswers = objectMapper.readValue(jsonData, new TypeReference<List<Map<String, List<String>>>>() {});
+
+        for (Map<String, List<String>> entry : questionsAndAnswers) {
+            for (Map.Entry<String, List<String>> qa : entry.entrySet()) {
+                System.out.println("\nQuestion: " + qa.getKey());
+                System.out.println("Answers:");
+                for (String answer : qa.getValue()) {
+                    System.out.println("    " + answer);
+                }
+            }
+        }
+    }
+
+}
