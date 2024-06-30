@@ -41,6 +41,12 @@ public class ToJsonConversion {
         return apiPath+ "&" + jsonData;
     }
 
+    public String codeMenuItemProfile(MenuItemProfile itemProfile, String apiPath) throws JsonProcessingException {
+        String jsonData = objectMapper.writeValueAsString(itemProfile);
+
+        return apiPath+ "&" + jsonData;
+    }
+
     public String codeEmployeeFeedback(Feedback feedback) throws JsonProcessingException {
         String jsonData = objectMapper.writeValueAsString(feedback);
 

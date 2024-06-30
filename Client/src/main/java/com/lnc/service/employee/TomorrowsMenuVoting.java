@@ -14,9 +14,17 @@ import java.util.Map;
 public class TomorrowsMenuVoting {
     public void voteForTomorrowsMenu(String employeeId) throws Exception {
         String apiPath = "/employee/tomorrowsMenu";
-        String requestTomorrowsMenu = apiPath + "& ";
+
+        ToJsonConversion toJsonConversion = new ToJsonConversion();
+        String jsonData = toJsonConversion.codeEmployeeID(employeeId);
+
+        String requestTomorrowsMenu = apiPath + "&" + jsonData;
 
         String responseMenu = ServerConnection.requestServer(requestTomorrowsMenu);
+        if(responseMenu == null || responseMenu.isEmpty() || responseMenu.equalsIgnoreCase("null")){
+            System.out.println("No menu found for tomorrow");
+            return;
+        }
 
         JsonDataFormat jsonDataFormat = new JsonDataFormat();
         List<String> menu = jsonDataFormat.printDaysMenu(responseMenu, "TOMORROW");

@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lnc.model.DailyMenu;
-import com.lnc.model.EmployeeProfile;
-import com.lnc.model.Feedback;
-import com.lnc.model.MenuItem;
+import com.lnc.model.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,5 +42,9 @@ public class ConversionFromJson {
 
     public EmployeeProfile decodeEmployeeProfile(String jsonData) throws JsonProcessingException {
         return objectMapper.readValue(jsonData, EmployeeProfile.class);
+    }
+
+    public MenuItemProfile decodeMenuItemProfile(String jsonData) throws JsonProcessingException {
+        return objectMapper.readValue(jsonData, MenuItemProfile.class);
     }
 }

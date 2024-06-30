@@ -2,6 +2,8 @@ package com.lnc.service.admin;
 
 import com.lnc.connection.ServerConnection;
 import com.lnc.model.MenuItem;
+import com.lnc.model.MenuItemProfile;
+import com.lnc.service.MenuItemProfileFetcher;
 import com.lnc.util.InputHandler;
 import com.lnc.util.ToJsonConversion;
 
@@ -37,6 +39,15 @@ public class MenuItemAddition {
 
       String response = ServerConnection.requestServer(request);
       System.out.println("Response: " + response);
+
+      if(response.equals("Added item to menu.")) {
+        MenuItemProfileFetcher menuItemProfileFetcher = new MenuItemProfileFetcher();
+        MenuItemProfile menuItemProfile = menuItemProfileFetcher.getMenuItemProfile(itemName);
+
+        String menuItemProfileRequest = jsonCoder.codeMenuItemProfile(menuItemProfile, "/admin/addItemProfile");
+        String menuItemProfileResponse = ServerConnection.requestServer(menuItemProfileRequest);
+        System.out.println("Response: " + menuItemProfileResponse);
+      }
     } catch (Exception ex) {
       logger.severe("Error in adding menu item: " + ex.getMessage());
     }

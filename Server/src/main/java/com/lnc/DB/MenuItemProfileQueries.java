@@ -1,6 +1,7 @@
 package com.lnc.DB;
 
 import com.lnc.connection.JDBCConnection;
+import com.lnc.model.MenuItemProfile;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -47,5 +48,39 @@ public class MenuItemProfileQueries {
         }
 
         return profile;
+    }
+
+    public boolean addMenuItemProfile(MenuItemProfile menuItemProfile, int itemId) {
+        String query = "INSERT INTO menu_item_profile (item_id, diet_type, spice_level, region, sweetness) VALUES (?, ?, ?, ?, ?)";
+
+        try (PreparedStatement addMenuItemProfileStmt = connection.prepareStatement(query)) {
+            addMenuItemProfileStmt.setInt(1, itemId);
+            addMenuItemProfileStmt.setString(2, menuItemProfile.getDietType());
+            addMenuItemProfileStmt.setString(3, menuItemProfile.getSpiceLevel());
+            addMenuItemProfileStmt.setString(4, menuItemProfile.getRegion());
+            addMenuItemProfileStmt.setBoolean(5, menuItemProfile.isSweet());
+
+            return addMenuItemProfileStmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            logger.severe("Failed to add menu item profile.\n" + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean updateMenuItemProfile(MenuItemProfile menuItemProfile, int itemId) {
+        String query = "UPDATE menu_item_profile SET diet_type = ?, spice_level = ?, region = ?, sweetness = ? WHERE item_id = ?";
+
+        try (PreparedStatement updateMenuItemProfileStmt = connection.prepareStatement(query)) {
+            updateMenuItemProfileStmt.setString(1, menuItemProfile.getDietType());
+            updateMenuItemProfileStmt.setString(2, menuItemProfile.getSpiceLevel());
+            updateMenuItemProfileStmt.setString(3, menuItemProfile.getRegion());
+            updateMenuItemProfileStmt.setBoolean(4, menuItemProfile.isSweet());
+            updateMenuItemProfileStmt.setInt(5, itemId);
+
+            return updateMenuItemProfileStmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            logger.severe("Failed to update menu item profile.\n" + e.getMessage());
+            return false;
+        }
     }
 }
