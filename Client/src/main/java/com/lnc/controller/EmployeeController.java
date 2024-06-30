@@ -1,5 +1,6 @@
 package com.lnc.controller;
 
+import com.lnc.model.EmployeeProfile;
 import com.lnc.service.NotificationService;
 import com.lnc.service.UserLogout;
 import com.lnc.service.employee.*;
@@ -41,7 +42,7 @@ public class EmployeeController {
             displayOptions();
             int choice = InputHandler.getInt("Enter your choice: ");
             processOption(choice);
-            if (choice == 6) {
+            if (choice == 7) {
                 break;
             }
         }
@@ -51,7 +52,7 @@ public class EmployeeController {
         switch (choice) {
             case 1:
                 TodaysMenu todaysMenu = new TodaysMenu();
-                todaysMenu.viewTodaysMenu();
+                todaysMenu.viewTodaysMenu(employeeID);
                 break;
             case 2:
                 LocalTime currentTime = nowIST.toLocalTime();
@@ -75,6 +76,10 @@ public class EmployeeController {
                 improviseItem.giveFeedbackToImproviseItem(employeeID);
                 break;
             case 6:
+                EmployeeProfileUpdater employeeProfileUpdater = new EmployeeProfileUpdater();
+                employeeProfileUpdater.updateEmployeeProfile(employeeID);
+                break;
+            case 7:
                 UserLogout userLogout = new UserLogout();
                 boolean isLoggedOut = userLogout.logout(employeeID);
                 if (isLoggedOut) {
@@ -98,6 +103,7 @@ public class EmployeeController {
         System.out.println("3. Give Feedback.");
         System.out.println("4. View Notifications.");
         System.out.println("5. Give Feedback on Improvise Item.");
-        System.out.println("6. Logout");
+        System.out.println("6. Update Profile");
+        System.out.println("7. Logout");
     }
 }

@@ -1,12 +1,14 @@
 package com.lnc.controller;
 
 import com.lnc.service.UserLogout;
+import com.lnc.service.admin.MenuView;
 import com.lnc.service.chef.EngineRecommendation;
 import com.lnc.service.chef.FeedbackView;
 import com.lnc.service.chef.MenuRollout;
 import com.lnc.service.chef.ReportGenerator;
 import com.lnc.service.discardedItem.DiscardedItemProcessor;
 import com.lnc.service.discardedItem.ImproviseItemFeedbackDisplay;
+import com.lnc.service.regiteration.MenuItemProfileUpdater;
 import com.lnc.util.InputHandler;
 
 import static java.lang.Thread.sleep;
@@ -30,7 +32,7 @@ public class ChefController {
       displayOptions();
       int choice = InputHandler.getInt("Enter your choice: ");
       processOption(choice);
-      if (choice == 7) {
+      if (choice == 9) {
         break;
       }
     }
@@ -63,6 +65,14 @@ public class ChefController {
         improviseItemFeedbackDisplay.displayFeedback();
         break;
       case 7:
+        MenuView menuItemDisplay = new MenuView();
+        menuItemDisplay.displayMenu();
+        break;
+      case 8:
+        MenuItemProfileUpdater menuItemProfileUpdater = new MenuItemProfileUpdater();
+        menuItemProfileUpdater.updateMenuItemProfile();
+        break;
+      case 9:
         UserLogout userLogout = new UserLogout();
         boolean isLoggedOut = userLogout.logout(employeeID);
         if (isLoggedOut) {
@@ -87,6 +97,8 @@ public class ChefController {
     System.out.println("4. Generate Report");
     System.out.println("5. View Discard Items. (Available 1st of every month)");
     System.out.println("6. View Improvise Item Feedback");
-    System.out.println("7. Logout");
+    System.out.println("7. View Menu Items");
+    System.out.println("8. Update Menu Item Profile");
+    System.out.println("9. Logout");
   }
 }

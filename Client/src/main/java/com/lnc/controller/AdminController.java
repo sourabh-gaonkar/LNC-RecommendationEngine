@@ -7,6 +7,7 @@ import com.lnc.service.admin.MenuItemUpdate;
 import com.lnc.service.admin.MenuView;
 import com.lnc.service.discardedItem.DiscardedItemProcessor;
 import com.lnc.service.discardedItem.ImproviseItemFeedbackDisplay;
+import com.lnc.service.regiteration.MenuItemProfileUpdater;
 import com.lnc.util.InputHandler;
 
 import static java.lang.Thread.sleep;
@@ -30,7 +31,7 @@ public class AdminController {
             displayOptions();
             int choice = InputHandler.getInt("Enter your choice: ");
             processOption(choice);
-            if (choice == 7) {
+            if (choice == 8) {
                 break;
             }
         }
@@ -63,6 +64,10 @@ public class AdminController {
                 improviseItemFeedbackDisplay.displayFeedback();
                 break;
             case 7:
+                MenuItemProfileUpdater menuItemProfileUpdater = new MenuItemProfileUpdater();
+                menuItemProfileUpdater.updateMenuItemProfile();
+                break;
+            case 8:
                 UserLogout userLogout = new UserLogout();
                 boolean isLoggedOut = userLogout.logout(employeeID);
                 if (isLoggedOut) {
@@ -87,6 +92,7 @@ public class AdminController {
         System.out.println("4. View Menu Items");
         System.out.println("5. View Discard Items. (Available 1st of every month)");
         System.out.println("6. View Improvise Item Feedback");
-        System.out.println("7. Logout");
+        System.out.println("7. Update Item Profile.");
+        System.out.println("8. Logout");
     }
 }

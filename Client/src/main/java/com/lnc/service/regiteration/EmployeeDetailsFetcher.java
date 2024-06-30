@@ -1,27 +1,15 @@
-package com.lnc.controller;
+package com.lnc.service.regiteration;
 
-import com.lnc.connection.ServerConnection;
 import com.lnc.model.Employee;
 import com.lnc.util.InputHandler;
-import com.lnc.util.ToJsonConversion;
 
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
-public class RegistrationController {
-    public void registerUser() throws Exception {
-        Employee employee = getEmployee();
-
-        ToJsonConversion converter = new ToJsonConversion();
-        String request = converter.codeUserDetails(employee);
-
-        String response = ServerConnection.requestServer(request);
-        System.out.println("Response: " + response);
-    }
-
-    private Employee getEmployee() throws IOException, NoSuchAlgorithmException {
+public class EmployeeDetailsFetcher {
+    public Employee getEmployee() throws IOException, NoSuchAlgorithmException {
         String name = getName();
         String employeeID = getEmployeeID();
         String emailID = getMailID();
@@ -32,6 +20,7 @@ public class RegistrationController {
         employee.setEmployeeID(employeeID);
         employee.setEmail(emailID);
         employee.setPassword(password);
+
         return employee;
     }
 

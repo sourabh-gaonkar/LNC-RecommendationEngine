@@ -3,11 +3,9 @@ package com.lnc.app;
 import com.lnc.service.Authentication;
 import com.lnc.service.LogoutUser;
 import com.lnc.service.NewNotification;
-import com.lnc.service.Registration;
-import com.lnc.service.admin.MenuItemAddition;
-import com.lnc.service.admin.MenuItemDeletion;
-import com.lnc.service.admin.MenuItemDisplay;
-import com.lnc.service.admin.MenuItemUpdate;
+import com.lnc.service.admin.*;
+import com.lnc.service.registration.EmployeeProfileCreator;
+import com.lnc.service.registration.Registration;
 import com.lnc.service.chef.FeedbackDisplay;
 import com.lnc.service.chef.ReportGenerator;
 import com.lnc.service.chef.RolloutMenu;
@@ -48,6 +46,11 @@ public class Route {
             case "/register":
                 Registration register = new Registration();
                 response = register.addUser(data);
+                break;
+
+            case "/register/userPreference":
+                EmployeeProfileCreator employeeProfileCreator = new EmployeeProfileCreator();
+                response = employeeProfileCreator.createEmployeeProfile(data);
                 break;
 
             case "/getNotifications":
@@ -95,6 +98,16 @@ public class Route {
                 response = addItem.addMenuItem(data);
                 break;
 
+            case "/admin/addItemProfile":
+                MenuItemProfileAddition addItemProfile = new MenuItemProfileAddition();
+                response = addItemProfile.addMenuItemProfile(data);
+                break;
+
+            case "/admin/updateItemProfile":
+                MenuItemProfileUpdater updateItemProfile = new MenuItemProfileUpdater();
+                response = updateItemProfile.updateMenuItemProfile(data);
+                break;
+
             case "/admin/deleteItem":
                 MenuItemDeletion deleteItem = new MenuItemDeletion();
                 response = deleteItem.deleteMenuItem(data);
@@ -122,17 +135,22 @@ public class Route {
 
             case "/employee/todaysMenu":
                 TodaysMenu todaysMenu = new TodaysMenu();
-                response = todaysMenu.getTodaysMenu();
+                response = todaysMenu.getTodaysMenu(data);
                 break;
 
             case "/employee/tomorrowsMenu":
                 TomorrowsMenu tomorrowsMenu = new TomorrowsMenu();
-                response = tomorrowsMenu.getTomorrowsMenu();
+                response = tomorrowsMenu.getTomorrowsMenu(data);
                 break;
 
             case "/employee/vote":
                 MenuVote menuVote = new MenuVote();
                 response = menuVote.voteForMenu(data);
+                break;
+
+            case "/employee/editProfile":
+                EmployeeProfileEditor employeeProfileEditor = new EmployeeProfileEditor();
+                response = employeeProfileEditor.editEmployeeProfile(data);
                 break;
 
             case "/chef/getFeedback":
