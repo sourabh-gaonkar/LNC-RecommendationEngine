@@ -6,18 +6,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
-import java.util.HashMap;
 
 public class ImproviseFeedbackAnswerQueries {
-    private final Logger logger = Logger.getLogger(DiscardMenuQueries.class.getName());
+    private final Logger logger = Logger.getLogger(ImproviseFeedbackAnswerQueries.class.getName());
     private Connection connection;
 
     public ImproviseFeedbackAnswerQueries() {
-        try{
+        try {
             JDBCConnection dbInstance = JDBCConnection.getInstance();
             this.connection = dbInstance.getConnection();
         } catch (SQLException e) {
@@ -25,13 +22,13 @@ public class ImproviseFeedbackAnswerQueries {
         }
     }
 
-    public boolean addAnswer(String employeeId, Map<String, String> answer){
-        String query = "INSERT INTO improvise_feedback_answer (question_id, employee_id, answer_text) VALUES (?, ?, ?)";
+    public boolean addAnswer(String employeeId, Map<String, String> answer) {
+        final String INSERT_QUERY = "INSERT INTO improvise_feedback_answer (question_id, employee_id, answer_text) VALUES (?, ?, ?)";
 
-        try(PreparedStatement addAnswerStmt = connection.prepareStatement(query)){
+        try (PreparedStatement addAnswerStmt = connection.prepareStatement(INSERT_QUERY)) {
             for (Map.Entry<String, String> entry : answer.entrySet()) {
                 int questionId = Integer.parseInt(entry.getKey());
-                if(ifAnsweredByEmployee(employeeId, questionId)){
+                if (ifAnsweredByEmployee(employeeId, questionId)) {
                     return false;
                 }
                 addAnswerStmt.setInt(1, questionId);
@@ -47,9 +44,9 @@ public class ImproviseFeedbackAnswerQueries {
         }
     }
 
-    private boolean ifAnsweredByEmployee(String employeeId, int questionId){
-        String query = "SELECT * FROM improvise_feedback_answer WHERE employee_id = ? AND question_id = ?";
-        try(PreparedStatement checkAnswerStmt = connection.prepareStatement(query)){
+    private boolean ifAnsweredByEmployee(String employeeId, int questionId) {
+        final String CHECK_QUERY = "SELECT 1 FROM improvise_feedback_answer WHERE employee_id = ? AND question_id = ?";
+        try (PreparedStatement checkAnswerStmt = connection.prepareStatement(CHECK_QUERY)) {
             checkAnswerStmt.setString(1, employeeId);
             checkAnswerStmt.setInt(2, questionId);
             return checkAnswerStmt.executeQuery().next();
@@ -61,8 +58,7 @@ public class ImproviseFeedbackAnswerQueries {
 
     public List<Map<String, List<String>>> getAnswersWithQuestion(int itemId) {
         List<Map<String, List<String>>> questionAnswers = new ArrayList<>();
-
-        String query = "SELECT q.question_text, a.answer_text " +
+        final String SELECT_QUERY = "SELECT q.question_text, a.answer_text " +
                 "FROM improvise_feedback_answer a " +
                 "JOIN improvise_feedback_question q ON a.question_id = q.question_id " +
                 "JOIN improvise_feedback_session s ON q.session_id = s.session_id " +
@@ -70,28 +66,23 @@ public class ImproviseFeedbackAnswerQueries {
                 "ORDER BY a.answer_id DESC " +
                 "LIMIT 10";
 
-        try(PreparedStatement getQuestionAnswersStmt = connection.prepareStatement(query)){
+        try (PreparedStatement getQuestionAnswersStmt = connection.prepareStatement(SELECT_QUERY)) {
             getQuestionAnswersStmt.setInt(1, itemId);
-
-            try(ResultSet rs = getQuestionAnswersStmt.executeQuery()){
+            try (ResultSet rs = getQuestionAnswersStmt.executeQuery()) {
                 Map<String, List<String>> questionAnswersMap = new HashMap<>();
 
-                while(rs.next()){
+                while (rs.next()) {
                     String question = rs.getString("question_text");
                     String answer = rs.getString("answer_text");
 
-                    if (!questionAnswersMap.containsKey(question)) {
-                        questionAnswersMap.put(question, new ArrayList<>());
-                    }
-
-                    questionAnswersMap.get(question).add(answer);
+                    questionAnswersMap.computeIfAbsent(question, k -> new ArrayList<>()).add(answer);
                 }
 
-                for (Map.Entry<String, List<String>> entry : questionAnswersMap.entrySet()) {
+                questionAnswersMap.forEach((question, answers) -> {
                     Map<String, List<String>> questionAnswer = new HashMap<>();
-                    questionAnswer.put(entry.getKey(), entry.getValue());
+                    questionAnswer.put(question, answers);
                     questionAnswers.add(questionAnswer);
-                }
+                });
             }
         } catch (SQLException e) {
             logger.severe("Failed to get answers from the database.\n" + e.getMessage());
