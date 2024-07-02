@@ -1,4 +1,4 @@
-package com.lnc.app;
+package com.lnc.controller;
 
 import com.lnc.service.Authentication;
 import com.lnc.service.LogoutUser;
@@ -22,8 +22,8 @@ import com.lnc.service.recommendationEngine.RecommendationEngine;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Route {
-    private final Logger logger = Logger.getLogger(Route.class.getName());
+public class Routes {
+    private final Logger logger = Logger.getLogger(Routes.class.getName());
 
     public String redirect(String request) throws Exception {
         String[] parts = request.split("&");
