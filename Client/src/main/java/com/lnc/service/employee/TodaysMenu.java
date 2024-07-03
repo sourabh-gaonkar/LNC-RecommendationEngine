@@ -14,6 +14,9 @@ public class TodaysMenu {
     String request = apiPath + "&" + jsonData;
 
     String response = ServerConnection.requestServer(request);
+    if(response.equals("[]") || response.isEmpty()) {
+      System.out.println("No Menu found.");
+    }
 
     JsonDataFormat jsonDataFormat = new JsonDataFormat();
     jsonDataFormat.printDaysMenu(response, "TODAY");
