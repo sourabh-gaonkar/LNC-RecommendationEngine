@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 public class MenuItemDeletion {
 
   private static final Logger logger = Logger.getLogger(MenuItemDeletion.class.getName());
-
   private final ConversionFromJson jsonDecoder = new ConversionFromJson();
   private final MenuQueries menuQueries = new MenuQueries();
 
@@ -25,10 +24,8 @@ public class MenuItemDeletion {
       boolean isDeleted = menuQueries.deleteMenuItem(itemName);
       return isDeleted ? "Deleted Item Successfully" : "Error deleting menu item.";
 
-    } catch (JsonProcessingException e) {
+    } catch (JsonProcessingException | NullPointerException e) {
       logger.log(Level.SEVERE, "JSON processing error: " + e.getMessage(), e);
-    } catch (NullPointerException e) {
-      logger.log(Level.SEVERE, "Null pointer exception: " + e.getMessage(), e);
     }
     return "Error deleting menu item.";
   }
