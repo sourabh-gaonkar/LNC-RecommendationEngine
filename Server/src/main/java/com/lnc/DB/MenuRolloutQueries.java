@@ -20,7 +20,7 @@ public class MenuRolloutQueries {
     private final FeedbackQueries feedbackQueries = new FeedbackQueries();
 
     public MenuRolloutQueries() {
-        try {
+        try{
             JDBCConnection dbInstance = JDBCConnection.getInstance();
             connection = dbInstance.getConnection();
         } catch (SQLException ex) {
@@ -30,24 +30,45 @@ public class MenuRolloutQueries {
 
     public boolean rolloutMenu(DailyMenu dailyMenu) {
         boolean isRolledOut = false;
+        boolean isLunchAdded = false;
+        boolean isSnackAdded = false;
+        boolean isDinnerAdded = false;
+        boolean isBFAdded = false;
+
         LocalDate currentDate = LocalDate.now();
 
-        try {
-            // Use try-with-resources for PreparedStatement
-            String query = "INSERT INTO menu_rollout (item_id, date, votes) VALUES (?, ?, 0)";
-            try (PreparedStatement rolloutMenuStmt = connection.prepareStatement(query)) {
-                // Roll out breakfast items
-                isRolledOut = executeRollout(dailyMenu.getBreakfastItems(), rolloutMenuStmt, currentDate);
+        String query = "INSERT INTO menu_rollout (item_id, date, votes) VALUES (?, ?, 0)";
 
-                // Roll out lunch items
-                isRolledOut = isRolledOut && executeRollout(dailyMenu.getLunchItems(), rolloutMenuStmt, currentDate);
-
-                // Roll out snack items
-                isRolledOut = isRolledOut && executeRollout(dailyMenu.getSnackItems(), rolloutMenuStmt, currentDate);
-
-                // Roll out dinner items
-                isRolledOut = isRolledOut && executeRollout(dailyMenu.getDinnerItems(), rolloutMenuStmt, currentDate);
+        try(PreparedStatement rolloutMenuStmt = connection.prepareStatement(query)) {
+            for(String item : dailyMenu.getBreakfastItems()) {
+                int itemID = menuQueries.getItemID(item);
+                rolloutMenuStmt.setInt(1, itemID);
+                rolloutMenuStmt.setString(2, currentDate.toString());
+                isBFAdded = rolloutMenuStmt.executeUpdate() > 0;
             }
+
+            for(String item : dailyMenu.getLunchItems()) {
+                int itemID = menuQueries.getItemID(item);
+                rolloutMenuStmt.setInt(1, itemID);
+                rolloutMenuStmt.setString(2, currentDate.toString());
+                isLunchAdded = rolloutMenuStmt.executeUpdate() > 0;
+            }
+
+            for(String item : dailyMenu.getSnackItems()) {
+                int itemID = menuQueries.getItemID(item);
+                rolloutMenuStmt.setInt(1, itemID);
+                rolloutMenuStmt.setString(2, currentDate.toString());
+                isSnackAdded = rolloutMenuStmt.executeUpdate() > 0;
+            }
+
+            for(String item : dailyMenu.getDinnerItems()) {
+                int itemID = menuQueries.getItemID(item);
+                rolloutMenuStmt.setInt(1, itemID);
+                rolloutMenuStmt.setString(2, currentDate.toString());
+                isDinnerAdded = rolloutMenuStmt.executeUpdate() > 0;
+            }
+
+            isRolledOut = isBFAdded && isLunchAdded && isSnackAdded && isDinnerAdded;
         } catch (SQLException ex) {
             logger.severe("Failed to roll out menu.\n" + ex.getMessage());
         } catch (Exception e) {
@@ -55,17 +76,6 @@ public class MenuRolloutQueries {
         }
 
         return isRolledOut;
-    }
-
-    private boolean executeRollout(List<String> items, PreparedStatement stmt, LocalDate currentDate) throws SQLException {
-        boolean isAdded = false;
-        for (String item : items) {
-            int itemID = menuQueries.getItemID(item);
-            stmt.setInt(1, itemID);
-            stmt.setString(2, currentDate.toString());
-            isAdded = stmt.executeUpdate() > 0;
-        }
-        return isAdded;
     }
 
     public List<Map<String, Object>> getTodaysMenu() {
@@ -86,11 +96,11 @@ public class MenuRolloutQueries {
                 WHERE rn <= 3;
                 """;
 
-        try (PreparedStatement getTodaysMenuStmt = connection.prepareStatement(query)) {
+        try(PreparedStatement getTodaysMenuStmt = connection.prepareStatement(query)) {
             getTodaysMenuStmt.setString(1, yesterday.toString());
             ResultSet rs = getTodaysMenuStmt.executeQuery();
 
-            while (rs.next()) {
+            while(rs.next()) {
                 Map<String, Object> item = Map.of(
                         "item_name", rs.getString("item_name"),
                         "price", rs.getDouble("price"),
@@ -115,11 +125,11 @@ public class MenuRolloutQueries {
         String query = "SELECT m.item_name, m.price, m.category FROM menu_rollout mr " +
                 "JOIN menu m ON mr.item_id = m.item_id WHERE mr.date = ?";
 
-        try (PreparedStatement getTomorrowsMenuStmt = connection.prepareStatement(query)) {
+        try(PreparedStatement getTomorrowsMenuStmt = connection.prepareStatement(query)) {
             getTomorrowsMenuStmt.setString(1, currentDate.toString());
             ResultSet rs = getTomorrowsMenuStmt.executeQuery();
 
-            while (rs.next()) {
+            while(rs.next()) {
                 Map<String, Object> item = Map.of(
                         "item_name", rs.getString("item_name"),
                         "price", rs.getDouble("price"),
@@ -143,7 +153,7 @@ public class MenuRolloutQueries {
 
         String query = "UPDATE menu_rollout SET votes = votes + 1 WHERE item_id = ? AND date = ?";
 
-        try (PreparedStatement voteForItemStmt = connection.prepareStatement(query)) {
+        try(PreparedStatement voteForItemStmt = connection.prepareStatement(query)) {
             int itemID = menuQueries.getItemID(itemName);
             voteForItemStmt.setInt(1, itemID);
             voteForItemStmt.setString(2, currentDate.toString());

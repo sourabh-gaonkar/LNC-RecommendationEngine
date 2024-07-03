@@ -19,7 +19,7 @@ public class DiscardItemDeletion {
             if(discardMenuQueries.removeFromDiscardMenu(itemName)){
                 logger.info("Item removed from discard menu");
                 if(menuQueries.deleteMenuItem(itemName)){
-                    logger.info("Item added back to menu");
+                    logger.info("Item deleted from to menu");
                     return "Deleted item from discard menu.";
                 } else {
                     logger.severe("Failed to add item back to menu");

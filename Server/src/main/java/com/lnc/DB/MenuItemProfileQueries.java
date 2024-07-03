@@ -12,11 +12,11 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public class MenuItemProfileQueries {
-    private static final Logger logger = Logger.getLogger(MenuItemProfileQueries.class.getName());
+    private final Logger logger = Logger.getLogger(DiscardMenuQueries.class.getName());
     private Connection connection;
 
     public MenuItemProfileQueries() {
-        try {
+        try{
             JDBCConnection dbInstance = JDBCConnection.getInstance();
             this.connection = dbInstance.getConnection();
         } catch (SQLException e) {
@@ -26,10 +26,6 @@ public class MenuItemProfileQueries {
 
     public Map<String, Object> getMenuItemProfile(String itemName) {
         Map<String, Object> profile = new HashMap<>();
-        if (itemName == null || itemName.isEmpty()) {
-            logger.warning("Invalid item name provided.");
-            return profile;
-        }
 
         String query = "SELECT diet_type, spice_level, region, sweetness " +
                 "FROM menu_item_profile mip " +
@@ -55,11 +51,6 @@ public class MenuItemProfileQueries {
     }
 
     public boolean addMenuItemProfile(MenuItemProfile menuItemProfile, int itemId) {
-        if (menuItemProfile == null) {
-            logger.warning("Null MenuItemProfile provided.");
-            return false;
-        }
-
         String query = "INSERT INTO menu_item_profile (item_id, diet_type, spice_level, region, sweetness) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement addMenuItemProfileStmt = connection.prepareStatement(query)) {
@@ -77,11 +68,6 @@ public class MenuItemProfileQueries {
     }
 
     public boolean updateMenuItemProfile(MenuItemProfile menuItemProfile, int itemId) {
-        if (menuItemProfile == null) {
-            logger.warning("Null MenuItemProfile provided.");
-            return false;
-        }
-
         String query = "UPDATE menu_item_profile SET diet_type = ?, spice_level = ?, region = ?, sweetness = ? WHERE item_id = ?";
 
         try (PreparedStatement updateMenuItemProfileStmt = connection.prepareStatement(query)) {

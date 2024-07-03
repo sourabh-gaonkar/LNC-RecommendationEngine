@@ -6,7 +6,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class ImproviseFeedbackQuestionQueries {
@@ -14,11 +17,11 @@ public class ImproviseFeedbackQuestionQueries {
     private Connection connection;
 
     public ImproviseFeedbackQuestionQueries() {
-        try {
+        try{
             JDBCConnection dbInstance = JDBCConnection.getInstance();
             this.connection = dbInstance.getConnection();
         } catch (SQLException e) {
-            logger.severe("Failed to connect to the database: " + e.getMessage());
+            logger.severe("Failed to connect to the database.\n" + e.getMessage());
         }
     }
 
@@ -29,22 +32,22 @@ public class ImproviseFeedbackQuestionQueries {
             for (String question : questions) {
                 addQuestionsStmt.setInt(1, feedbackSessionID);
                 addQuestionsStmt.setString(2, question);
-                addQuestionsStmt.addBatch();
+                isQuestionsAdded = addQuestionsStmt.executeUpdate() > 0;
             }
-            int[] updateCounts = addQuestionsStmt.executeBatch();
-            isQuestionsAdded = Arrays.stream(updateCounts).allMatch(count -> count > 0);
         } catch (SQLException ex) {
-            logger.severe("Failed to add questions to feedback session: " + ex.getMessage());
+            logger.severe("Failed to add questions to feedback session.\n" + ex.getMessage());
         }
         return isQuestionsAdded;
     }
 
     public List<Map<Integer, String>> getQuestions(int feedbackSessionID) {
         List<Map<Integer, String>> questions = new ArrayList<>();
+
         String query = "SELECT question_id, question_text FROM improvise_feedback_question WHERE session_id = ?";
 
-        try (PreparedStatement getQuestionsStmt = connection.prepareStatement(query)) {
+        try(PreparedStatement getQuestionsStmt = connection.prepareStatement(query)) {
             getQuestionsStmt.setInt(1, feedbackSessionID);
+
             ResultSet rs = getQuestionsStmt.executeQuery();
             while (rs.next()) {
                 int questionId = rs.getInt("question_id");
@@ -55,8 +58,9 @@ public class ImproviseFeedbackQuestionQueries {
                 questions.add(question);
             }
         } catch (SQLException ex) {
-            logger.severe("Failed to get questions for feedback session: " + ex.getMessage());
+            logger.severe("Failed to get questions for feedback session.\n" + ex.getMessage());
         }
+
         return questions;
     }
 }

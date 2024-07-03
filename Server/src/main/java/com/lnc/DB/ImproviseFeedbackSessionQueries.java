@@ -9,11 +9,11 @@ import java.sql.SQLException;
 import java.util.logging.Logger;
 
 public class ImproviseFeedbackSessionQueries {
-    private final Logger logger = Logger.getLogger(ImproviseFeedbackSessionQueries.class.getName());
+    private final Logger logger = Logger.getLogger(DiscardMenuQueries.class.getName());
     private Connection connection;
 
     public ImproviseFeedbackSessionQueries() {
-        try {
+        try{
             JDBCConnection dbInstance = JDBCConnection.getInstance();
             this.connection = dbInstance.getConnection();
         } catch (SQLException e) {
@@ -25,32 +25,17 @@ public class ImproviseFeedbackSessionQueries {
         int feedbackSessionID = 0;
         MenuQueries menuQueries = new MenuQueries();
         int itemID = menuQueries.getItemID(itemName);
-        String createQuery = "INSERT INTO improvise_feedback_session (item_id) VALUES (?)";
-        String selectQuery = "SELECT session_id FROM improvise_feedback_session WHERE item_id = ?";
-
-        try (PreparedStatement createStmt = connection.prepareStatement(createQuery);
-             PreparedStatement selectStmt = connection.prepareStatement(selectQuery)) {
-
-            // Create feedback session
-            createStmt.setInt(1, itemID);
-            boolean isFeedbackSessionCreated = createStmt.executeUpdate() > 0;
-
-            if (isFeedbackSessionCreated) {
-                // Retrieve feedback session ID
-                selectStmt.setInt(1, itemID);
-                ResultSet resultSet = selectStmt.executeQuery();
-                if (resultSet.next()) {
-                    feedbackSessionID = resultSet.getInt("session_id");
-                }
-            }
-
+        String query = "INSERT INTO improvise_feedback_session (item_id) VALUES (?)";
+        try (PreparedStatement createFeedbackSessionStmt = connection.prepareStatement(query)) {
+            createFeedbackSessionStmt.setInt(1, itemID);
+            boolean isFeedbackSessionCreated = createFeedbackSessionStmt.executeUpdate() > 0;
+            if (isFeedbackSessionCreated) feedbackSessionID = getFeedbackSessionID(itemID);
         } catch (SQLException ex) {
-            logger.severe("Failed to create or retrieve feedback session.\n" + ex.getMessage());
+            logger.severe("Failed to create feedback session.\n" + ex.getMessage());
         }
         return feedbackSessionID;
     }
 
-    // No change needed in getFeedbackSessionID method as per your request
     public int getFeedbackSessionID(int itemID) {
         int feedbackSessionID = 0;
         String query = "SELECT session_id FROM improvise_feedback_session WHERE item_id = ?";

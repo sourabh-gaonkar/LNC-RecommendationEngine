@@ -15,7 +15,7 @@ public class EmployeeOrderQueries {
     private final MenuQueries menuQueries = new MenuQueries();
 
     public EmployeeOrderQueries() {
-        try {
+        try{
             JDBCConnection dbInstance = JDBCConnection.getInstance();
             connection = dbInstance.getConnection();
         } catch (SQLException ex) {
@@ -23,22 +23,20 @@ public class EmployeeOrderQueries {
         }
     }
 
-    private int getItemId(String menuItem) {
-        return menuQueries.getItemID(menuItem);
-    }
-
     public int getFeedbacksLeft(Feedback feedback) {
-        String query = "SELECT available_feedbacks FROM employee_orders WHERE employee_id = ? AND item_id = ?";
         int feedbacksLeft = 0;
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, feedback.getEmployeeID());
-            stmt.setInt(2, getItemId(feedback.getMenuItem()));
+        String query = "SELECT available_feedbacks FROM employee_orders WHERE employee_id = ? AND item_id = ?";
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    feedbacksLeft = rs.getInt("available_feedbacks");
-                }
+        int itemId = menuQueries.getItemID(feedback.getMenuItem());
+
+        try(PreparedStatement getAvailableFeedbackStmt = connection.prepareStatement(query)) {
+            getAvailableFeedbackStmt.setString(1, feedback.getEmployeeID());
+            getAvailableFeedbackStmt.setInt(2, itemId);
+
+            ResultSet rs = getAvailableFeedbackStmt.executeQuery();
+            if (rs.next()) {
+                feedbacksLeft = rs.getInt("available_feedbacks");
             }
         } catch (SQLException e) {
             logger.severe("Error while getting available feedbacks: " + e.getMessage());
@@ -48,20 +46,36 @@ public class EmployeeOrderQueries {
     }
 
     public boolean isRowPresent(Feedback feedback) {
-        return isRowPresent(feedback.getEmployeeID(), feedback.getMenuItem());
+        boolean isRowPresent = false;
+
+        String query = "SELECT * FROM employee_orders WHERE employee_id = ? AND item_id = ?";
+
+        int itemId = menuQueries.getItemID(feedback.getMenuItem());
+
+        try(PreparedStatement checkRowStmt = connection.prepareStatement(query)) {
+            checkRowStmt.setString(1, feedback.getEmployeeID());
+            checkRowStmt.setInt(2, itemId);
+
+            isRowPresent = checkRowStmt.executeQuery().next();
+        } catch (SQLException e) {
+            logger.severe("Error while checking if row is present: " + e.getMessage());
+        }
+
+        return isRowPresent;
     }
 
     public boolean isRowPresent(String employeeId, String itemName) {
-        String query = "SELECT 1 FROM employee_orders WHERE employee_id = ? AND item_id = ?";
         boolean isRowPresent = false;
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, employeeId);
-            stmt.setInt(2, getItemId(itemName));
+        String query = "SELECT * FROM employee_orders WHERE employee_id = ? AND item_id = ?";
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                isRowPresent = rs.next();
-            }
+        int itemId = menuQueries.getItemID(itemName);
+
+        try(PreparedStatement checkRowStmt = connection.prepareStatement(query)) {
+            checkRowStmt.setString(1, employeeId);
+            checkRowStmt.setInt(2, itemId);
+
+            isRowPresent = checkRowStmt.executeQuery().next();
         } catch (SQLException e) {
             logger.severe("Error while checking if row is present: " + e.getMessage());
         }
@@ -70,39 +84,55 @@ public class EmployeeOrderQueries {
     }
 
     public boolean addFeedbackCount(String employeeId, String itemName) {
+        boolean isAdded = false;
+
         String query = "UPDATE employee_orders SET available_feedbacks = available_feedbacks + 1 WHERE employee_id = ? AND item_id = ?";
-        return updateFeedbackCount(employeeId, itemName, query);
+
+        int itemId = menuQueries.getItemID(itemName);
+
+        try(PreparedStatement addFeedbackCountStmt = connection.prepareStatement(query)) {
+            addFeedbackCountStmt.setString(1, employeeId);
+            addFeedbackCountStmt.setInt(2, itemId);
+
+            isAdded = addFeedbackCountStmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            logger.severe("Error while adding feedback count: " + e.getMessage());
+        }
+
+        return isAdded;
     }
 
     public boolean subtractFeedbackCount(Feedback feedback) {
+        boolean isSubtracted = false;
+
         String query = "UPDATE employee_orders SET available_feedbacks = available_feedbacks - 1 WHERE employee_id = ? AND item_id = ?";
-        return updateFeedbackCount(feedback.getEmployeeID(), feedback.getMenuItem(), query);
-    }
 
-    private boolean updateFeedbackCount(String employeeId, String itemName, String query) {
-        boolean isUpdated = false;
+        int itemId = menuQueries.getItemID(feedback.getMenuItem());
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, employeeId);
-            stmt.setInt(2, getItemId(itemName));
+        try(PreparedStatement subtractFeedbackCountStmt = connection.prepareStatement(query)) {
+            subtractFeedbackCountStmt.setString(1, feedback.getEmployeeID());
+            subtractFeedbackCountStmt.setInt(2, itemId);
 
-            isUpdated = stmt.executeUpdate() > 0;
+            isSubtracted = subtractFeedbackCountStmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            logger.severe("Error while updating feedback count: " + e.getMessage());
+            logger.severe("Error while subtracting feedback count: " + e.getMessage());
         }
 
-        return isUpdated;
+        return isSubtracted;
     }
 
     public boolean addNewItemFeedbackValue(String employeeID, String menuItem) {
-        String query = "INSERT INTO employee_orders (employee_id, item_id, available_feedbacks) VALUES (?, ?, 1)";
         boolean isAdded = false;
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, employeeID);
-            stmt.setInt(2, getItemId(menuItem));
+        String query = "INSERT INTO employee_orders (employee_id, item_id, available_feedbacks) VALUES (?, ?, 1)";
 
-            isAdded = stmt.executeUpdate() > 0;
+        int itemId = menuQueries.getItemID(menuItem);
+
+        try(PreparedStatement addNewItemFeedbackValueStmt = connection.prepareStatement(query)) {
+            addNewItemFeedbackValueStmt.setString(1, employeeID);
+            addNewItemFeedbackValueStmt.setInt(2, itemId);
+
+            isAdded = addNewItemFeedbackValueStmt.executeUpdate() > 0;
         } catch (SQLException e) {
             logger.severe("Error while adding new item feedback value: " + e.getMessage());
         }
