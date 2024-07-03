@@ -22,7 +22,7 @@ public class FeedbackView {
 
       String response = ServerConnection.requestServer(request);
 
-      printFeedbacks(response);
+      printFeedback(response);
     } catch (JsonProcessingException ex) {
       logger.severe("Error in json parsing feedbacks: " + ex.getMessage());
     } catch (Exception ex) {
@@ -43,10 +43,10 @@ public class FeedbackView {
     return menuItem;
   }
 
-  private void printFeedbacks(String response){
+  private void printFeedback(String response) {
     try {
       jsonDataFormat.viewFormattedFeedbacks(response);
-    } catch (Exception e) {
+    } catch (Exception ex){
       System.out.println(response);
     }
   }
