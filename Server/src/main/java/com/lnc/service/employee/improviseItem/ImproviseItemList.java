@@ -15,6 +15,9 @@ public class ImproviseItemList {
     public String getImproviseItemList(){
         try{
             List<String> improviseItems = improviseMenuQueries.getAllImproviseList();
+            if(improviseItems == null || improviseItems.isEmpty()) {
+                return "No improvise items found.";
+            }
             return conversionToJson.codeItemList(improviseItems);
         } catch (JsonProcessingException | NullPointerException ex){
             logger.severe("Failed to get improvise items.\n" + ex.getMessage());

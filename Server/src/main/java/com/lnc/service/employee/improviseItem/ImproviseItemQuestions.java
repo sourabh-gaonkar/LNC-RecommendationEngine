@@ -18,12 +18,16 @@ public class ImproviseItemQuestions {
     private final ImproviseFeedbackSessionQueries improviseFeedbackSessionQueries = new ImproviseFeedbackSessionQueries();
     private final ImproviseFeedbackQuestionQueries improviseFeedbackQuestionQueries = new ImproviseFeedbackQuestionQueries();
     private final ConversionToJson conversionToJson = new ConversionToJson();
+
     public String getQuestions(String jsonData){
         try {
             String itemName = conversionFromJson.getJsonValue("itemName", jsonData);
+
             int itemID = menuQueries.getItemID(itemName);
             int sessionID = improviseFeedbackSessionQueries.getFeedbackSessionID(itemID);
+
             List<Map<Integer, String>> questions = improviseFeedbackQuestionQueries.getQuestions(sessionID);
+
             return conversionToJson.codeQuestions(questions);
         } catch (JsonProcessingException | NullPointerException e) {
             logger.severe("Failed to get questions for " + jsonData + ".\n" + e.getMessage());
