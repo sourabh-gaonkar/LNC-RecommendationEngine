@@ -13,7 +13,7 @@ public class UserLogout {
     public String logout(String jsonData) {
         try {
             String employeeID = fromJsonConverter.getJsonValue("employee_id", jsonData);
-            
+
             if (userLoginLogQueries.addLogoutLog(employeeID)) {
                 logger.info("Logout log added for employee: " + employeeID);
             } else {

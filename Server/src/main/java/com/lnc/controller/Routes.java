@@ -1,7 +1,7 @@
 package com.lnc.controller;
 
 import com.lnc.service.Authentication;
-import com.lnc.service.NewNotification;
+import com.lnc.service.UndeliveredNotifications;
 import com.lnc.service.UserLogout;
 import com.lnc.service.admin.*;
 import com.lnc.service.registration.EmployeeProfileCreator;
@@ -54,7 +54,7 @@ public class Routes {
                 break;
 
             case "/getNotifications":
-                NewNotification newNotification = new NewNotification();
+                UndeliveredNotifications newNotification = new UndeliveredNotifications();
                 response = newNotification.getNewNotifications(data);
                 break;
 
