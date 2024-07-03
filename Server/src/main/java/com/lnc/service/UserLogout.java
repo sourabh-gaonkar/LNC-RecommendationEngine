@@ -5,13 +5,15 @@ import com.lnc.utils.ConversionFromJson;
 
 import java.util.logging.Logger;
 
-public class LogoutUser {
-    private final Logger logger = Logger.getLogger(LogoutUser.class.getName());
+public class UserLogout {
+    private final Logger logger = Logger.getLogger(UserLogout.class.getName());
     private final UserLoginLogQueries userLoginLogQueries = new UserLoginLogQueries();
     private final ConversionFromJson fromJsonConverter = new ConversionFromJson();
+
     public String logout(String jsonData) {
         try {
             String employeeID = fromJsonConverter.getJsonValue("employee_id", jsonData);
+            
             if (userLoginLogQueries.addLogoutLog(employeeID)) {
                 logger.info("Logout log added for employee: " + employeeID);
             } else {

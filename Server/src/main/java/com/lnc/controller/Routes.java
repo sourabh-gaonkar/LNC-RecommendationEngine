@@ -1,8 +1,8 @@
 package com.lnc.controller;
 
 import com.lnc.service.Authentication;
-import com.lnc.service.LogoutUser;
 import com.lnc.service.NewNotification;
+import com.lnc.service.UserLogout;
 import com.lnc.service.admin.*;
 import com.lnc.service.registration.EmployeeProfileCreator;
 import com.lnc.service.registration.Registration;
@@ -38,7 +38,7 @@ public class Routes {
                 break;
 
             case "/logout":
-                LogoutUser logoutUser = new LogoutUser();
+                UserLogout logoutUser = new UserLogout();
                 response = logoutUser.logout(data);
                 break;
 

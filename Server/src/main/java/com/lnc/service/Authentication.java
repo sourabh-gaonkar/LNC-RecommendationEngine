@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 public class Authentication {
     private final UserDetailsQueries userDetailsQueries = new UserDetailsQueries();
     private final UserLoginLogQueries userLoginLogQueries = new UserLoginLogQueries();
+    private final ConversionFromJson fromJsonConverter = new ConversionFromJson();
+    private final ConversionToJson toJsonConverter = new ConversionToJson();
     private final Logger logger = Logger.getLogger(Authentication.class.getName());
 
     public String authenticate(String jsonData) {
@@ -32,12 +34,10 @@ public class Authentication {
     }
 
     private String extractEmployeeID(String jsonData) throws JsonProcessingException, NullPointerException {
-        ConversionFromJson fromJsonConverter = new ConversionFromJson();
         return fromJsonConverter.getJsonValue("employeeID", jsonData);
     }
 
     private String extractPassword(String jsonData) throws JsonProcessingException, NullPointerException {
-        ConversionFromJson fromJsonConverter = new ConversionFromJson();
         return fromJsonConverter.getJsonValue("password", jsonData);
     }
 
@@ -63,7 +63,6 @@ public class Authentication {
     }
 
     private String convertEmployeeToJson(Employee employee) throws JsonProcessingException {
-        ConversionToJson toJsonConverter = new ConversionToJson();
         return toJsonConverter.codeUserDetails(employee);
     }
 }
