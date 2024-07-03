@@ -13,28 +13,25 @@ import java.util.logging.Logger;
 public class ReportGenerator {
 
   private static final Logger LOGGER = Logger.getLogger(ReportGenerator.class.getName());
+  private final ConversionFromJson fromJson = new ConversionFromJson();
+  private final FeedbackQueries feedbackQueries = new FeedbackQueries();
+  private final ConversionToJson toJson = new ConversionToJson();
 
   public String generateReport(String jsonData) {
     try {
-      ConversionFromJson fromJson = new ConversionFromJson();
       String year = fromJson.getJsonValue("year", jsonData);
       String month = fromJson.getJsonValue("month", jsonData);
 
-      FeedbackQueries feedbackQueries = new FeedbackQueries();
       List<Map<String, Object>> reportData = feedbackQueries.generateFeedbackReport(month, year);
 
       if (reportData == null) {
-        return "Error in generating report";
+        return "Error in generating report.";
       }
 
-      ConversionToJson toJson = new ConversionToJson();
       return toJson.codeMonthlyReport(reportData);
 
-    } catch (JsonProcessingException ex) {
+    } catch (JsonProcessingException | NullPointerException ex) {
       LOGGER.log(Level.SEVERE, "JSON processing error in generating report: " + ex.getMessage(), ex);
-      return "Error in generating report";
-    } catch (NullPointerException ex) {
-      LOGGER.log(Level.SEVERE, "Null value encountered in generating report: " + ex.getMessage(), ex);
       return "Error in generating report";
     }
   }

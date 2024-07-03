@@ -12,9 +12,14 @@ import java.util.logging.Logger;
 
 public class FeedbackDisplay {
   private final Logger logger = Logger.getLogger(FeedbackDisplay.class.getName());
+  private final ConversionFromJson fromJson = new ConversionFromJson();
+  private final MenuQueries menu = new MenuQueries();
+  private final FeedbackQueries feedbackQueries = new FeedbackQueries();
+  private final ConversionToJson toJson = new ConversionToJson();
 
   public String displayFeedback(String jsonData) {
     String itemName = getItemNameFromJson(jsonData);
+
     if (itemName == null) {
       return "Invalid item name.";
     }
@@ -28,7 +33,6 @@ public class FeedbackDisplay {
 
   private String getItemNameFromJson(String jsonData) {
     try {
-      ConversionFromJson fromJson = new ConversionFromJson();
       return fromJson.getJsonValue("itemName", jsonData);
     } catch (JsonProcessingException | NullPointerException e) {
       logger.severe("Error parsing JSON: " + e.getMessage());
@@ -37,13 +41,10 @@ public class FeedbackDisplay {
   }
 
   private boolean isMenuItemPresent(String itemName) {
-    MenuQueries menu = new MenuQueries();
     return menu.checkMenuItemPresent(itemName);
   }
 
   private String generateFeedbackResponse(String itemName) {
-    FeedbackQueries feedbackQueries = new FeedbackQueries();
-
     List<Map<String, Object>> feedbackList = feedbackQueries.viewFeedback(itemName);
     if (feedbackList.isEmpty()) {
       return "No feedbacks available for this item.";
@@ -66,7 +67,6 @@ public class FeedbackDisplay {
                                         Map<String, Object> weeklyStat,
                                         Map<String, Object> overallStat) {
     try {
-      ConversionToJson toJson = new ConversionToJson();
       return toJson.codeFeedbacks(feedbackList, weeklyStat, overallStat);
     } catch (JsonProcessingException | NullPointerException e) {
       logger.severe("Error converting feedbacks to JSON: " + e.getMessage());

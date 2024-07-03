@@ -83,7 +83,7 @@ public class MenuRolloutQueries {
         LocalDate currentDate = LocalDate.now();
         LocalDate yesterday = currentDate.minusDays(1);
 
-    String query = """
+        String query = """
                 WITH RankedItems AS (
                     SELECT m.item_name, m.price, m.category,
                     ROW_NUMBER() OVER (PARTITION BY m.category ORDER BY mr.votes DESC, m.item_name) AS rn

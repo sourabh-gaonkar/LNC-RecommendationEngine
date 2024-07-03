@@ -9,12 +9,12 @@ import java.util.logging.Logger;
 
 public class MenuItemUpdate {
   private static final Logger logger = Logger.getLogger(MenuItemUpdate.class.getName());
+  private final MenuQueries menuQueries = new MenuQueries();
 
   public String updateMenuItem(String jsonData) {
     try {
       MenuItem item = decodeJsonToMenuItem(jsonData);
 
-      MenuQueries menuQueries = new MenuQueries();
       if (menuQueries.checkMenuItemPresent(item.getItemName())) {
         if (menuQueries.updateMenuItem(item)) {
           return "Updated menu item.";

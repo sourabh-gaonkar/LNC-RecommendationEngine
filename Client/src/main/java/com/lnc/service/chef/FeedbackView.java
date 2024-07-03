@@ -11,17 +11,18 @@ import java.util.logging.Logger;
 
 public class FeedbackView {
   private final Logger logger = Logger.getLogger(FeedbackView.class.getName());
+  private final JsonDataFormat jsonDataFormat = new JsonDataFormat();
+  private final ToJsonConversion toJson = new ToJsonConversion();
 
   public void getFeedbacks() {
     try {
       String menuItem = getMenuItem();
 
-      ToJsonConversion toJson = new ToJsonConversion();
       String request = toJson.codeItemName(menuItem, "/chef/getFeedback");
 
       String response = ServerConnection.requestServer(request);
-      JsonDataFormat jsonDataFormat = new JsonDataFormat();
-      jsonDataFormat.viewFormattedFeedbacks(response);
+
+      printFeedback(response);
     } catch (JsonProcessingException ex) {
       logger.severe("Error in json parsing feedbacks: " + ex.getMessage());
     } catch (Exception ex) {
@@ -40,5 +41,13 @@ public class FeedbackView {
       break;
     }
     return menuItem;
+  }
+
+  private void printFeedback(String response) {
+    try {
+      jsonDataFormat.viewFormattedFeedbacks(response);
+    } catch (Exception ex){
+      System.out.println(response);
+    }
   }
 }

@@ -1,9 +1,9 @@
 package com.lnc.controller;
 
-import com.lnc.service.NewNotification;
+import com.lnc.service.UndeliveredNotifications;
 
 public class NotificationRoutes implements RouteHandler {
-    private final NewNotification newNotification = new NewNotification();
+    private final UndeliveredNotifications newNotification = new UndeliveredNotifications();
 
     @Override
     public String handle(String path, String data) throws Exception {

@@ -22,7 +22,7 @@ public class UserDetailsQueries {
         }
     }
 
-        public boolean addUser(Employee employee) {
+    public boolean addUser(Employee employee) {
         boolean isUserAdded = false;
 
         String query = "INSERT INTO user_details VALUES (?, ?, ?, ?, ?)";

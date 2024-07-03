@@ -13,8 +13,16 @@ public class AllNotificationsOfEmployee {
     String request = apiPath + "&" + jsonsString;
 
     String response = ServerConnection.requestServer(request);
+    if(!validateResponse(response)){
+      System.out.println("Error fetching notifications. Try later.");
+      return;
+    }
 
     JsonDataFormat formatter = new JsonDataFormat();
     formatter.printAllNotifications(response);
+  }
+
+  public boolean validateResponse(String response) {
+      return !response.equalsIgnoreCase("Error in fetching notifications");
   }
 }

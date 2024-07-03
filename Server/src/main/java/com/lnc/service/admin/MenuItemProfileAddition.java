@@ -17,6 +17,7 @@ public class MenuItemProfileAddition {
     public String addMenuItemProfile(String jsonData) {
         try {
             MenuItemProfile menuItemProfile = fromJson.decodeMenuItemProfile(jsonData);
+
             String itemName = menuItemProfile.getItemName();
             int itemId = menuQueries.getItemID(itemName);
 

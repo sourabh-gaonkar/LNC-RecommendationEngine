@@ -1,11 +1,11 @@
 package com.lnc.controller;
 
 import com.lnc.service.Authentication;
-import com.lnc.service.LogoutUser;
+import com.lnc.service.UserLogout;
 
 public class AuthRoutes implements RouteHandler {
     private final Authentication auth = new Authentication();
-    private final LogoutUser logoutUser = new LogoutUser();
+    private final UserLogout logoutUser = new UserLogout();
 
     @Override
     public String handle(String path, String data) throws Exception {

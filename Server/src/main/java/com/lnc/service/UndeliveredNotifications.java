@@ -9,18 +9,20 @@ import com.lnc.utils.ConversionToJson;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class NewNotification {
-  private final Logger logger = Logger.getLogger(NewNotification.class.getName());
+public class UndeliveredNotifications {
+  private final Logger logger = Logger.getLogger(UndeliveredNotifications.class.getName());
+  private final ConversionFromJson fromJsonConverter = new ConversionFromJson();
+  private final NotificationQueries notificationQueries = new NotificationQueries();
+  private final ConversionToJson toJson = new ConversionToJson();
+
   public String getNewNotifications(String jsonData) {
     try{
-      ConversionFromJson fromJsonConverter = new ConversionFromJson();
       String employee_id = fromJsonConverter.getJsonValue("employee_id", jsonData);
 
-      NotificationQueries notificationQueries = new NotificationQueries();
       List<Notification> notifications = notificationQueries.getNewNotifications(employee_id);
 
-      ConversionToJson toJson = new ConversionToJson();
       return toJson.codeNotifications(notifications);
+
     } catch (JsonProcessingException | NullPointerException e) {
       logger.severe("Error getting notification: " + e.getMessage());
       return null;

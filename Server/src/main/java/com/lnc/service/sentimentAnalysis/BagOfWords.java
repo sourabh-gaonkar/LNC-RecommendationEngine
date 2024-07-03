@@ -50,7 +50,7 @@ public class BagOfWords {
 
     private void updateCSV(String filePath, Map<String, Integer> wordMap) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
-            bw.write("word,count"); // Write header
+            bw.write("word,count");
             bw.newLine();
             for (Map.Entry<String, Integer> entry : wordMap.entrySet()) {
                 bw.write(entry.getKey() + "," + entry.getValue());

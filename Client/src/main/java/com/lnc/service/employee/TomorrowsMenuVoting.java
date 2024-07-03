@@ -21,7 +21,7 @@ public class TomorrowsMenuVoting {
         String requestTomorrowsMenu = apiPath + "&" + jsonData;
 
         String responseMenu = ServerConnection.requestServer(requestTomorrowsMenu);
-        if(responseMenu == null || responseMenu.isEmpty() || responseMenu.equalsIgnoreCase("null")){
+        if(responseMenu == null || responseMenu.isEmpty() || responseMenu.equalsIgnoreCase("[]")){
             System.out.println("No menu found for tomorrow");
             return;
         }

@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 public class MenuItemAddition {
   private Logger logger = Logger.getLogger(MenuItemAddition.class.getName());
+  private final ConversionFromJson jsonDecoder = new ConversionFromJson();
 
   public String addMenuItem(String jsonData) {
     try {
@@ -31,7 +32,6 @@ public class MenuItemAddition {
   }
 
   private MenuItem decodeJsonToMenuItem(String jsonData) throws JsonProcessingException, NullPointerException  {
-    ConversionFromJson jsonDecoder = new ConversionFromJson();
     return jsonDecoder.decodeMenuItem(jsonData);
   }
 

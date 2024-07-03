@@ -33,7 +33,7 @@ public class FeedbackQueries {
     LocalDate currentDate = LocalDate.now();
 
     String query =
-        "INSERT INTO feedback (employee_id, item_id, rating, comment, feedback_date) VALUES (?,?,?,?,?)";
+            "INSERT INTO feedback (employee_id, item_id, rating, comment, feedback_date) VALUES (?,?,?,?,?)";
 
     try (PreparedStatement addFeedbackStmt = connection.prepareStatement(query)) {
       addFeedbackStmt.setString(1, feedback.getEmployeeID());
@@ -55,7 +55,7 @@ public class FeedbackQueries {
     int itemID = menu.getItemID(itemName);
 
     String query =
-        "SELECT employee_id, rating, comment, feedback_date FROM feedback WHERE item_id = ? ORDER BY feedback_date DESC LIMIT 20";
+            "SELECT employee_id, rating, comment, feedback_date FROM feedback WHERE item_id = ? ORDER BY feedback_date DESC LIMIT 20";
 
     try (PreparedStatement viewFeedbackStmt = connection.prepareStatement(query)) {
       viewFeedbackStmt.setInt(1, itemID);
@@ -86,7 +86,7 @@ public class FeedbackQueries {
     int itemID = menu.getItemID(itemName);
 
     String query =
-        "SELECT AVG(rating) AS weekly_rating, COUNT(*) AS weekly_reviews FROM feedback WHERE item_id = ? AND feedback_date >= CURDATE() - INTERVAL 7 DAY";
+            "SELECT AVG(rating) AS weekly_rating, COUNT(*) AS weekly_reviews FROM feedback WHERE item_id = ? AND feedback_date >= CURDATE() - INTERVAL 7 DAY";
 
     try (PreparedStatement weeklyStatsStmt = connection.prepareStatement(query)) {
       weeklyStatsStmt.setInt(1, itemID);
@@ -108,7 +108,7 @@ public class FeedbackQueries {
     int itemID = menu.getItemID(itemName);
 
     String query =
-        "SELECT AVG(rating) AS overall_rating, COUNT(*) AS overall_reviews FROM feedback WHERE item_id = ?";
+            "SELECT AVG(rating) AS overall_rating, COUNT(*) AS overall_reviews FROM feedback WHERE item_id = ?";
 
     try (PreparedStatement overallStatsStmt = connection.prepareStatement(query)) {
       overallStatsStmt.setInt(1, itemID);
@@ -127,14 +127,14 @@ public class FeedbackQueries {
   public List<Map<String, Object>> generateFeedbackReport(String month, String year) {
 
     String query =
-        "SELECT m.item_name, u.name AS employee_name, f.rating, f.comment, f.feedback_date, "
-            + "(SELECT AVG(f2.rating) FROM feedback f2 WHERE f2.item_id = f.item_id AND "
-            + "MONTH(f2.feedback_date) = ? AND YEAR(f2.feedback_date) = ?) AS avg_rating "
-            + "FROM feedback f "
-            + "JOIN user_details u ON f.employee_id = u.employee_id "
-            + "JOIN menu m ON f.item_id = m.item_id "
-            + "WHERE MONTH(f.feedback_date) = ? AND YEAR(f.feedback_date) = ? "
-            + "ORDER BY m.item_name, f.feedback_date";
+            "SELECT m.item_name, u.name AS employee_name, f.rating, f.comment, f.feedback_date, "
+                    + "(SELECT AVG(f2.rating) FROM feedback f2 WHERE f2.item_id = f.item_id AND "
+                    + "MONTH(f2.feedback_date) = ? AND YEAR(f2.feedback_date) = ?) AS avg_rating "
+                    + "FROM feedback f "
+                    + "JOIN user_details u ON f.employee_id = u.employee_id "
+                    + "JOIN menu m ON f.item_id = m.item_id "
+                    + "WHERE MONTH(f.feedback_date) = ? AND YEAR(f.feedback_date) = ? "
+                    + "ORDER BY m.item_name, f.feedback_date";
 
     List<Map<String, Object>> reportData = new ArrayList<>();
 

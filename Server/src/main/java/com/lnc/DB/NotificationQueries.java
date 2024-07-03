@@ -42,7 +42,7 @@ public class NotificationQueries {
     List<Notification> notifications = new ArrayList<>();
 
     String query =
-        "SELECT n.message, n.created_at FROM notification n JOIN employee_notifications en ON n.notification_id = en.notification_id WHERE en.employee_id = ? LIMIT 10";
+            "SELECT n.message, n.created_at FROM notification n JOIN employee_notifications en ON n.notification_id = en.notification_id WHERE en.employee_id = ? LIMIT 10";
 
     try (PreparedStatement getNotificationsStmt = connection.prepareStatement(query)) {
       getNotificationsStmt.setString(1, employeeID);
@@ -56,10 +56,10 @@ public class NotificationQueries {
         notification.setCreatedAt(createdAt);
         notifications.add(notification);
       }
-        boolean isStatusUpdated = updateNotificationStatus(employeeID, "READ");
-        if (!isStatusUpdated) {
-            System.out.println("Failed to update notification status.");
-        }
+      boolean isStatusUpdated = updateNotificationStatus(employeeID, "READ");
+      if (!isStatusUpdated) {
+        System.out.println("Failed to update notification status.");
+      }
     } catch (SQLException ex) {
       logger.severe("Failed to get notifications.\n" + ex.getMessage());
     }
@@ -71,7 +71,7 @@ public class NotificationQueries {
     List<Notification> notifications = new ArrayList<>();
 
     String query =
-        "SELECT n.message, n.created_at FROM notification n JOIN employee_notifications en ON n.notification_id = en.notification_id WHERE en.employee_id = ? AND status = 'PENDING' LIMIT 10";
+            "SELECT n.message, n.created_at FROM notification n JOIN employee_notifications en ON n.notification_id = en.notification_id WHERE en.employee_id = ? AND status = 'PENDING' LIMIT 10";
 
     try (PreparedStatement getNotificationsStmt = connection.prepareStatement(query)) {
       getNotificationsStmt.setString(1, employeeID);
