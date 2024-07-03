@@ -17,6 +17,7 @@ public class MenuItemProfileUpdater {
     public String updateMenuItemProfile(String jsonData) {
         try {
             MenuItemProfile menuItemProfile = fromJson.decodeMenuItemProfile(jsonData);
+
             String itemName = menuItemProfile.getItemName();
             int itemId = menuQueries.getItemID(itemName);
 

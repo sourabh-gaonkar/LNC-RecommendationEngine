@@ -18,17 +18,17 @@ class MenuItemDeletionTest {
     void testDeleteMenuItemForInvalidItem() {
         String jsonData = "{\"itemName\":\"Invalid Item Name\"}";
 
-        menuItemDeletionUnderTest.deleteMenuItem(jsonData);
+        String result = menuItemDeletionUnderTest.deleteMenuItem(jsonData);
 
-        assertEquals("Menu item not found.", menuItemDeletionUnderTest.deleteMenuItem(jsonData));
+        assertEquals("Menu item not found.", result);
     }
 
     @Test
     void testDeleteMenuItemForInvalidJsonTemplate() {
         String jsonData = "{\"item\":\"Invalid Template\"}";
 
-        menuItemDeletionUnderTest.deleteMenuItem(jsonData);
+        String result = menuItemDeletionUnderTest.deleteMenuItem(jsonData);
 
-        assertEquals("Error deleting menu item.", menuItemDeletionUnderTest.deleteMenuItem(jsonData));
+        assertEquals("Error deleting menu item.", result);
     }
 }

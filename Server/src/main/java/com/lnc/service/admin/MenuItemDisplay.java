@@ -9,8 +9,10 @@ import java.util.logging.Logger;
 
 public class MenuItemDisplay {
   private final Logger logger = Logger.getLogger(MenuItemDisplay.class.getName());
+  private final MenuQueries menu = new MenuQueries();
+  private final ConversionToJson jsonCoder = new ConversionToJson();
+
   public String displayMenu() throws Exception {
-    MenuQueries menu = new MenuQueries();
     List<Map<String, Object>> items = menu.viewMenuItems();
 
     if(items.isEmpty()) {
@@ -18,7 +20,6 @@ public class MenuItemDisplay {
       return null;
     }
 
-    ConversionToJson jsonCoder = new ConversionToJson();
     return jsonCoder.codeAllMenuItems(items);
   }
 }
