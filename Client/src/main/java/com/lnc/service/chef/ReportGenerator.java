@@ -31,6 +31,10 @@ public class ReportGenerator {
         String request = convertToJson.codeMonthYear(month, year);
 
         String response = ServerConnection.requestServer(request);
+        if(!validateResponse(response)){
+            System.out.println("Error fetching report data from the server.");
+            return;
+        }
 
         writeReportToCSV(response, year, month);
     }
@@ -100,5 +104,9 @@ public class ReportGenerator {
 
         writer.close();
         System.out.println("Report generated successfully: " + reportFileName);
+    }
+
+    public boolean validateResponse(String response) {
+        return !(response.equalsIgnoreCase("Error in generating report.") || response.equalsIgnoreCase("[]"));
     }
 }
