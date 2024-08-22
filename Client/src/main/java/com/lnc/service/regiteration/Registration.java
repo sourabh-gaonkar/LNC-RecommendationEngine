@@ -3,10 +3,10 @@ package com.lnc.service.regiteration;
 import com.lnc.connection.ServerConnection;
 import com.lnc.model.Employee;
 import com.lnc.model.EmployeeProfile;
-import com.lnc.util.ToJsonConversion;
+import com.lnc.util.JsonStringConverter;
 
 public class Registration {
-    private final ToJsonConversion converter = new ToJsonConversion();
+    private final JsonStringConverter converter = new JsonStringConverter();
     public void registerUser() throws Exception {
         EmployeeDetailsFetcher employeeDetailsFetcher = new EmployeeDetailsFetcher();
         Employee employee = employeeDetailsFetcher.getEmployee();

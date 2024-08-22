@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ToJsonConversion {
+public class JsonStringConverter {
     private final ObjectMapper objectMapper = new ObjectMapper();
     public String codeLoginCredentials(String employeeID, String password) throws JsonProcessingException {
         Map<String,String> loginCredentials = new HashMap<>();

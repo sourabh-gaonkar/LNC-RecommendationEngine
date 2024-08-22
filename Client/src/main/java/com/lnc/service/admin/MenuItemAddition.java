@@ -5,8 +5,9 @@ import com.lnc.model.MenuItem;
 import com.lnc.model.MenuItemProfile;
 import com.lnc.service.MenuItemProfileFetcher;
 import com.lnc.util.InputHandler;
-import com.lnc.util.ToJsonConversion;
+import com.lnc.util.JsonStringConverter;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 public class MenuItemAddition {
@@ -14,42 +15,54 @@ public class MenuItemAddition {
 
   public void addMenuItem() {
     try{
-      MenuItem item = new MenuItem();
-      String itemName = InputHandler.getString("\nEnter menu item name: ");
-      Double price = InputHandler.getDouble("Enter price: ");
-      int choice;
-      do {
-        choice = InputHandler.getInt("Enter availability (1 - available, 0 - not available): ");
-      } while (choice != 0 && choice != 1);
-      boolean available = choice == 1;
-      int categoryCode;
-      do {
-        categoryCode =
-                InputHandler.getInt(
-                        "Enter category code (1 - Breakfast, 2 - Lunch, 3 - Snack, 4 - Dinner): ");
-      } while (categoryCode < 1 || categoryCode > 4);
+      MenuItem item = getMenuDetails();
 
-      item.setItemName(itemName);
-      item.setPrice(price);
-      item.setAvailability(available);
-      item.setCategory(categoryCode);
 
-      ToJsonConversion jsonCoder = new ToJsonConversion();
+      JsonStringConverter jsonCoder = new JsonStringConverter();
       String request = jsonCoder.codeMenuItem(item, "/admin/addItem");
 
       String response = ServerConnection.requestServer(request);
       System.out.println("Response: " + response);
 
       if(response.equals("Added item to menu.")) {
-        MenuItemProfileFetcher menuItemProfileFetcher = new MenuItemProfileFetcher();
-        MenuItemProfile menuItemProfile = menuItemProfileFetcher.getMenuItemProfile(itemName);
-
-        String menuItemProfileRequest = jsonCoder.codeMenuItemProfile(menuItemProfile, "/admin/addItemProfile");
-        String menuItemProfileResponse = ServerConnection.requestServer(menuItemProfileRequest);
-        System.out.println("Response: " + menuItemProfileResponse);
+        handleRequest(item, jsonCoder);
       }
     } catch (Exception ex) {
       logger.severe("Error in adding menu item: " + ex.getMessage());
     }
+  }
+
+  private static void handleRequest(MenuItem item, JsonStringConverter jsonCoder) throws IOException {
+    MenuItemProfileFetcher menuItemProfileFetcher = new MenuItemProfileFetcher();
+    MenuItemProfile menuItemProfile = menuItemProfileFetcher.getMenuItemProfile(item.getItemName());
+
+    String menuItemProfileRequest = jsonCoder.codeMenuItemProfile(menuItemProfile, "/admin/addItemProfile");
+    String menuItemProfileResponse = ServerConnection.requestServer(menuItemProfileRequest);
+    System.out.println("Response: " + menuItemProfileResponse);
+  }
+
+  private MenuItem getMenuDetails() throws IOException {
+    MenuItem item = new MenuItem();
+
+    String itemName = InputHandler.getString("\nEnter menu item name: ");
+    Double price = InputHandler.getDouble("Enter price: ");
+    int choice;
+    do {
+      choice = InputHandler.getInt("Enter availability (1 - available, 0 - not available): ");
+    } while (choice != 0 && choice != 1);
+    boolean available = choice == 1;
+    int categoryCode;
+    do {
+      categoryCode =
+              InputHandler.getInt(
+                      "Enter category code (1 - Breakfast, 2 - Lunch, 3 - Snack, 4 - Dinner): ");
+    } while (categoryCode < 1 || categoryCode > 4);
+
+    item.setItemName(itemName);
+    item.setPrice(price);
+    item.setAvailability(available);
+    item.setCategory(categoryCode);
+
+    return item;
   }
 }

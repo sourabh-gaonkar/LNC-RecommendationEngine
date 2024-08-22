@@ -1,6 +1,6 @@
 package com.lnc.connection;
 
-import com.lnc.controller.Route;
+import com.lnc.controller.RequestRouter;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -34,7 +34,7 @@ public class ClientHandler implements Runnable{
     }
 
     private String handleRequest(String request) throws Exception {
-        Route redirection = new Route();
+        RequestRouter redirection = new RequestRouter();
         return redirection.redirect(request);
     }
 }

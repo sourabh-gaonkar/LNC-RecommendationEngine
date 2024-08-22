@@ -3,10 +3,10 @@ package com.lnc.service.discardedItem;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lnc.connection.ServerConnection;
 import com.lnc.service.employee.improviseItem.ImproviseFeedback;
-import com.lnc.util.FromJsonConversion;
+import com.lnc.util.JsonStringDecoder;
 import com.lnc.util.InputHandler;
 import com.lnc.util.JsonDataFormat;
-import com.lnc.util.ToJsonConversion;
+import com.lnc.util.JsonStringConverter;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 public class ImproviseItemFeedbackDisplay {
     private final Logger logger = Logger.getLogger(ImproviseFeedback.class.getName());
-    private final ToJsonConversion toJsonConversion = new ToJsonConversion();
+    private final JsonStringConverter toJsonConversion = new JsonStringConverter();
     private final JsonDataFormat jsonDataFormat = new JsonDataFormat();
 
     public void displayFeedback() {

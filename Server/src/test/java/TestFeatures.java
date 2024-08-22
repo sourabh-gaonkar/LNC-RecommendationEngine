@@ -1,7 +1,4 @@
-import com.lnc.DB.DiscardMenuQueries;
-import com.lnc.DB.EmployeeOrderQueries;
-import com.lnc.DB.EmployeeProfileQueries;
-import com.lnc.DB.FeedbackQueries;
+import com.lnc.DB.*;
 import com.lnc.model.Feedback;
 import org.junit.jupiter.api.Test;
 
@@ -12,9 +9,9 @@ public class TestFeatures {
     @Test
     public void testFeatures() {
         try {
-            FeedbackQueries fq = new FeedbackQueries();
-            List<Map<String, Object>> report = fq.generateFeedbackReport("03", "2024");
-            System.out.println(report);
+            MenuQueries menuQueries = new MenuQueries();
+            List<Map<String, Object>> menu = menuQueries.viewMenuItems();
+            System.out.println(menu);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

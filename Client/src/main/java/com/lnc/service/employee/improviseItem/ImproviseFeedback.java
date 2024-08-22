@@ -2,9 +2,9 @@ package com.lnc.service.employee.improviseItem;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lnc.connection.ServerConnection;
-import com.lnc.util.FromJsonConversion;
+import com.lnc.util.JsonStringDecoder;
 import com.lnc.util.InputHandler;
-import com.lnc.util.ToJsonConversion;
+import com.lnc.util.JsonStringConverter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,8 +15,8 @@ import java.util.logging.Logger;
 
 public class ImproviseFeedback {
     private final Logger logger = Logger.getLogger(ImproviseFeedback.class.getName());
-    private final ToJsonConversion toJsonConversion = new ToJsonConversion();
-    private final FromJsonConversion fromJsonConversion = new FromJsonConversion();
+    private final JsonStringConverter toJsonConversion = new JsonStringConverter();
+    private final JsonStringDecoder fromJsonConversion = new JsonStringDecoder();
     public void giveImprovisationFeedback(String improvisationItem, String employeeId) {
         try {
             List<Map<Integer, String>> questions = getQuestions(improvisationItem);

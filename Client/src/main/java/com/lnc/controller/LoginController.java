@@ -9,17 +9,19 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 public class LoginController {
+  private  int EMP_ID_LENGTH = 6;
+  private int MIN_PASSWORD_LENGTH = 8;
   AuthService auth = new AuthService();
 
   public void loginUser() throws Exception {
-    String employeeID = getEmployeeID();
+    String employeeID = getValidEmployeeID();
     String password = getPassword();
     String hashPassword = getHashPassword(password);
 
     auth.authenticate(employeeID, hashPassword);
   }
 
-  private String getEmployeeID() throws IOException {
+  private String getValidEmployeeID() throws IOException {
     String employeeID;
     while (true) {
       employeeID = InputHandler.getString("\nEnter your Employee ID: ");
@@ -33,7 +35,7 @@ public class LoginController {
   }
 
   private boolean isValidEmployeeID(String employeeID) {
-    if (employeeID.length() != 6
+    if (employeeID.length() != EMP_ID_LENGTH
         || !(employeeID.startsWith("EMP")
             || employeeID.startsWith("ADM")
             || employeeID.startsWith("CHE"))) {
@@ -59,7 +61,7 @@ public class LoginController {
   }
 
   private boolean isValidPassword(String password) {
-    if (password.length() < 8) {
+    if (password.length() < MIN_PASSWORD_LENGTH) {
       return false;
     }
 

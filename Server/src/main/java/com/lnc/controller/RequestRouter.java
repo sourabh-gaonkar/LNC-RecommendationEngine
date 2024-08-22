@@ -5,11 +5,11 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Route {
-    private final Logger logger = Logger.getLogger(Route.class.getName());
+public class RequestRouter {
+    private final Logger logger = Logger.getLogger(RequestRouter.class.getName());
     private final Map<String, RouteHandler> routeHandlers = new HashMap<>();
 
-    public Route() {
+    public RequestRouter() {
         routeHandlers.put("/login", new AuthRoutes());
         routeHandlers.put("/logout", new AuthRoutes());
         routeHandlers.put("/register", new RegistrationRoutes());
@@ -22,12 +22,12 @@ public class Route {
         routeHandlers.put("/discardItem/getQuestions", new DiscardItemRoutes());
         routeHandlers.put("/discardItem/submitAnswers", new DiscardItemRoutes());
         routeHandlers.put("/discardItem/getFeedback", new DiscardItemRoutes());
-        routeHandlers.put("/admin/addItem", new AdminRoutes());
-        routeHandlers.put("/admin/addItemProfile", new AdminRoutes());
-        routeHandlers.put("/admin/updateItemProfile", new AdminRoutes());
-        routeHandlers.put("/admin/deleteItem", new AdminRoutes());
-        routeHandlers.put("/admin/viewItems", new AdminRoutes());
-        routeHandlers.put("/admin/updateItem", new AdminRoutes());
+        routeHandlers.put("/admin/addItem", new AdminRequestHandler());
+        routeHandlers.put("/admin/addItemProfile", new AdminRequestHandler());
+        routeHandlers.put("/admin/updateItemProfile", new AdminRequestHandler());
+        routeHandlers.put("/admin/deleteItem", new AdminRequestHandler());
+        routeHandlers.put("/admin/viewItems", new AdminRequestHandler());
+        routeHandlers.put("/admin/updateItem", new AdminRequestHandler());
         routeHandlers.put("/employee/feedback", new EmployeeRoutes());
         routeHandlers.put("/employee/getNotifications", new EmployeeRoutes());
         routeHandlers.put("/employee/todaysMenu", new EmployeeRoutes());

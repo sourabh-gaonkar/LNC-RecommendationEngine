@@ -3,7 +3,7 @@ package com.lnc.service.admin;
 import com.lnc.connection.ServerConnection;
 import com.lnc.model.MenuItem;
 import com.lnc.util.InputHandler;
-import com.lnc.util.ToJsonConversion;
+import com.lnc.util.JsonStringConverter;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -27,7 +27,7 @@ public class MenuItemUpdate {
       item.setAvailability(available);
       item.setCategory(categoryCode);
 
-      ToJsonConversion jsonCoder = new ToJsonConversion();
+      JsonStringConverter jsonCoder = new JsonStringConverter();
       String request = jsonCoder.codeMenuItem(item, "/admin/updateItem");
 
       String response = ServerConnection.requestServer(request);

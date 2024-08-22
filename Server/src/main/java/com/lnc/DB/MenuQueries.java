@@ -93,7 +93,17 @@ public class MenuQueries {
     public List<Map<String, Object>> viewMenuItems() {
         List<Map<String, Object>> menuList = new ArrayList<>();
 
-        String query = "SELECT item_name, price, availability, category FROM menu";
+        String query = "SELECT " +
+                "m.item_name, " +
+                "m.price, " +
+                "m.availability, " +
+                "m.category, " +
+                "mip.diet_type, " +
+                "mip.spice_level, " +
+                "mip.region, " +
+                "mip.sweetness " +
+                "FROM menu m " +
+                "JOIN menu_item_profile mip ON m.item_id = mip.item_id";
 
         try (PreparedStatement viewMenuItemsStmt = connection.prepareStatement(query)) {
             ResultSet rs = viewMenuItemsStmt.executeQuery();
@@ -104,6 +114,10 @@ public class MenuQueries {
                 item.put("price", rs.getBigDecimal("price"));
                 item.put("availability", rs.getBoolean("availability"));
                 item.put("category", rs.getString("category"));
+                item.put("diet_type", getDietType(rs.getString("diet_type")));
+                item.put("spice_level", rs.getString("spice_level"));
+                item.put("region", getRegion(rs.getString("region")));
+                item.put("sweet", rs.getBoolean("sweetness"));
                 menuList.add(item);
             }
         } catch (SQLException ex) {
@@ -140,5 +154,29 @@ public class MenuQueries {
             logger.severe("Error while getting all menu IDs: " + ex.getMessage());
         }
         return menuIds;
+    }
+
+    private String getDietType(String dietType) {
+        String diet = null;
+        if(dietType.equalsIgnoreCase("VEG")){
+            diet = "Vegetarian";
+        } else if(dietType.equalsIgnoreCase("EGG")){
+            diet = "Eggetarian";
+        } else {
+            diet = "Non-Vegetarian";
+        }
+        return diet;
+    }
+
+    private String getRegion(String regionShort) {
+        String region = null;
+        if (regionShort.equalsIgnoreCase("SI")) {
+            region = "South India";
+        } else if (regionShort.equalsIgnoreCase("NI")){
+            region = "North India";
+        } else {
+            region = "Pan Asia";
+        }
+        return region;
     }
 }
