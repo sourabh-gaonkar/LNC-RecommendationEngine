@@ -3,7 +3,7 @@ package com.lnc.service.discardedItem;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lnc.connection.ServerConnection;
 import com.lnc.util.InputHandler;
-import com.lnc.util.ToJsonConversion;
+import com.lnc.util.JsonStringConverter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 public class DiscardedItemImprovisation {
     private final Logger logger = Logger.getLogger(DiscardedItemImprovisation.class.getName());
-    private final ToJsonConversion toJsonConversion = new ToJsonConversion();
+    private final JsonStringConverter toJsonConversion = new JsonStringConverter();
     public void improviseDiscardedItem(String discardedItem) {
         try{
             int numberOfQuestions = getNoOfQuestions();

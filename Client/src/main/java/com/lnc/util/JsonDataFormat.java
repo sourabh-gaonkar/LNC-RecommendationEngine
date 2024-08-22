@@ -15,22 +15,27 @@ import java.util.Map;
 public class JsonDataFormat {
     private final ObjectMapper objectMapper = new ObjectMapper();
     public void prettyView(String jsonData) throws Exception {
-        List<MenuItemResponse> items;
+        List<Map<String, Object>> items;
         try {
-            items = objectMapper.readValue(jsonData, new TypeReference<List<MenuItemResponse>>() {});
+            items = objectMapper.readValue(jsonData, new TypeReference<List<Map<String, Object>>>() {});
         } catch (IOException ex) {
             throw new Exception("Error formatting JSON data.\n" + ex.getMessage());
         }
 
-        System.out.printf("%-30s %-10s %-15s %-10s%n", "Item Name", "Price", "Availability", "Category");
-        System.out.println("--------------------------------------------------------------------------");
+        System.out.printf("%-30s %-10s %-15s %-15s %-20s %-15s %-15s %-10s%n",
+                "Item Name", "Price", "Availability", "Category", "Diet Type", "Spice Level", "Region", "Sweet");
+        System.out.println("-------------------------------------------------------------------------------------------------------------------------------------");
 
-        for (MenuItemResponse item : items) {
-            System.out.printf("%-30s %-10.2f %-15s %-10s%n",
-                    item.getItemName(),
-                    item.getPrice(),
-                    item.isAvailable() ? "Yes" : "No",
-                    item.getCategory());
+        for (Map<String, Object> item : items) {
+            System.out.printf("%-30s %-10.2f %-15s %-15s %-20s %-15s %-15s %-10s%n",
+                    item.get("item_name"),
+                    (Double) item.get("price"),
+                    (Boolean) item.get("availability") ? "Yes" : "No",
+                    item.get("category"),
+                    item.get("diet_type"),
+                    item.get("spice_level"),
+                    item.get("region"),
+                    (Boolean) item.get("sweet") ? "Yes" : "No");
         }
     }
 

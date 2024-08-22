@@ -3,7 +3,7 @@ package com.lnc.service.employee;
 import com.lnc.connection.ServerConnection;
 import com.lnc.util.InputHandler;
 import com.lnc.util.JsonDataFormat;
-import com.lnc.util.ToJsonConversion;
+import com.lnc.util.JsonStringConverter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class TomorrowsMenuVoting {
     public void voteForTomorrowsMenu(String employeeId) throws Exception {
         String apiPath = "/employee/tomorrowsMenu";
 
-        ToJsonConversion toJsonConversion = new ToJsonConversion();
+        JsonStringConverter toJsonConversion = new JsonStringConverter();
         String jsonData = toJsonConversion.codeEmployeeID(employeeId);
 
         String requestTomorrowsMenu = apiPath + "&" + jsonData;
@@ -45,7 +45,7 @@ public class TomorrowsMenuVoting {
         employeeVotingData.put("employeeID", employeeId);
         employeeVotingData.put("votedItems", votedItemList);
 
-        ToJsonConversion convertToJson = new ToJsonConversion();
+        JsonStringConverter convertToJson = new JsonStringConverter();
         String requestVoting = convertToJson.codeVotedItems(employeeVotingData);
 
         String responseVoting = ServerConnection.requestServer(requestVoting);

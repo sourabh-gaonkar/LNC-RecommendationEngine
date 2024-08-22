@@ -3,7 +3,7 @@ package com.lnc.service.chef;
 import com.lnc.connection.ServerConnection;
 import com.lnc.util.InputHandler;
 import com.lnc.util.JsonDataFormat;
-import com.lnc.util.ToJsonConversion;
+import com.lnc.util.JsonStringConverter;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 public class EngineRecommendation {
   private final Logger logger = Logger.getLogger(EngineRecommendation.class.getName());
   private final JsonDataFormat jsonFormatter = new JsonDataFormat();
-  private final ToJsonConversion toJsonConverter = new ToJsonConversion();
+  private final JsonStringConverter toJsonConverter = new JsonStringConverter();
   public void viewRecommendation() {
     try{
       int itemCount = getItemCount();

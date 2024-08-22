@@ -5,11 +5,11 @@ import com.lnc.connection.ServerConnection;
 import com.lnc.controller.AdminController;
 import com.lnc.controller.ChefController;
 import com.lnc.controller.EmployeeController;
-import com.lnc.util.FromJsonConversion;
-import com.lnc.util.ToJsonConversion;
+import com.lnc.util.JsonStringDecoder;
+import com.lnc.util.JsonStringConverter;
 
 public class AuthService {
-  private final ToJsonConversion jsonConversion = new ToJsonConversion();
+  private final JsonStringConverter jsonConversion = new JsonStringConverter();
 
   public void authenticate(String employeeID, String password) throws JsonProcessingException {
     String request = jsonConversion.codeLoginCredentials(employeeID, password);
@@ -22,20 +22,15 @@ public class AuthService {
   }
 
   private void handleServerResponse(String response, String employeeID) throws Exception {
-    switch (response) {
-      case "Wrong username or password.":
-      case "EmployeeID does not exist.":
-      case "Wrong request format.":
-        System.out.println("Wrong username or password.");
-        break;
-      default:
-        processValidResponse(response, employeeID);
-        break;
+    if(response.equalsIgnoreCase("Wrong request format") || response.equalsIgnoreCase("EmployeeID does not exist.") || response.equalsIgnoreCase("Wrong username or password.")){
+      System.out.println("Wrong username or password.");
+    } else {
+      processValidResponse(response, employeeID);
     }
   }
 
   private void processValidResponse(String response, String employeeID) throws Exception {
-    FromJsonConversion jsonDecode = new FromJsonConversion();
+    JsonStringDecoder jsonDecode = new JsonStringDecoder();
     String name = jsonDecode.getJsonValue("name", response);
     String role = jsonDecode.getJsonValue("role", response);
 

@@ -2,7 +2,7 @@ package com.lnc.service.admin;
 
 import com.lnc.connection.ServerConnection;
 import com.lnc.util.InputHandler;
-import com.lnc.util.ToJsonConversion;
+import com.lnc.util.JsonStringConverter;
 
 import java.util.logging.Logger;
 
@@ -13,7 +13,7 @@ public class MenuItemDeletion {
     try {
       String itemName = InputHandler.getString("\nEnter item name: ");
 
-      ToJsonConversion jsonCoder = new ToJsonConversion();
+      JsonStringConverter jsonCoder = new JsonStringConverter();
       String request = jsonCoder.codeItemName(itemName, "/admin/deleteItem");
 
       String response = ServerConnection.requestServer(request);

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lnc.connection.ServerConnection;
 import com.lnc.model.Notification;
-import com.lnc.util.ToJsonConversion;
+import com.lnc.util.JsonStringConverter;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class NotificationService {
 
   public void fetchAndDisplayNotifications(String employeeID) throws Exception {
     String apiPath = "/getNotifications";
-    String request = apiPath + "&" + new ToJsonConversion().codeEmployeeID(employeeID);
+    String request = apiPath + "&" + new JsonStringConverter().codeEmployeeID(employeeID);
 
     String response = ServerConnection.requestServer(request);
 

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lnc.connection.ServerConnection;
 import com.lnc.util.InputHandler;
 import com.lnc.util.JsonDataFormat;
-import com.lnc.util.ToJsonConversion;
+import com.lnc.util.JsonStringConverter;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 public class FeedbackView {
   private final Logger logger = Logger.getLogger(FeedbackView.class.getName());
   private final JsonDataFormat jsonDataFormat = new JsonDataFormat();
-  private final ToJsonConversion toJson = new ToJsonConversion();
+  private final JsonStringConverter toJson = new JsonStringConverter();
 
   public void getFeedbacks() {
     try {

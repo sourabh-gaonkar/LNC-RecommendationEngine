@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Map;
 
-public class FromJsonConversion {
+public class JsonStringDecoder {
   private final ObjectMapper objectMapper = new ObjectMapper();
 
   public String getJsonValue(String key, String jsonData) throws JsonProcessingException {

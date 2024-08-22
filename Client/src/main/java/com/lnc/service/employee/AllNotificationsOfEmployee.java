@@ -2,11 +2,11 @@ package com.lnc.service.employee;
 
 import com.lnc.connection.ServerConnection;
 import com.lnc.util.JsonDataFormat;
-import com.lnc.util.ToJsonConversion;
+import com.lnc.util.JsonStringConverter;
 
 public class AllNotificationsOfEmployee {
   public void getAllNotifications(String employeeID) throws Exception {
-    ToJsonConversion convertToJson = new ToJsonConversion();
+    JsonStringConverter convertToJson = new JsonStringConverter();
     String jsonsString = convertToJson.codeEmployeeID(employeeID);
 
     String apiPath = "/employee/getNotifications";

@@ -3,7 +3,7 @@ package com.lnc.service.chef;
 import com.lnc.connection.ServerConnection;
 import com.lnc.model.DailyMenu;
 import com.lnc.util.InputHandler;
-import com.lnc.util.ToJsonConversion;
+import com.lnc.util.JsonStringConverter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,9 +16,15 @@ public class MenuRollout {
     List<String> snackItems = collectItems("snack", 4);
     List<String> dinnerItems = collectItems("dinner", 4);
 
-    DailyMenu dailyMenu = new DailyMenu(breakfastItems, lunchItems, snackItems, dinnerItems);
+    List<List<String>> dailyMenuItems = new ArrayList<>();
+    dailyMenuItems.add(breakfastItems);
+    dailyMenuItems.add(lunchItems);
+    dailyMenuItems.add(snackItems);
+    dailyMenuItems.add(dinnerItems);
 
-    ToJsonConversion toJson = new ToJsonConversion();
+    DailyMenu dailyMenu = new DailyMenu(dailyMenuItems);
+
+    JsonStringConverter toJson = new JsonStringConverter();
     String request = toJson.codeDailyMenu(dailyMenu);
 
     String response = ServerConnection.requestServer(request);

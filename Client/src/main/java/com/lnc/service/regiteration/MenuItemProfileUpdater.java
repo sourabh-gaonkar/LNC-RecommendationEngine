@@ -6,7 +6,7 @@ import com.lnc.model.MenuItem;
 import com.lnc.model.MenuItemProfile;
 import com.lnc.service.MenuItemProfileFetcher;
 import com.lnc.util.InputHandler;
-import com.lnc.util.ToJsonConversion;
+import com.lnc.util.JsonStringConverter;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ public class MenuItemProfileUpdater {
         MenuItemProfileFetcher menuItemProfileFetcher = new MenuItemProfileFetcher();
         MenuItemProfile menuItemProfile = menuItemProfileFetcher.getMenuItemProfile(itemName);
 
-        ToJsonConversion jsonCoder = new ToJsonConversion();
+        JsonStringConverter jsonCoder = new JsonStringConverter();
         String menuItemProfileRequest = jsonCoder.codeMenuItemProfile(menuItemProfile, "/admin/updateItemProfile");
         String menuItemProfileResponse = ServerConnection.requestServer(menuItemProfileRequest);
         System.out.println("Response: " + menuItemProfileResponse);

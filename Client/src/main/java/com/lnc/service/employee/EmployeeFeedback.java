@@ -3,7 +3,7 @@ package com.lnc.service.employee;
 import com.lnc.connection.ServerConnection;
 import com.lnc.model.Feedback;
 import com.lnc.util.InputHandler;
-import com.lnc.util.ToJsonConversion;
+import com.lnc.util.JsonStringConverter;
 
 import java.io.IOException;
 
@@ -15,7 +15,7 @@ public class EmployeeFeedback {
         feedback.setRating(getRating());
         feedback.setComment(getComment());
 
-        ToJsonConversion toJsonConversion = new ToJsonConversion();
+        JsonStringConverter toJsonConversion = new JsonStringConverter();
         String request = toJsonConversion.codeEmployeeFeedback(feedback);
 
         try{

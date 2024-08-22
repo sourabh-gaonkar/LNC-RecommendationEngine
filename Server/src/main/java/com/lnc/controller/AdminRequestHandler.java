@@ -2,7 +2,7 @@ package com.lnc.controller;
 
 import com.lnc.service.admin.*;
 
-public class AdminRoutes implements RouteHandler {
+public class AdminRequestHandler implements RouteHandler {
     private final MenuItemAddition addItem = new MenuItemAddition();
     private final MenuItemProfileAddition addItemProfile = new MenuItemProfileAddition();
     private final MenuItemProfileUpdater updateItemProfile = new MenuItemProfileUpdater();

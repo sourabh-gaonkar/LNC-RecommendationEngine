@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lnc.connection.ServerConnection;
 import com.lnc.util.InputHandler;
-import com.lnc.util.ToJsonConversion;
+import com.lnc.util.JsonStringConverter;
 import com.opencsv.CSVWriter;
 
 import java.io.FileWriter;
@@ -27,7 +27,7 @@ public class ReportGenerator {
         }
         System.out.println("Generating report for " + month + "/" + year + "...");
 
-        ToJsonConversion convertToJson = new ToJsonConversion();
+        JsonStringConverter convertToJson = new JsonStringConverter();
         String request = convertToJson.codeMonthYear(month, year);
 
         String response = ServerConnection.requestServer(request);
